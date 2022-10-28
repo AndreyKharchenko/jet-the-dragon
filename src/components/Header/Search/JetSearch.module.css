@@ -1,0 +1,8 @@
+.searchPaper {
+  display: flex;
+  align-items: center;
+  width: 400px;
+  border-radius: 20px!important;
+  border: 1px solid #ccc;
+  padding: 0px 4px; 
+}

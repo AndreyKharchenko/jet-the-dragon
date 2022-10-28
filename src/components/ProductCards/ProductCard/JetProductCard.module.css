@@ -1,0 +1,19 @@
+.productImage {
+    border-radius: 3%;
+}
+
+.productContent {
+    width: auto;
+    padding: 10px!important;
+}
+
+.productActions {
+    margin-bottom: 2rem!important;
+    padding: 10px!important;
+    justify-content: flex-end;
+}
+
+.productRaiting {
+    font-size: 1rem!important;
+    margin-top: 0.2rem;
+}
