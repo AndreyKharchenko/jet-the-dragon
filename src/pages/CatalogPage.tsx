@@ -16,6 +16,7 @@ const CatalogPage: React.FC<{}> = () => {
                 <JetHeader />
                 <JetOptionsTab />
             </Box>
+            
             <Box sx={{
                 display: 'flex',
                 flexDirection: 'column',
@@ -30,6 +31,7 @@ const CatalogPage: React.FC<{}> = () => {
             <Box>
                 <JetFooter />
             </Box>
+            
         </Box>
     );
 }

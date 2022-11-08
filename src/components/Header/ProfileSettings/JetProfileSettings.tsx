@@ -6,11 +6,14 @@ import MenuIcon from '@mui/icons-material/Menu';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import JetMenu from '../../common/JetMenu';
 import JetDialog from '../../common/JetDialog';
+import { useNavigate } from 'react-router-dom';
 const JetProfileSettings: React.FC<{}> = () => {
     const [anchormElm, setAnchormElm] = useState<null | HTMLElement>(null);
     const [openMenu, setOpenMenu] = useState(false);
 
     const [dialog, handleDialog] = useState<boolean>(false);
+
+    const navigate = useNavigate();
 
     const handleCloseMenu = () => {
         setAnchormElm(null);
@@ -30,10 +33,14 @@ const JetProfileSettings: React.FC<{}> = () => {
         handleDialog(false);
     }
 
+    const onLogin = (loginType: string) => {
+        navigate(`/login/${loginType}`);
+    }
+
     const tmpMenuItems = [
         {id: 1, txt: 'Профиль', icon: { name: 'jet-account-outline', style: {mr:1} }, method: handleCloseMenu},
-        {id: 2, txt: 'Зарегистрироваться', icon: { name: 'jet-add-person', style: {mr:1} }, method: handleCloseMenu},
-        {id: 3, txt: 'Стать поставщиком', icon: { name:'jet-add-group-outline', style: {mr:1} }, method: handleCloseMenu},
+        {id: 2, txt: 'Зарегистрироваться', icon: { name: 'jet-add-person', style: {mr:1} }, method: () => onLogin('user')},
+        {id: 3, txt: 'Стать поставщиком', icon: { name:'jet-add-group-outline', style: {mr:1} }, method: () => onLogin('provider')},
         {id: 4, txt: 'Выйти', icon: { name:'jet-logout', style: {mr:1} }, color: '#f44336', method: handleCloseMenu},
     ]
     

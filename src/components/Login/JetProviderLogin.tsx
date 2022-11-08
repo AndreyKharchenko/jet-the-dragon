@@ -1,6 +1,6 @@
 import React from 'react'
 
-const JetProviderLogin = () => {
+const JetProviderLogin: React.FC<{}> = () => {
   return (
     <div>JetProviderLogin</div>
   )
