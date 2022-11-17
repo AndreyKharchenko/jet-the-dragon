@@ -64,16 +64,7 @@ const JetUserLogin: React.FC<{}> = (props) => {
                 
                   <form onSubmit={methods.handleSubmit(onSubmit)}>
                     <JetInput name='username' label='Username' placeholder='Enter username' fullWidth={true} sx={{mb:1.5}} />
-                    <JetInput name='password' label='Password' placeholder='Enter password' type={'password'} fullWidth={true} sx={{mb:1}}/>
-                    {/*<FormControlLabel 
-                          label='Remember me' 
-                          control={
-                            <Checkbox  
-                              checked={rememberMe} 
-                              onChange={(e) => handleCheckbox(!rememberMe)}
-                            />
-                          }
-                        />*/}
+                    <JetInput name='password' label='Password' placeholder='Enter password' type={'password'} fullWidth={true} sx={{mb:1}} />
                     <JetCheckbox name='rememberMe' label='Remember me' value={false} />
                     
 

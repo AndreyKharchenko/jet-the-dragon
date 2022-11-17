@@ -36,6 +36,11 @@ export const dFlex = {
     flexDirection: 'row'
 }
 
+export const dFlexCol = {
+    display: 'flex',
+    flexDirection: 'column'
+}
+
 export const fixedBottom = {
    position: 'absolute', 
    bottom: 100,

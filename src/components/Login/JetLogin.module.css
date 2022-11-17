@@ -1,0 +1,23 @@
+.providerInfoContainer {
+    margin-bottom: 2rem;
+}
+
+.providerInfoSubtitle {
+    margin-top: 0.5rem;
+    margin-bottom: 0;
+}
+
+.providerInfoSubtitleTxt {
+    padding-left: 0!important;
+    font-weight: bold!important;
+    font-size: 1rem!important;
+}
+
+.formBtnContainer {
+    display: flex;
+    flex-direction: row;
+    padding-top: 1rem;
+    position: fixed;
+    bottom: 70px;
+    width: 50%;
+}
