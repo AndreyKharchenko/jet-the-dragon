@@ -61,6 +61,14 @@ const theme = createTheme({
             defaultProps: {
                 disableRipple: true
             }
+        },
+        MuiFormHelperText: {
+            styleOverrides: {
+                root: {
+                    color: 'red',
+                    fontSize: 'small'
+                }
+            }
         }
 
     }

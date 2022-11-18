@@ -48,7 +48,7 @@ const JetUserLogin: React.FC<{}> = (props) => {
   ]
   return (
     <Grid>
-      <Paper elevation={10} sx={{padding:20, height: '55vh', width: 280, margin: '20px auto'}}>
+      <Paper elevation={10} sx={{padding:20, height: '57vh', width: 280, margin: '20px auto'}}>
           <Grid container alignItems='center' flexDirection='column' sx={{position:'absolute', top:'80px', left:'0px'}}>
             <Avatar sx={{backgroundColor: '#3853D8'}}><LockOutlined /></Avatar>
             <Box sx={{textTransform: 'uppercase'}}>
