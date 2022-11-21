@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
 import { Avatar, Button, FormControlLabel, Grid, Paper, TextField, Typography, Link, Checkbox, Box, Autocomplete } from '@mui/material';
 import { LockOutlined } from '@mui/icons-material';
-import { CountryType, IFormInputs } from '../../models/login';
+import { CountryType, IUserForm } from '../../models/login';
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
 import { JetInput } from '../common/form-components/JetInput';
 import { JetCheckbox } from '../common/form-components/JetCheckbox';
@@ -25,10 +25,10 @@ const JetUserLogin: React.FC<{}> = (props) => {
     setRememberMe(value);
   }*/
 
-  //const {register, handleSubmit, watch, formState: {errors}} = useForm<IFormInputs>();
-  const methods = useForm<IFormInputs>();
+  //const {register, handleSubmit, watch, formState: {errors}} = useForm<IUserForm>();
+  const methods = useForm<IUserForm>();
 
-  const onSubmit: SubmitHandler<IFormInputs> = (data: IFormInputs) => {
+  const onSubmit: SubmitHandler<IUserForm> = (data: IUserForm) => {
       console.log('data:', data);
   }
 

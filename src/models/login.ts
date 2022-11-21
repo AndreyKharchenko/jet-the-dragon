@@ -5,7 +5,7 @@ export interface CountryType {
     suggested?: boolean;
 }
 
-export interface IFormInputs {
+export interface IUserForm {
     username: string;
     password: string;
     email?: string;
