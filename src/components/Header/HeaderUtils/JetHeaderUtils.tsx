@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box, Button, Stack } from '@mui/material';
+import { Box, Button, IconButton, Stack } from '@mui/material';
 import { flexCenter } from '../../../themes/commonStyles';
 import LanguageIcon from '@mui/icons-material/Language';
 import MenuIcon from '@mui/icons-material/Menu';
@@ -7,7 +7,10 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import JetMenu from '../../common/JetMenu';
 import JetDialog from '../../common/JetDialog';
 import { useNavigate } from 'react-router-dom';
-const JetProfileSettings: React.FC<{}> = () => {
+
+import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
+
+const JetHeaderUtils: React.FC<{}> = () => {
     const [anchormElm, setAnchormElm] = useState<null | HTMLElement>(null);
     const [openMenu, setOpenMenu] = useState(false);
 
@@ -37,6 +40,10 @@ const JetProfileSettings: React.FC<{}> = () => {
         navigate(`/login/${loginType}`);
     }
 
+    const onCart = () => {
+        navigate('/cart');
+    }
+
     const tmpMenuItems = [
         {id: 1, txt: 'Профиль', icon: { name: 'jet-account-outline', style: {mr:1} }, method: handleCloseMenu},
         {id: 2, txt: 'Зарегистрироваться', icon: { name: 'jet-add-person', style: {mr:1} }, method: () => onLogin('user')},
@@ -64,6 +71,9 @@ const JetProfileSettings: React.FC<{}> = () => {
                         </Stack>
 
                     </Button>
+                    <IconButton onClick={onCart} color='primary'>
+                        <ShoppingCartOutlinedIcon fontSize="medium" />
+                    </IconButton>
                 </Stack>
             </Box>
 
@@ -85,4 +95,4 @@ const JetProfileSettings: React.FC<{}> = () => {
     );
 }
 
-export default JetProfileSettings;
+export default JetHeaderUtils;

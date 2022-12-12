@@ -27,9 +27,9 @@ const JetMenu: React.FC<PropsType> = (props) => {
             onClose={props.onClose}
         >
                 {
-                    props.menuItems.map(item => {
+                    props.menuItems.map((item, index) => {
                         return(
-                            <MenuItem onClick={item.method} sx={{color: item.color}}> 
+                            <MenuItem onClick={item.method} sx={{color: item.color}} key={index}> 
                                 <Box sx={item.icon.style}>
                                     <JetIcon icon={item.icon.name} />
                                 </Box>

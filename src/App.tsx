@@ -9,8 +9,8 @@ function App() {
   return (
     <div>
       <Routes>
-        {/*<Route path="/" element={<CatalogPage />} />*/}
-        <Route path="/" element={<></>} />
+        <Route path="/" element={<CatalogPage />} />
+        {/*<Route path="/" element={<></>} />*/}
         <Route path="/login/:id" element={<LoginPage />} />
         <Route path="/cart" element={<CartPage />} />
       </Routes>

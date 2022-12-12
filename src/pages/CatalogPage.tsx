@@ -13,7 +13,7 @@ const CatalogPage: React.FC<{}> = () => {
             height: '100vh'
           }}>
             <Box>
-                <JetHeader />
+                <JetHeader headerType="main" />
                 <JetOptionsTab />
             </Box>
             

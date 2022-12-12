@@ -5,6 +5,11 @@ export const flexBetween = {
     justifyContent: 'space-between'
 };
 
+export const flexAround = {
+    display: 'flex',
+    justifyContent: 'space-around'
+};
+
 export const flexBetweenCenter = {
     display: 'flex',
     justifyContent: {xs: 'center', md: 'space-between'},

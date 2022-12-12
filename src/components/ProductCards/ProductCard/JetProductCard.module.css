@@ -4,12 +4,14 @@
 
 .productContent {
     width: auto;
+    height: auto!important;
     padding: 10px!important;
 }
 
 .productActions {
     margin-bottom: 2rem!important;
     padding: 10px!important;
+    padding-bottom: 0px!important;
     justify-content: flex-end;
 }
 

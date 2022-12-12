@@ -1,26 +1,31 @@
-import { Box, Button } from '@mui/material';
 import React from 'react';
+import { Box, Container } from '@mui/material';
 import { useAppDispatch, useAppSelector } from '../hooks/useRedux';
-import { cartActions } from '../store/slices/cartSlice';
+import JetHeader from "../components/Header/JetHeader";
+import JetFooter from '../components/Footer/JetFooter';
+import JetCart from '../components/Cart/JetCart';
 
 const CartPage:React.FC<{}> = () => {
-    const dispatch = useAppDispatch();
-    const products = useAppSelector((state:any) => state.cart.products);
-    const handleClick = () => {
-        console.log('handleClick');
-        dispatch(cartActions.addProduct(
-            { id:1, name: 'Milk', kolvo:3 }
-        ))
-    }
-
+    
     return (
         <Box sx={{display: 'flex',flexDirection: 'column', height: '100vh'}}>
-            <Box><Button onClick={handleClick}>cart page</Button></Box>
-            {
-                products.map((product: any, index: number) => {
-                    return <Box key={index}>{product.name}</Box>
-                })
-            }
+            <Box>
+                <JetHeader headerType='cart' />
+            </Box>
+            <Box sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                flexGrow: 1,
+                height: 100,
+                overflowY: 'scroll'
+            }}>
+                <Container maxWidth="xl" sx={{mb:3, backgroundColor:'#f6f9fc', height:'100%'}}>
+                    <JetCart />
+                </Container>
+            </Box>
+            <Box>
+                {/*<JetFooter />*/}
+            </Box>
         </Box>
     )
 }
