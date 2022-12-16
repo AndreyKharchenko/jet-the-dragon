@@ -4,5 +4,6 @@ export interface IProduct {
     qty: number,
     price: number,
     image: string,
-    isChoose?: boolean
+    isChoose?: boolean,
+    isFavourite?: boolean
 }

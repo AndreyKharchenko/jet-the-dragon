@@ -9,7 +9,9 @@ import { IProduct } from '../../../models/catalog';
 
 interface PropsType {
     card: IProduct,
-    addToCart: (product: IProduct) => void
+    addToCart: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>, product: IProduct) => void,
+    addToFavourite: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>,product: IProduct) => void,
+    onProduct: (id: number | string) => void
 }
 
 const JetProductCard: React.FC<PropsType> = (props) => {
@@ -17,7 +19,7 @@ const JetProductCard: React.FC<PropsType> = (props) => {
     const isNew = true;
     return(
         <Box sx={{flexGrow:1,position:'relative', ml: 3, mb: 3, cursor: 'pointer'}}>
-            <Card sx={{maxWidth: '100%'}} elevation={5}>
+            <Card sx={{maxWidth: '100%'}} elevation={5} onClick={() => props.onProduct(props.card.id)}>
                 <CardMedia
                     height={275}
                     className={style.productImage}
@@ -51,7 +53,7 @@ const JetProductCard: React.FC<PropsType> = (props) => {
                     
                 </CardContent>
                 <CardActions className={style.productActions}>
-                    <IconButton onClick={() => props.addToCart(props.card)}>
+                    <IconButton onClick={(e) => props.addToCart(e, props.card)}>
                         {
                             (props.card.isChoose)
                             ?
@@ -61,8 +63,15 @@ const JetProductCard: React.FC<PropsType> = (props) => {
                         }
                     </IconButton>
 
-                    <IconButton>
-                        <FavoriteBorderIcon />
+                    <IconButton onClick={(e) => props.addToFavourite(e, props.card)}>
+                        {
+                            (props.card.isFavourite)
+                            ?
+                            <FavoriteBorderIcon color="error" />
+                            :
+                            <FavoriteBorderIcon />
+                        }
+                        
                     </IconButton>
                 </CardActions>
             </Card>
