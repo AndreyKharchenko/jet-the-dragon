@@ -1,0 +1,116 @@
+.productContainer {
+    box-sizing: border-box;
+    padding-left: 2rem;
+}
+
+.productTitleTxt {
+    font-size: 26px;
+    font-weight: 600;
+    line-height: 30px;
+}
+.productDetails {
+    display: flex;
+    justify-content: space-around;
+}
+
+.productRaiting {
+    font-size: 1rem!important;
+    margin-top: 0.2rem;
+}
+
+.productUtlBtn {
+    font-size: 0.9rem;
+    color: #000;
+    padding: 7px;
+}
+
+.productUtlBtn:last-child {
+    margin-left: 2rem;
+}
+
+.productUtlBtn span {
+    margin-left: 5px;
+}
+
+.productFeedBack {
+    font-size: inherit;
+    font-weight: inherit;
+    line-height: inherit;
+    cursor: pointer;
+    text-decoration: underline;
+    margin: 0 1rem;
+}
+
+.productUtils {
+    display: flex;
+    justify-content: space-between;
+    padding-right: 5rem;
+    margin-top: 2rem;
+}
+
+.productImg {
+    height: 400px;
+    width:100%;
+    border-radius: 10px;
+}
+
+.imageContainer{
+    width: 600px!important;
+    text-align: center;
+}
+
+
+.productCostCard {
+    width: 20vw;
+    height: 20vh;
+    padding: 20px;
+    padding-bottom: 60%;
+    border-radius: 5%!important;
+}
+
+.productCost {
+    font-weight: 600;
+    font-size: 20px;
+}
+
+.productUnit {
+    font-weight: 400!important;
+    font-size: 20px!important;
+}
+
+.buyBtn {
+    box-sizing: border-box!important;
+    border-radius: 35px!important;
+    height: 20%!important;
+    font-size: 14px!important;
+    line-height: 20px!important;
+    margin-top: 2rem!important;
+    margin-bottom: 0.5rem!important;
+}
+
+.tab {
+    font-size: 20px!important;
+}
+
+.tabContainer {
+    border: 1px solid #e2e6e9;
+    padding: 10px 25px;
+    border-radius: 20px;
+}
+
+.tabTitle {
+    font-size: 24px!important;
+    line-height: 30px!important;
+    font-weight: 700!important;
+}
+
+.space {
+    position: relative;
+    top: 3px;
+    border-bottom: 1px dotted #dcdcdc;
+    width: 85%;
+}
+
+.nameSpec {
+    color: #8c959c;
+}

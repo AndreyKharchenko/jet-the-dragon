@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box, Button, IconButton, Stack } from '@mui/material';
+import { Badge, Box, Button, IconButton, Stack } from '@mui/material';
 import { flexCenter } from '../../../themes/commonStyles';
 import LanguageIcon from '@mui/icons-material/Language';
 import MenuIcon from '@mui/icons-material/Menu';
@@ -9,12 +9,15 @@ import JetDialog from '../../common/JetDialog';
 import { useNavigate } from 'react-router-dom';
 
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
+import { useAppSelector } from '../../../hooks/useRedux';
 
 const JetHeaderUtils: React.FC<{}> = () => {
     const [anchormElm, setAnchormElm] = useState<null | HTMLElement>(null);
     const [openMenu, setOpenMenu] = useState(false);
 
     const [dialog, handleDialog] = useState<boolean>(false);
+
+    const products = useAppSelector(state => state.cart.products);
 
     const navigate = useNavigate();
 
@@ -72,7 +75,9 @@ const JetHeaderUtils: React.FC<{}> = () => {
 
                     </Button>
                     <IconButton onClick={onCart} color='primary'>
-                        <ShoppingCartOutlinedIcon fontSize="medium" />
+                        <Badge badgeContent={products.length} color="primary">
+                            <ShoppingCartOutlinedIcon fontSize="medium" />
+                        </Badge>
                     </IconButton>
                 </Stack>
             </Box>

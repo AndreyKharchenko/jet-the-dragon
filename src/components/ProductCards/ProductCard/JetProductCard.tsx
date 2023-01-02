@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Box, Card, CardActions, CardContent, CardMedia, IconButton, Typography } from "@mui/material";
 import AddBoxOutlinedIcon from '@mui/icons-material/AddBoxOutlined';
 import StarIcon from '@mui/icons-material/Star';
@@ -15,11 +15,20 @@ interface PropsType {
 }
 
 const JetProductCard: React.FC<PropsType> = (props) => {
-    
+    const [elevation, setElevation] = useState<number>(3);
+    const onMouseOver = () => setElevation(10);
+    const onMouseOut = () => setElevation(3);
+
     const isNew = true;
     return(
         <Box sx={{flexGrow:1,position:'relative', ml: 3, mb: 3, cursor: 'pointer'}}>
-            <Card sx={{maxWidth: '100%'}} elevation={5} onClick={() => props.onProduct(props.card.id)}>
+            <Card 
+                sx={{maxWidth: '100%'}} 
+                elevation={elevation} 
+                onClick={() => props.onProduct(props.card.id)} 
+                onMouseOver={onMouseOver}
+                onMouseOut={onMouseOut}
+            >
                 <CardMedia
                     height={275}
                     className={style.productImage}

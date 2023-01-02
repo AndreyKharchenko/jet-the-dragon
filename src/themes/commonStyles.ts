@@ -10,6 +10,11 @@ export const flexAround = {
     justifyContent: 'space-around'
 };
 
+export const flexEnd = {
+    display: 'flex',
+    alignItems: 'flex-end'
+};
+
 export const flexBetweenCenter = {
     display: 'flex',
     justifyContent: {xs: 'center', md: 'space-between'},
