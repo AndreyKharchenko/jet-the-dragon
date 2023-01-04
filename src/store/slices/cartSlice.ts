@@ -19,6 +19,14 @@ const cartSlice = createSlice({
         removeProduct(state: ICartState, action: PayloadAction<IProduct>) {
             const index = state.products.findIndex(prod => prod.id == action.payload.id);
             state.products.splice(index,1);
+        },
+        incrementQty(state: ICartState, action: PayloadAction<{id: number}>) {
+            const index = state.products.findIndex(prod => prod.id == action.payload.id);
+            state.products[index].qty++;
+        },
+        decrementQty(state: ICartState, action: PayloadAction<{id: number}>) {
+            const index = state.products.findIndex(prod => prod.id == action.payload.id);
+            state.products[index].qty--;
         }
     },
 })

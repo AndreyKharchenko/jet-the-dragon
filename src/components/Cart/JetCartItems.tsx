@@ -7,10 +7,12 @@ import style from './JetCart.module.css';
 
 interface ICartProducts {
     products: IProduct[],
-    removeCartItem: (cartItem: IProduct) => void
+    removeCartItem: (cartItem: IProduct) => void,
+    decrementQty: (id: number) => void,
+    incremntQty: (id: number) => void,
 }
 
-const JetCartProducts: React.FC<ICartProducts> = ({products, removeCartItem}) => {
+const JetCartProducts: React.FC<ICartProducts> = ({products, removeCartItem, decrementQty, incremntQty}) => {
     return (
         <Box className={style.cartItems}>
             <List>
@@ -31,7 +33,7 @@ const JetCartProducts: React.FC<ICartProducts> = ({products, removeCartItem}) =>
                                                     <h3>{it.name}</h3>
                                                     <h4>
                                                         {it.price}.00 * {it.qty} =  
-                                                        <span> {productQty}.00 </span>
+                                                        <span> {productQty}.00 ₽</span>
                                                     </h4>
                                                 </Box>     
                                             </CardContent>
@@ -39,15 +41,15 @@ const JetCartProducts: React.FC<ICartProducts> = ({products, removeCartItem}) =>
                                         <Box className={style.cartItemActions}>
                                             <Box className={style.cartClearBtn}>
                                                 <IconButton onClick={() => removeCartItem(it)}>
-                                                    <ClearOutlined color='primary' fontSize='large' />
+                                                    <ClearOutlined color='primary' fontSize='small' />
                                                 </IconButton>
                                             </Box>
                                             <Box>
-                                                <IconButton>
-                                                    <Add color='primary' fontSize='large' />
+                                                <IconButton onClick={() => incremntQty(it.id)}>
+                                                    <Add color='primary' fontSize='medium' />
                                                 </IconButton>
-                                                <IconButton>
-                                                    <RemoveOutlined color='primary' fontSize='large' />
+                                                <IconButton onClick={() => decrementQty(it.id)}>
+                                                    <RemoveOutlined color='primary' fontSize='medium' />
                                                 </IconButton>
                                             </Box>
                                         </Box>

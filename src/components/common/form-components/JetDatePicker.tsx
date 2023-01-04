@@ -9,10 +9,13 @@ import { Controller, useFormContext } from 'react-hook-form';
 type datePickerType = {
     label: string,
     format: string,
-    name: string
+    name: string,
+    views?: Array<Views>
 }
 
-const JetDatePicker: React.FC<datePickerType> = ({label, format, name}) => {
+type Views = 'day' | 'month' | 'year';
+
+const JetDatePicker: React.FC<datePickerType> = ({label, format, name, views}) => {
     const {control, setValue, getValues} = useFormContext();
 
     useEffect(() => {
@@ -37,7 +40,7 @@ const JetDatePicker: React.FC<datePickerType> = ({label, format, name}) => {
                             value={time}
                             onChange={handleChange}
                             renderInput={(params) => <TextField {...params} />}
-                            
+                            views={!!views?.length ? views : ['year', 'day']}
                         />
                     </LocalizationProvider>
                 )}

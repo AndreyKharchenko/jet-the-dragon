@@ -82,3 +82,14 @@
     color: #3853D8;
     text-align: center;
 }
+
+.checkoutBtn {
+    box-sizing: border-box!important;
+    border-radius: 35px!important;
+    height: 20%!important;
+    width: 80%!important;
+    font-size: 14px!important;
+    line-height: 28px!important;
+    margin-top: 2rem!important;
+    margin-bottom: 0.5rem!important;
+}

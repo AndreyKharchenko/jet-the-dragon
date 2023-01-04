@@ -12,7 +12,12 @@ export const flexAround = {
 
 export const flexEnd = {
     display: 'flex',
-    alignItems: 'flex-end'
+    justifyContent: 'flex-end'
+};
+
+export const flexStart = {
+    display: 'flex',
+    alignItems: 'flex-start'
 };
 
 export const flexBetweenCenter = {
@@ -58,7 +63,8 @@ export const fixedBottom = {
 }
 
 export const defaultButton = {
-    fontWeight: '800',
-    textTransform: 'uppercase'
+    fontWeight: '500',
+    textTransform: 'uppercase',
+    fontSize: '0.875'
 }
 
