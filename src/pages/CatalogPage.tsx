@@ -10,7 +10,7 @@ const CatalogPage: React.FC<{}> = () => {
         <Box sx={{
             display: 'flex',
             flexDirection: 'column',
-            height: '100vh'
+            height: '100vh',
           }}>
             <Box>
                 <JetHeader headerType="main" />

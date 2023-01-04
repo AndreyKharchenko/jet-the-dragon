@@ -6,7 +6,6 @@ import ProductPage from './pages/ProductPage';
 import { Routes, Route } from 'react-router-dom';
 import './App.css';
 
-
 function App() {
   return (
     <div>

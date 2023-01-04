@@ -21,12 +21,12 @@ const CartPage:React.FC<{}> = () => {
                 height: 100,
                 overflowY: 'scroll'
             }}>
-                <Container maxWidth="xl" sx={{mb:3, backgroundColor:'#f6f9fc', height:'100%'}}>
+                <Container maxWidth="xl" sx={{mb:0, backgroundColor:'#f6f9fc', height:'100%'}}>
                     <JetCart />
                 </Container>
             </Box>
             <Box>
-                {/*<JetFooter />*/}
+                <JetFooter />
             </Box>
         </Box>
     )

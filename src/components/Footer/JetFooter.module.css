@@ -1,0 +1,45 @@
+.bottomDrawer {
+    padding: 20px;
+    background-color: #eef1f2;
+    height: 40vh;
+}
+
+.columnTitle {
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 20px;
+    color: #1c1f22;
+}
+
+.columnLink {
+    display: flex;
+    flex-direction: column;
+    margin-top: 1rem;
+}
+
+.columnLink a {
+    padding-left: 0;
+    margin-bottom: 1rem;
+    color: #494f54;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.columnLink a:hover {
+    padding-left: 0;
+    margin-bottom: 1rem;
+    color: #3853D8;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.contacts {
+    margin-left: -0.7rem;
+    margin-top: 1rem;
+}
+
+.contacts button {
+   margin-right: 0.7rem;
+}
+
+
