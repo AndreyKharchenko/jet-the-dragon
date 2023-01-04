@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks/useRedux';
-import { Box, Button, DialogActions, DialogContent, DialogTitle, IconButton } from '@mui/material';
+import { Box, DialogContent, DialogTitle, IconButton } from '@mui/material';
 import JetCartItems from './JetCartItems';
 import JetCartTotal from './JetCartTotal';
-import { defaultButton, flexAround } from '../../themes/commonStyles';
+import { flexAround } from '../../themes/commonStyles';
 import { cartActions } from '../../store/slices/cartSlice';
 import style from './JetCart.module.css';
 import { IProduct } from '../../models/catalog';
@@ -43,6 +43,7 @@ const JetCart: React.FC<{}> = () => {
 
     return (
         <>
+        <Box className={style.cartTitle}>Корзина</Box>
         <Box sx={flexAround} className={style.cartContainer}>
             {
                 !(!!products.length)

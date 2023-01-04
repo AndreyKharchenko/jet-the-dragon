@@ -1,6 +1,7 @@
 import { Box, Container } from '@mui/material'
 import React from 'react'
 import JetHeader from '../components/Header/JetHeader'
+import JetOptionsTab from '../components/OptionsTab/JetOptionsTab'
 import JetProduct from '../components/Product/JetProduct'
 
 
@@ -8,7 +9,8 @@ const ProductPage:React.FC<{}> = () => {
   return (
     <Box sx={{display: 'flex',flexDirection: 'column', height: '100vh'}}>
         <Box>
-          <JetHeader headerType='cart' />
+          <JetHeader headerType='product' />
+          <JetOptionsTab />
         </Box>
         <Box sx={{
           display: 'flex',

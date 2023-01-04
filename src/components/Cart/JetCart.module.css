@@ -93,3 +93,9 @@
     margin-top: 2rem!important;
     margin-bottom: 0.5rem!important;
 }
+
+.cartTitle {
+    font-size: 30px;
+    font-weight: 700;
+    padding: 15px
+}
