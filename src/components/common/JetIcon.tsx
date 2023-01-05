@@ -2,7 +2,7 @@ import React from "react";
 import { useMemo, useEffect } from 'react';
 import {Apple, Egg, KebabDining, SetMeal, AccountCircleOutlined, Logout, PersonAddAltOutlined, GroupAddOutlined} from '@mui/icons-material';
 type PropsType = {
-    icon: string,
+    icon: string
 }
 
 const SvgIcon: React.FC<PropsType> = (props) => {

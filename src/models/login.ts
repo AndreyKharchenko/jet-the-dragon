@@ -23,7 +23,7 @@ export interface IProviderForm {
     inn: string;
     providerName: string;
     chiefName: string;
-    ogrnil: string;
+    ogrnip: string;
     declarationNum: string;
     dtDeclaration: object;
     sanBookNum: string;

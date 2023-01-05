@@ -18,7 +18,7 @@ const JetSearch: React.FC<{}> = () => {
                 <SearchIcon />
             </IconButton>   
 
-            <InputBase sx={{ ml: 1, flex: 1 }} placeholder="Search product" {...input} />
+            <InputBase sx={{ ml: 1, flex: 1 }} placeholder="Искать товары" {...input} />
 
             <IconButton sx={{ p: '10px' }}>
                 <TuneIcon />

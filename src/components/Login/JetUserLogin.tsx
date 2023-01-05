@@ -18,7 +18,7 @@ const JetUserLogin: React.FC<{}> = (props) => {
   //const [rememberMe, setRememberMe] = useState<boolean>(false);
   const [action, setAction] = useState<actionType>({
     isSignIn: true,
-    text: 'Sign In'
+    text: 'Войти'
   });
 
   /*const //handleCheckbox = (value: boolean) => {
@@ -63,9 +63,9 @@ const JetUserLogin: React.FC<{}> = (props) => {
                 <FormProvider {...methods}>
                 
                   <form onSubmit={methods.handleSubmit(onSubmit)}>
-                    <JetInput name='username' label='Username' placeholder='Enter username' fullWidth={true} sx={{mb:1.5}} />
-                    <JetInput name='password' label='Password' placeholder='Enter password' type={'password'} fullWidth={true} sx={{mb:1}} />
-                    <JetCheckbox name='rememberMe' label='Remember me' value={false} />
+                    <JetInput name='username' label='Имя' placeholder='Имя' fullWidth={true} sx={{mb:1.5}} />
+                    <JetInput name='password' label='Пароль' placeholder='Пароль' type={'password'} fullWidth={true} sx={{mb:1}} />
+                    <JetCheckbox name='rememberMe' label='Запомнить меня' value={false} />
                     
 
                     <Button 
@@ -83,10 +83,10 @@ const JetUserLogin: React.FC<{}> = (props) => {
               <Box sx={{mb: 1}}>
                 <FormProvider {...methods}>
                   <form onSubmit={methods.handleSubmit(onSubmit)}>
-                    <JetInput name='username' label='Username' placeholder='Enter username' fullWidth={true} sx={{mb:1.5}} />
-                    <JetInput name='password' label='Password' placeholder='Enter password' type={'password'} fullWidth={true} sx={{mb:1.5}} />
-                    <JetInput name='checkPwd' label='Confirm password' placeholder='Enter password' type={'password'} fullWidth={true} sx={{mb:1.5}} />
-                    <JetInput name='eMail' label='E-mail/phone' placeholder='E-mail/phone' fullWidth={true} sx={{mb:3}} />
+                    <JetInput name='username' label='Имя' placeholder='Имя' fullWidth={true} sx={{mb:1.5}} />
+                    <JetInput name='password' label='Пароль' placeholder='Пароль' type={'password'} fullWidth={true} sx={{mb:1.5}} />
+                    <JetInput name='checkPwd' label='Подтвердите пароль' placeholder='Подтвердите пароль' type={'password'} fullWidth={true} sx={{mb:1.5}} />
+                    <JetInput name='eMail' label='E-mail/телефон' placeholder='E-mail/телефон' fullWidth={true} sx={{mb:3}} />
                     <Autocomplete
                       id="country-select-demo"
                       sx={{ width: 280, mb:1 }}
@@ -108,7 +108,7 @@ const JetUserLogin: React.FC<{}> = (props) => {
                       renderInput={(params) => (
                         <TextField
                           {...params}
-                          label="Choose a country"
+                          label="Страна"
                           inputProps={{
                             ...params.inputProps,
                             autoComplete: 'new-password', 
@@ -118,19 +118,8 @@ const JetUserLogin: React.FC<{}> = (props) => {
                     />
 
                     
-                    <JetInput name='city' label='City' placeholder='City' fullWidth={true} sx={{mb:1}} />
-
-                    {/*<FormControlLabel 
-                          label='Remember me' 
-                          control={
-                            <Checkbox  
-                              checked={rememberMe} 
-                              onChange={(e) => handleCheckbox(!rememberMe)}
-                              
-                            />
-                          }
-                        />*/}
-                    <JetCheckbox name='rememberMe' label='Remember me' value={false} />
+                    <JetInput name='city' label='Город' placeholder='Город' fullWidth={true} sx={{mb:1}} />
+                    <JetCheckbox name='rememberMe' label='Запомнить меня' value={false} />
 
                     <Button 
                       type='submit' 
@@ -172,13 +161,13 @@ const JetUserLogin: React.FC<{}> = (props) => {
                   sx={{cursor:'pointer'}}
                   onClick={() => console.log('#')}
                 >
-                  Forgot password?
+                  Забыли пароль?
                 </Typography>
                 <Typography 
                   sx={{cursor: 'pointer', color: theme => theme.palette.primary.main}}
-                  onClick={(() => setAction({isSignIn: !action.isSignIn, text: (!action.isSignIn) ? 'Sign In' : 'Sign Up'}))}
+                  onClick={(() => setAction({isSignIn: !action.isSignIn, text: (!action.isSignIn) ? 'Войти' : 'Создать профиль'}))}
                 > 
-                  Are you new user? Sign up
+                  Вы новый пользователь? Создать профиль
                 </Typography>
               </Box>
             :

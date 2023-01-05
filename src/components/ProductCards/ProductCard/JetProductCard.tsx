@@ -38,9 +38,9 @@ const JetProductCard: React.FC<PropsType> = (props) => {
                 <CardContent className={style.productContent}>
                     <Box sx={flexBetween}>
                         <Box>
-                            <Typography component="h5" sx={{fontWeight: 'bold'}}>{props.card.name}</Typography>
+                            <Typography component="h5" className={style.productCardName}>{props.card.name}</Typography>
                             <Typography component="h5" color={theme => theme.palette.secondary.main}>Описание Описание Описание Описание</Typography>
-                            <Typography component="h5" sx={{fontWeight: 'bold'}}>{props.card.price}Р.</Typography>
+                            <Typography component="h5" className={style.productCardPrice}>{props.card.price}₽</Typography>
                         </Box>
                         <Box>
                             <Box sx={dFlex}>

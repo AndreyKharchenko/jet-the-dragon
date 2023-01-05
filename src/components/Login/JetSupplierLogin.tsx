@@ -12,7 +12,7 @@ import { IProviderForm } from '../../models/login';
 
 const steps = ['Информация о физическом лице','Сведения об ИП', 'Декларация соответствия ТР ТС','Сведения о санитарной книге', 'Почти готово!'];
 
-const JetProviderLogin: React.FC<{}> = () => {
+const JetSupplierLogin: React.FC<{}> = () => {
   const [activeStep, setActiveStep] = useState<number>(0);
 
   const methods = useForm<IProviderForm>();
@@ -137,7 +137,7 @@ const JetProviderLogin: React.FC<{}> = () => {
 
                           <Box sx={dFlexCol}>
                             <JetInput name={'chiefName'} label={'ФИО руководителя'} placeholder={'ФИО руководителя'} sx={{width:'13rem', mb:1}} />
-                            <JetInput name={'ogrnil'} label={'ОГРНИЛ'} placeholder={'ОГРНИЛ'} sx={{width:'13rem'}} />
+                            <JetInput name={'ogrnip'} label={'ОГРНИП'} placeholder={'ОГРНИП'} sx={{width:'13rem'}} />
                           </Box>
                         </Box>
                       </Box>
@@ -215,4 +215,4 @@ const JetProviderLogin: React.FC<{}> = () => {
   )
 }
 
-export default JetProviderLogin
+export default JetSupplierLogin

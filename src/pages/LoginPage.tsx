@@ -1,6 +1,6 @@
 import React from 'react'
 import JetUserLogin from '../components/Login/JetUserLogin';
-import JetProviderLogin from '../components/Login/JetProviderLogin';
+import JetSupplierLogin from '../components/Login/JetSupplierLogin';
 import { useParams } from 'react-router-dom';
 
 const LOGIN_TYPES = {
@@ -13,7 +13,7 @@ const LoginPage:React.FC<{}> = () => {
   return (
     (id?.toUpperCase() == LOGIN_TYPES['PROVIDER'])
     ?
-      <JetProviderLogin />
+      <JetSupplierLogin />
     :
       <JetUserLogin />
   )
