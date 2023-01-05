@@ -15,17 +15,11 @@ type actionType = {
 
 
 const JetUserLogin: React.FC<{}> = (props) => {
-  //const [rememberMe, setRememberMe] = useState<boolean>(false);
   const [action, setAction] = useState<actionType>({
     isSignIn: true,
     text: 'Войти'
   });
 
-  /*const //handleCheckbox = (value: boolean) => {
-    setRememberMe(value);
-  }*/
-
-  //const {register, handleSubmit, watch, formState: {errors}} = useForm<IUserForm>();
   const methods = useForm<IUserForm>();
 
   const onSubmit: SubmitHandler<IUserForm> = (data: IUserForm) => {
