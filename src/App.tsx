@@ -3,8 +3,10 @@ import CatalogPage from './pages/CatalogPage';
 import LoginPage from './pages/LoginPage';
 import CartPage from './pages/CartPage';
 import ProductPage from './pages/ProductPage';
+import SupplierPage from './pages/SupplierPage';
 import { Routes, Route } from 'react-router-dom';
 import './App.css';
+
 
 function App() {
   return (
@@ -15,6 +17,7 @@ function App() {
         <Route path="/login/:id" element={<LoginPage />} />
         <Route path="/cart" element={<CartPage />} />
         <Route path="product/:id" element={<ProductPage />} />
+        <Route path="supplier/:id" element={<SupplierPage />} />
       </Routes>
     </div>
   );

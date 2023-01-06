@@ -35,8 +35,7 @@ const JetProductCards: React.FC<{}> = () => {
     }
 
     const onProduct = (id: string | number) => {
-        navigate(`/product/${id}`)
-        console.log('onProduct');
+        navigate(`/product/${id}`);
     }
 
     const tmpCards = [

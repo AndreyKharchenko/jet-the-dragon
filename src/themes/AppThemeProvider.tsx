@@ -16,7 +16,7 @@ const theme = createTheme({
         },
         secondary: {
             main: grey[700]
-        }
+        },
     },
     components: {
         MuiTypography: {
@@ -73,7 +73,10 @@ const theme = createTheme({
                     color: grey[700]
                 }*/
             }
-        }
+        },
+        
+        
+        
 
     }
 });

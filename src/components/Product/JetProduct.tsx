@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Box, Button, Card, Tabs, Tab, Paper, Slider, Tooltip, Typography, List, ListItem, ListItemText } from '@mui/material';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks/useRedux';
 import { catalogActions } from '../../store/slices/catalogSlice';
 import { dFlex, flexAround, flexBetween, flexEnd } from '../../themes/commonStyles';
@@ -13,11 +13,10 @@ const JetProduct = () => {
   const params = useParams();
   const dispatch = useAppDispatch();
   const productInfo = useAppSelector(state => state.catalog.currentProduct);
+  const navigate = useNavigate();
 
   const [prodCount, setProdCount] = React.useState<number>(0);
-
   const [isBuy, setBuy] = useState<boolean>(false);
-
   const [tab, setTab] = useState<number>(0);
 
   const handleCountChange = (event: Event, newValue: number | number[]) => {
@@ -29,6 +28,10 @@ const JetProduct = () => {
   const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
     setTab(newValue);
   };
+
+  const onSupplier = (id: number) => {
+    navigate(`/supplier/${id}`);
+  }
 
   const valueLabelFormat = (value: number) => {
     const units = ['Гр', 'Кг'];
@@ -186,7 +189,7 @@ const JetProduct = () => {
                 <Typography sx={{fontSize:'16px'}} color="secondary" component='span'>
                   Продавец: 
                 </Typography>
-                <Typography component='span' color="primary">
+                <Typography component='span' color="primary" onClick={() => onSupplier(1)} sx={{cursor:'pointer'}}>
                   Роджерс 
                   <Tooltip title="Информация о фирме" placement="top">
                     <InfoOutlined color='secondary' fontSize='small' sx={{cursor:'pointer'}} />

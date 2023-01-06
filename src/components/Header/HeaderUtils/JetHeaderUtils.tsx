@@ -90,10 +90,9 @@ const JetHeaderUtils: React.FC<{}> = () => {
             /> 
 
             <Menu
-                className={style.ksks}
                 open={regMenu}   
                 anchorEl={anchormElm}
-                elevation={0}
+                elevation={10}
                 anchorOrigin={{
                     vertical: 'bottom',
                     horizontal: 'left',
