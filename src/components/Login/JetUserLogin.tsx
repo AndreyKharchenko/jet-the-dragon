@@ -5,6 +5,7 @@ import { CountryType, IUserForm } from '../../models/login';
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
 import { JetInput } from '../common/form-components/JetInput';
 import { JetCheckbox } from '../common/form-components/JetCheckbox';
+import { useNavigate } from 'react-router-dom';
 
 // Sign-in or sign-up
 type actionType = {
@@ -20,10 +21,13 @@ const JetUserLogin: React.FC<{}> = (props) => {
     text: 'Войти'
   });
 
+  const navigate = useNavigate();
+
   const methods = useForm<IUserForm>();
 
   const onSubmit: SubmitHandler<IUserForm> = (data: IUserForm) => {
       console.log('data:', data);
+      navigate(`/profile/user/1`);
   }
 
   const countries: readonly CountryType[] = [

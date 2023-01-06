@@ -8,12 +8,14 @@ import JetDatePicker from '../common/form-components/JetDatePicker';
 import style from './JetLogin.module.css';
 import { flexBetweenCenter, dFlexCol } from '../../themes/commonStyles';
 import { IProviderForm } from '../../models/login';
+import { useNavigate } from 'react-router-dom';
 
 
 const steps = ['Информация о физическом лице','Сведения об ИП', 'Декларация соответствия ТР ТС','Сведения о санитарной книге', 'Почти готово!'];
 
 const JetSupplierLogin: React.FC<{}> = () => {
   const [activeStep, setActiveStep] = useState<number>(0);
+  const navigate = useNavigate();
 
   const methods = useForm<IProviderForm>();
 
@@ -39,6 +41,8 @@ const JetSupplierLogin: React.FC<{}> = () => {
 
   const handleCompleteReg = (data: IProviderForm) => {
     console.log('complete registration', data);
+    navigate(`/profile/supplier/1`);
+
 
   };
   return (

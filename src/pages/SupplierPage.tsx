@@ -9,7 +9,7 @@ const SupplierPage: React.FC<{}> = () => {
   return (
     <Box sx={{display: 'flex',flexDirection: 'column', height: '100vh'}}>
         <Box>
-          <JetHeader headerType='product' />
+          <JetHeader headerType='supplier' />
           <JetOptionsTab />
         </Box>
         <Box sx={{
