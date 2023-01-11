@@ -1,6 +1,9 @@
 import React from "react";
 import { useMemo, useEffect } from 'react';
-import {Apple, Egg, KebabDining, SetMeal, AccountCircleOutlined, Logout, PersonAddAltOutlined, GroupAddOutlined} from '@mui/icons-material';
+import {Apple, Egg, KebabDining, SetMeal, AccountCircleOutlined, Logout, PersonAddAltOutlined, 
+  GroupAddOutlined, ShoppingCartOutlined, ShoppingBagOutlined,
+  ShoppingCartCheckoutOutlined, InventoryOutlined, BookmarkBorderOutlined,
+  ExitToAppOutlined} from '@mui/icons-material';
 type PropsType = {
     icon: string
 }
@@ -13,8 +16,14 @@ const SvgIcon: React.FC<PropsType> = (props) => {
     { icon: <Apple />, name: 'jet-fruit', label: 'Фрукты' },
     { icon: <AccountCircleOutlined />, name: 'jet-account-outline',  },
     { icon: <Logout />, name: 'jet-logout',  },
-    { icon: <PersonAddAltOutlined />, name: 'jet-add-person'},
-    { icon: <GroupAddOutlined />, name: 'jet-add-group-outline'},
+    { icon: <PersonAddAltOutlined />, name: 'jet-add-person' },
+    { icon: <GroupAddOutlined />, name: 'jet-add-group-outline' },
+    { icon: <ShoppingCartOutlined />, name: 'jet-cart' },
+    { icon: <ShoppingBagOutlined />, name: 'jet-order' },
+    { icon: <ShoppingCartCheckoutOutlined />, name: 'jet-return-order' },
+    { icon: <InventoryOutlined />, name: 'jet-purchased' },
+    { icon: <BookmarkBorderOutlined />, name: 'jet-favourite' },
+    { icon: <ExitToAppOutlined />, name: 'jet-exit' },
   ]
 
   const icon = useMemo(() => {

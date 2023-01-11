@@ -27,7 +27,7 @@ const JetUserLogin: React.FC<{}> = (props) => {
 
   const onSubmit: SubmitHandler<IUserForm> = (data: IUserForm) => {
       console.log('data:', data);
-      navigate(`/profile/user/1`);
+      navigate(`/user/1/my`);
   }
 
   const countries: readonly CountryType[] = [

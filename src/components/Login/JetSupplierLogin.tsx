@@ -41,7 +41,7 @@ const JetSupplierLogin: React.FC<{}> = () => {
 
   const handleCompleteReg = (data: IProviderForm) => {
     console.log('complete registration', data);
-    navigate(`/profile/supplier/1`);
+    navigate(`/supplier/1/my`);
 
 
   };
