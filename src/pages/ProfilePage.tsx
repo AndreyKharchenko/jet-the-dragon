@@ -16,16 +16,8 @@ const PROFILE_TYPES = {
 const ProfilePage = () => {
 
   const params = useParams();
-  const naigate = useNavigate();
-  console.log('params', params);
-  const ii = (e: React.MouseEvent<HTMLElement>) => {
-    e.stopPropagation();
-    //naigate(`/user/${params.id}/order`);
-  }
-
-  useEffect(() => {
-    console.log('params', params);
-  }, [params])
+  
+  
 
   return (
     <>
@@ -39,9 +31,9 @@ const ProfilePage = () => {
             {
               (params.userType == PROFILE_TYPES['SUPPLIER'])
               ?
-                <JetSupplierProfile id={params.id || null} />
+                <JetSupplierProfile id={params.id || null} page={params.page || null} />
               :
-                <JetUserProfile id={params.id || null} />
+                <JetUserProfile id={params.id || null} page={params.page || null} />
             }
         </Container>
       </Box>

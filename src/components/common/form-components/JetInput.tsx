@@ -16,13 +16,14 @@ type InputProps = {
     sx?: object | {},
     inputProps?: object,
     variant?: variantType,
-    helperText?: string | ''
+    helperText?: string | '',
+    required?: boolean
 }
 
 type variantType = 'standard' | 'filled' | 'outlined';
 
 
-export const JetInput: React.FC<InputProps> = ({name, label, placeholder, mask, type, fullWidth, inputProps, variant, sx, helperText}) => {
+export const JetInput: React.FC<InputProps> = ({name, label, placeholder, mask, type, fullWidth, inputProps, variant, sx, helperText, required}) => {
     const {control, setValue, setError, clearErrors, register} = useFormContext();
 
     const handleInputChange = (val: string) => {
@@ -86,7 +87,7 @@ export const JetInput: React.FC<InputProps> = ({name, label, placeholder, mask, 
                     control={control}
                     defaultValue=''
                     rules={{
-                        required: {value: true, message: `Поле ${label} обязательно`},
+                        required: {value: (required == undefined) ? true : false, message: `Поле ${label} обязательно`},
                     }}
                     render={({ field: {onChange, value}, fieldState: {error} }) => (
                         <TextField 
@@ -152,7 +153,7 @@ export const JetInput: React.FC<InputProps> = ({name, label, placeholder, mask, 
                             inputProps={{maxLength:12}}
                             defaultValue='+7'
                             helperText={!!error ? error.message : ''}
-                              
+                            value={value}  
                         />
                     )}
                 />

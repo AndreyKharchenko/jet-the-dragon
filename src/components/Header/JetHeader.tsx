@@ -21,7 +21,6 @@ const JetHeader: React.FC<IHeader> = ({headerType}) => {
                 minHeight:70, 
                 borderBottom: '1px solid #ddd',
                 boxShadow: '0px 5px 10px 2px rgba(34, 60, 80, 0.2)',
-                zIndex:10
             }}
         >
             {
@@ -35,6 +34,18 @@ const JetHeader: React.FC<IHeader> = ({headerType}) => {
                         }}>
                             <JetLogo />
                             <JetSearch />
+                            <JetHeaderUtils />
+                        </Box>
+                    </Container>
+                :
+                (!!headerType && headerType.toUpperCase() == 'PROFILE' || !(!!headerType)) 
+                ?
+                    <Container maxWidth="xl">
+                        <Box sx={{
+                            display: 'flex',
+                            justifyContent: 'flex-end',
+                            minHeight: 90,
+                        }}>
                             <JetHeaderUtils />
                         </Box>
                     </Container>

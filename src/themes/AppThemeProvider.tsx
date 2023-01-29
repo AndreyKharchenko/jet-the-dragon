@@ -4,9 +4,6 @@ import { grey } from '@mui/material/colors';
 
 
 const theme = createTheme({
-    zIndex: {
-        drawer: 1250
-    },
     typography: {
         allVariants: {
             textTransform: 'none',

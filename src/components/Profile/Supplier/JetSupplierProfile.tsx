@@ -5,7 +5,8 @@ import JetIcon from '../../common/JetIcon';
 import JetSidebar from '../../Sidebar/JetSidebar';
 
 interface ISupplierProfileProps {
-  id: number | string | null
+  id: number | string | null,
+  page: string | null
 }
 
 const mocdata: mocItem[] = [
@@ -20,7 +21,7 @@ const mocdata: mocItem[] = [
 
 type mocItem = {id: number, label: string, icon: string};
 
-const JetSupplierProfile: React.FC<ISupplierProfileProps> = ({id}) => {
+const JetSupplierProfile: React.FC<ISupplierProfileProps> = ({id, page}) => {
   
   const [selectedItem, setSelectedItem] = useState<mocItem>(mocdata[0]);
   const handleListItemClick = (item: mocItem) => {
