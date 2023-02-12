@@ -12,6 +12,10 @@ export const JetCheckbox: React.FC<CheckboxProps> = ({name, label, value}) => {
     const [selectedItem, setSelectedItem] = useState<any>(value);
     const {control, setValue, formState: {errors}} = useFormContext();
 
+    useEffect(() => {
+        setValue(name, value);
+    }, [])
+
     const handleSelect = (val:boolean) => {
         setSelectedItem(val);
         setValue(name, val);

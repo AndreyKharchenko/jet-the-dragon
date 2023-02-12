@@ -3,7 +3,7 @@ import { useMemo, useEffect } from 'react';
 import {Apple, Egg, KebabDining, SetMeal, AccountCircleOutlined, Logout, PersonAddAltOutlined, 
   GroupAddOutlined, ShoppingCartOutlined, ShoppingBagOutlined,
   ShoppingCartCheckoutOutlined, InventoryOutlined, BookmarkBorderOutlined,
-  ExitToAppOutlined} from '@mui/icons-material';
+  ExitToAppOutlined, Inventory, Timeline} from '@mui/icons-material';
 type PropsType = {
     icon: string
 }
@@ -24,6 +24,8 @@ const SvgIcon: React.FC<PropsType> = (props) => {
     { icon: <InventoryOutlined />, name: 'jet-purchased' },
     { icon: <BookmarkBorderOutlined />, name: 'jet-favourite' },
     { icon: <ExitToAppOutlined />, name: 'jet-exit' },
+    { icon: <Inventory />, name: 'jet-products' },
+    { icon: <Timeline />, name: 'jet-analytics' },
   ]
 
   const icon = useMemo(() => {

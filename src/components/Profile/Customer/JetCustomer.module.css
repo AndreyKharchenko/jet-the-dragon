@@ -1,0 +1,19 @@
+.defaultInput {
+    margin-bottom: 1rem!important;
+    width: 600px!important;
+}
+
+.defaultInput div {
+    width: 250px!important;
+}
+
+.title {
+    font-weight: 600;
+    font-size: 32px;
+    line-height: 40px;
+    margin-top: 2rem;
+    margin-left: 2rem;
+    margin-bottom: 2rem;
+    display: flex;
+    justify-content: flex-start;
+}

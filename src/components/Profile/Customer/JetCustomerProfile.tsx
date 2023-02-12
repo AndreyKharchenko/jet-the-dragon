@@ -4,17 +4,22 @@ import JetSidebar from '../../Sidebar/JetSidebar'
 import { useNavigate } from 'react-router-dom'
 import { dFlex } from '../../../themes/commonStyles'
 import JetIcon from '../../common/JetIcon'
-import JetUserMy from './JetUserMy'
 import JetLogo from '../../common/JetLogo'
+import JetCustomerMain from './JetCustomerMain'
+import JetCustomerOrdersList from './JetCustomerOrdersList'
+import JetCustomerReturns from './JetCustomerReturns'
+import JetCustomerPrchd from './JetCustomerPrchd'
+import JetCustomerFavourites from './JetCustomerFavourites'
+import JetOrder from '../../Orders/JetOrder'
 
 
 interface IUserProfileProps {
-    id: string | number | null,
+    orderId?: string | number | null,
     page: string | null
 }
 
 const mocdata: mocItem[] = [
-    {id: 1, label: 'Личный кабинет', icon: 'jet-account-outline', page: 'my'},
+    {id: 1, label: 'Личный кабинет', icon: 'jet-account-outline', page: 'main'},
     {id: 2, label: 'Моя корзина', icon: 'jet-cart', page: 'cart'},
     {id: 3, label: 'Мои заказы', icon: 'jet-order', page: 'orders'},
     {id: 4, label: 'Мои возвраты', icon: 'jet-return-order', page: 'returns'},
@@ -27,19 +32,29 @@ type mocItem = {id: number, label: string, icon: string, page: string};
 
 
 
-const JetUserProfile: React.FC<IUserProfileProps> = ({id, page}) => {
+const JetCustomerProfile: React.FC<IUserProfileProps> = ({orderId, page}) => {
     const [selectedItem, setSelectedItem] = useState<mocItem>(mocdata[0]);
     const navigate = useNavigate();
 
     const handleListItemClick = (item: mocItem) => {
+        if(item.page.toUpperCase() == 'CART') {
+            navigate(`/cart`);
+            return;
+        } else if(item.page.toUpperCase() == 'EXIT') {
+            navigate(`/login/user`);
+            return;
+        }
+        
         setSelectedItem(item);
-        navigate(`/user/${id}/${item.page}`);
+        //navigate(`/user/${id}/${item.page}`);
+        navigate(`/my/${item.page}`);
     }
 
     
     useEffect(() => {
         console.log('PAGE', page);
-    }, [page])
+        console.log('ID', orderId);
+    }, [page, orderId])
     
     
     return (
@@ -77,11 +92,31 @@ const JetUserProfile: React.FC<IUserProfileProps> = ({id, page}) => {
 
                 <Box sx={{mt:2}}>
                     {
-                        (page?.toUpperCase() == 'MY')
+                        (page?.toUpperCase() == 'MAIN')
                         ?
-                            <JetUserMy />
+                            <JetCustomerMain />
                         :
-                            selectedItem.label
+                        (page?.toUpperCase() == 'ORDERS' && !(!!orderId))
+                        ?
+                            <JetCustomerOrdersList />
+                        :
+                        (page?.toUpperCase() == 'ORDERS' && !!orderId)
+                        ?
+                            <JetOrder id={orderId} />
+                        :
+                        (page?.toUpperCase() == 'RETURNS')
+                        ?
+                            <JetCustomerReturns />
+                        :
+                        (page?.toUpperCase() == 'PURCHASED')
+                        ?
+                            <JetCustomerPrchd />
+                        :
+                        (page?.toUpperCase() == 'FAVOURITES')
+                        ?
+                            <JetCustomerFavourites />
+                        :
+                        null
                     }
                 </Box>
             </Box>
@@ -89,4 +124,4 @@ const JetUserProfile: React.FC<IUserProfileProps> = ({id, page}) => {
     )
 }
 
-export default JetUserProfile
+export default JetCustomerProfile

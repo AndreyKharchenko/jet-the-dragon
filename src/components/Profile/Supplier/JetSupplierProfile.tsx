@@ -1,43 +1,61 @@
-import { Box, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
 import React, { useState } from 'react'
+import { Box, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 import { dFlex } from '../../../themes/commonStyles';
 import JetIcon from '../../common/JetIcon';
+import JetLogo from '../../common/JetLogo';
 import JetSidebar from '../../Sidebar/JetSidebar';
+import JetSupplierAnalytics from './JetSupplierAnalytics';
+import JetSupplierMain from './JetSupplierMain';
+import JetSupplierProducts from './JetSupplierProducts';
 
 interface ISupplierProfileProps {
-  id: number | string | null,
+  //id: number | string | null,
   page: string | null
 }
 
 const mocdata: mocItem[] = [
-  {id: 1, label: 'Личный кабинет', icon: 'jet-account-outline'},
-  {id: 2, label: 'Моя корзина', icon: 'jet-cart'},
-  {id: 3, label: 'Мои заказы', icon: 'jet-order'},
-  {id: 4, label: 'Мои возвраты', icon: 'jet-return-order'},
-  {id: 5, label: 'Купленные товары', icon: 'jet-purchased'},
-  {id: 6, label: 'Избранное', icon: 'jet-favourite'},
-  {id: 7, label: 'Выход', icon: 'jet-exit'},
+  { id: 1, label: 'Личный кабинет', icon: 'jet-account-outline', page: 'main' },
+  { id: 2, label: 'Мои товары', icon: 'jet-products', page: 'products' },
+  { id: 3, label: 'Аналитика', icon: 'jet-analytics', page: 'analytics' },
+  { id: 4, label: 'Выход', icon: 'jet-exit', page: 'exit' },
 ]
 
-type mocItem = {id: number, label: string, icon: string};
+type mocItem = { id: number, label: string, icon: string, page: string };
 
-const JetSupplierProfile: React.FC<ISupplierProfileProps> = ({id, page}) => {
-  
+const JetSupplierProfile: React.FC<ISupplierProfileProps> = ({ page }) => {
+
   const [selectedItem, setSelectedItem] = useState<mocItem>(mocdata[0]);
+  const navigate = useNavigate();
+
   const handleListItemClick = (item: mocItem) => {
+
+    if (item.page.toUpperCase() == 'EXIT') {
+      navigate(`/login/supplier`);
+      return;
+    }
+
     setSelectedItem(item);
+    navigate(`/my/${item.page}`);
   }
   return (
     <>
       <Box sx={dFlex}>
         <JetSidebar>
-          <Box sx={{mt:15}}>
+          <Box sx={{ mt: 4, mb: 6 }}>
+            <JetLogo />
+          </Box>
+          <Box>
             {
               mocdata.map((item, index) => (
                 <ListItemButton
                   selected={selectedItem.id === item.id}
                   key={item.label}
-                  sx={{ color: (index == mocdata.length - 1) ? '#eb4034' : '#3853D8', mb: 1 }}
+                  sx={{
+                    color: (index == mocdata.length - 1) ? '#eb4034' : '#3853D8',
+                    mb: 1,
+                    borderLeft: (selectedItem.id === item.id) ? '5px solid #3853D8' : 'none',
+                  }}
                   onClick={() => handleListItemClick(item)}
                 >
                   <ListItemIcon sx={{ color: 'inherit' }}>
@@ -52,8 +70,23 @@ const JetSupplierProfile: React.FC<ISupplierProfileProps> = ({id, page}) => {
             }
           </Box>
         </JetSidebar>
-
-        <Box>{selectedItem.label}</Box>
+        <Box sx={{ mt: 2 }}>
+          {
+            (page?.toUpperCase() == 'MAIN')
+            ?
+              <JetSupplierMain />
+            :
+            (page?.toUpperCase() == 'PRODUCTS')
+            ?
+              <JetSupplierProducts />
+            :
+            (page?.toUpperCase() == 'ANALYTICS')
+            ?
+              <JetSupplierAnalytics />
+            :
+            null
+          }
+        </Box>
       </Box>
     </>
   )

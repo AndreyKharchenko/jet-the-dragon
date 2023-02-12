@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react'
-import { FormControl, InputLabel, MenuItem, Select } from '@mui/material'
+import React, { PointerEvent, useEffect, useState } from 'react'
+import { FormControl, InputLabel, MenuItem, Select, SelectChangeEvent } from '@mui/material'
 import { Controller, useFormContext } from 'react-hook-form'
 
 type selectOptionsType = {
@@ -10,16 +10,25 @@ type selectOptionsType = {
 type SelectProps = {
     options: selectOptionsType[]
     selectLabel: string,
-    selectName: string, 
-    sx: object
+    selectName: string,
+    initValue?: string,
+    disabled?: boolean,
+    sx?: object
 }
 
-const JetSelect:React.FC<SelectProps> = ({selectLabel, selectName, options, sx}) => {
-    const {control, setValue} = useFormContext();
+const JetSelect:React.FC<SelectProps> = ({selectLabel, selectName, initValue, options, disabled, sx}) => {
+    const {control, setValue, getValues} = useFormContext();
+    let [selectValue, setSelectValue] = useState(options[0].value);
     
     useEffect(() => {
-        setValue(selectName, options[0].value);
+        setValue(selectName, initValue || options[0].value);
+        setSelectValue(initValue || options[0].value);
     }, [])
+
+    const handleChange = (e: any) => {
+        setValue(selectName, e.target.value);
+        setSelectValue(e.target.value);
+    }
 
     const generateSingleOptions = () => {
         return options.map((option: selectOptionsType) => {
@@ -32,7 +41,7 @@ const JetSelect:React.FC<SelectProps> = ({selectLabel, selectName, options, sx})
     }
 
     return (
-        <FormControl size='small'>
+        <FormControl fullWidth>
             {
                 (selectLabel)
                 ?
@@ -43,8 +52,16 @@ const JetSelect:React.FC<SelectProps> = ({selectLabel, selectName, options, sx})
             
             <Controller 
                 render={({field}) => (
-                    <Select autoWidth {...field} sx={sx} defaultValue={options[0].value}>
-                        { generateSingleOptions() }                   </Select>
+                    <Select 
+                        {...field} 
+                        autoWidth
+                        sx={sx} 
+                        value={selectValue}
+                        onChange={(e) => handleChange(e)}
+                        disabled={disabled || false}
+                    >
+                        { generateSingleOptions() }                   
+                    </Select>
                 )}
                 control={control}
                 name={selectName}

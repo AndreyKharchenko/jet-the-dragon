@@ -53,8 +53,9 @@ const theme = createTheme({
         },
         MuiButton: {
             defaultProps: {
-                size: 'small',
-                disableRipple: true
+                //size: 'small',
+                //disableRipple: false
+                
             },
         },
         MuiTab: {
@@ -65,7 +66,7 @@ const theme = createTheme({
         MuiFormHelperText: {
             styleOverrides: {
                 root: {
-                    fontSize: 'small',
+                    fontSize: '10px',
                     color: grey[700]
                 },
                 /*error: {

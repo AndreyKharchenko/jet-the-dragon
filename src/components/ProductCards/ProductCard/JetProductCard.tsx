@@ -3,9 +3,9 @@ import { Box, Card, CardActions, CardContent, CardMedia, IconButton, Typography 
 import AddBoxOutlinedIcon from '@mui/icons-material/AddBoxOutlined';
 import StarIcon from '@mui/icons-material/Star';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import style from './JetProductCard.module.css';
+import style from '../JetProductCard.module.css';
 import { dFlex, flexBetween } from "../../../themes/commonStyles";
-import { IProduct } from '../../../models/catalog';
+import { IProduct } from '../../../models/product';
 
 interface PropsType {
     card: IProduct,

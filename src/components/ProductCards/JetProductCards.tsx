@@ -1,12 +1,17 @@
 import React, { useState } from "react";
 import JetProductCard from "./ProductCard/JetProductCard";
-import { Box, Grid } from "@mui/material";
+import { Badge, Box, Grid } from "@mui/material";
 import { useAppDispatch } from "../../hooks/useRedux";
-import { IProduct } from '../../models/catalog';
+import { IProduct } from '../../models/product';
 import { cartActions } from '../../store/slices/cartSlice';
 import { useNavigate } from "react-router-dom";
+import style from './JetProductCard.module.css'
 
-const JetProductCards: React.FC<{}> = () => {
+interface IJetProductCard {
+    prodTitle?: string;
+}
+
+const JetProductCards: React.FC<IJetProductCard> = ({prodTitle}) => {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
     const addToCart = (event:React.MouseEvent<HTMLButtonElement, MouseEvent>, product: IProduct) => {
@@ -62,24 +67,33 @@ const JetProductCards: React.FC<{}> = () => {
     }
 
     return(
-        <Box sx={{mx:2}}>
-            <Grid container>
-                {
-                    value.cards.map(card => {
-                        return(
-                            <Grid key={card.id} xs={12} sm={2} md={4} lg={3}>
-                                <JetProductCard 
-                                    card={card} 
-                                    addToCart={addToCart} 
-                                    addToFavourite={addToFavourite}
-                                    onProduct={onProduct} 
-                                />
-                            </Grid>
-                        )
-                    })
-                }
-            </Grid>
-        </Box>
+        <>
+            { !!prodTitle &&
+            <Box className={style.productTitle}>
+                <Badge badgeContent={tmpCards.length} color="primary">
+                    {prodTitle}
+                </Badge>
+            </Box>
+            }
+            <Box sx={{mx:2}}>
+                <Grid container>
+                    {
+                        value.cards.map(card => {
+                            return(
+                                <Grid key={card.id} xs={12} sm={2} md={4} lg={3}>
+                                    <JetProductCard 
+                                        card={card} 
+                                        addToCart={addToCart} 
+                                        addToFavourite={addToFavourite}
+                                        onProduct={onProduct} 
+                                    />
+                                </Grid>
+                            )
+                        })
+                    }
+                </Grid>
+            </Box>
+        </>
     );
 }
 

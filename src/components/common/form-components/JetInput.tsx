@@ -2,10 +2,6 @@ import React, { useEffect } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import { FormHelperText, TextField } from '@mui/material';
 
-
-
-
-
 type InputProps = {
     name: string, 
     label: string,
@@ -17,13 +13,15 @@ type InputProps = {
     inputProps?: object,
     variant?: variantType,
     helperText?: string | '',
-    required?: boolean
+    required?: boolean,
+    disabled?: boolean,
+    multiline?: boolean
 }
 
 type variantType = 'standard' | 'filled' | 'outlined';
 
 
-export const JetInput: React.FC<InputProps> = ({name, label, placeholder, mask, type, fullWidth, inputProps, variant, sx, helperText, required}) => {
+export const JetInput: React.FC<InputProps> = ({name, label, placeholder, mask, type, fullWidth, inputProps, variant, sx, helperText, required, disabled, multiline}) => {
     const {control, setValue, setError, clearErrors, register} = useFormContext();
 
     const handleInputChange = (val: string) => {
@@ -39,23 +37,25 @@ export const JetInput: React.FC<InputProps> = ({name, label, placeholder, mask, 
     }
 
     const emailHandler = (val: string) => {
+        console.log('VAL', val);
         const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         if(!re.test(val)) {
             setError(name, {type: 'onChange', message:'Некорректный E-mail'});
         }else {
             clearErrors(name);
         }
-        handleInputChange(val);
+        setValue(name, val);
     }
 
     const phoneHandler = (val: string) => {
         const re = /^(\+7|7|8)?[\s\-]?\(?[489][0-9]{2}\)?[\s\-]?[0-9]{3}[\s\-]?[0-9]{2}[\s\-]?[0-9]{2}$/;
         if(!re.test(val)) {
+            console.log('VAL:', val)
             setError(name, {type: 'onChange', message:'Некорректный номер телефона'});
         }else {
             clearErrors(name);
         }
-        handleInputChange(val);
+        setValue(name, val);
     }
 
     const bankCardHandler = (val: string) => {
@@ -103,6 +103,9 @@ export const JetInput: React.FC<InputProps> = ({name, label, placeholder, mask, 
                             value={value}
                             helperText={!!error ? error.message : helperText}  
                             error={!!error}
+                            disabled={disabled || false}
+                            multiline={multiline || false}
+                            rows={multiline ? 4 : 1}
                         />
                     )}
                 />
@@ -118,16 +121,19 @@ export const JetInput: React.FC<InputProps> = ({name, label, placeholder, mask, 
                     }}
                     render={({ field: {onChange, value}, fieldState: {error} }) => (
                         <TextField 
+                            {...register(name)}
                             onChange={(e) => emailHandler(e.target.value)}
                             type={type}
                             label={label}
                             variant='standard'
                             placeholder={placeholder}
                             fullWidth={fullWidth}
-                            value={value}
                             sx={sx}
-                            helperText={!!error ? error.message : ''} 
-                             
+                            inputProps={inputProps}
+                            value={value}
+                            helperText={!!error ? error.message : helperText} 
+                            error={!!error}
+                            disabled={disabled || false} 
                         />
                     )}
                 />
@@ -137,12 +143,13 @@ export const JetInput: React.FC<InputProps> = ({name, label, placeholder, mask, 
                 <Controller
                     name={name}
                     control={control}
-                    defaultValue=''
+                    defaultValue='+7'
                     rules={{
                         required: {value: true, message: `Поле ${label} обязательно`}
                     }}
                     render={({ field: {onChange, value}, fieldState: {error} }) => (
                         <TextField 
+                            {...register(name)}
                             onChange={(e) => phoneHandler(e.target.value)}
                             type={type}
                             label={label}
@@ -153,7 +160,9 @@ export const JetInput: React.FC<InputProps> = ({name, label, placeholder, mask, 
                             inputProps={{maxLength:12}}
                             defaultValue='+7'
                             helperText={!!error ? error.message : ''}
-                            value={value}  
+                            value={value} 
+                            error={!!error} 
+                            disabled={disabled || false}
                         />
                     )}
                 />

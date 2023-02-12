@@ -1,0 +1,78 @@
+/* ВЕРТИКАЛЬНЫЕ КАРТОЧКИ ТОВАРОВ */
+
+.productImage {
+    border-radius: 3%;
+}
+
+.productContent {
+    width: auto;
+    height: auto!important;
+    padding: 10px!important;
+}
+
+.productActions {
+    margin-bottom: 2rem!important;
+    padding: 10px!important;
+    padding-bottom: 0px!important;
+    justify-content: flex-end;
+}
+
+.productRaiting {
+    font-size: 1rem!important;
+    margin-top: 0.2rem;
+}
+
+.productCardName {
+    font-weight: 700!important;
+    line-height: 24px!important;
+    font-size: 18px!important;
+}
+
+.productCardPrice {
+    font-weight: 700!important;
+    line-height: 24px!important;
+    font-size: 16px!important;
+}
+
+.productTitle {
+    font-weight: 600;
+    font-size: 32px;
+    line-height: 40px;
+    margin-top: 2rem;
+    margin-left: 2rem;
+    margin-bottom: 2rem;
+    display: flex;
+    justify-content: flex-start;
+}
+
+/* ГОРИЗОНТАЛЬНЫЕ КАРТОЧКИ ТОВАРОВ */
+
+.item {
+    box-shadow: 0px 5px 10px 2px rgba(34, 60, 80, 0.2);
+    width: 60vw!important;
+    height: 22vh!important;
+    border-radius: 7px!important;
+    cursor: pointer;
+    margin-bottom: 1rem!important;
+}
+
+.itemContainer {
+    display: flex!important;
+    flex-direction: column!important;
+    width: 100%!important;
+}
+
+.itemHeader {
+    position: absolute!important;
+    top: 10px!important;
+}
+
+.itemAvatar {
+    margin-right: 1rem;
+}
+
+.itemPrice {
+    font-size: 18px!important;
+    font-weight: 600;
+    margin-right: 0.5rem;
+}

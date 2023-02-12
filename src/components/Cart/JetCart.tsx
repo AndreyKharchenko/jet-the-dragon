@@ -1,15 +1,16 @@
 import React, { useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks/useRedux';
 import { Box, DialogContent, DialogTitle, IconButton } from '@mui/material';
-import JetCartItems from './JetCartItems';
 import JetCartTotal from './JetCartTotal';
+import JetBankCard from '../common/JetBankCard';
+import JetCartList from './CartList/JetCartList';
+import JetDialog from '../common/JetDialog';
 import { flexAround } from '../../themes/commonStyles';
 import { cartActions } from '../../store/slices/cartSlice';
-import style from './JetCart.module.css';
-import { IProduct } from '../../models/catalog';
-import JetDialog from '../common/JetDialog';
+import { IProduct } from '../../models/product';
 import {Close} from '@mui/icons-material';
-import JetBankCard from '../common/JetBankCard';
+import style from './JetCart.module.css';
+
 
 const JetCart: React.FC<{}> = () => {
     const products = useAppSelector(state => state.cart.products);
@@ -53,7 +54,7 @@ const JetCart: React.FC<{}> = () => {
                     </Box>
                 :
                     <>
-                        <JetCartItems 
+                        <JetCartList 
                             products={products} 
                             removeCartItem={removeCartItem} 
                             incremntQty={incremntQty}

@@ -10,20 +10,24 @@ type datePickerType = {
     label: string,
     format: string,
     name: string,
+    initialValue?: Moment,
+    disabled?: boolean,
     views?: Array<Views>
 }
 
 type Views = 'day' | 'month' | 'year';
 
-const JetDatePicker: React.FC<datePickerType> = ({label, format, name, views}) => {
+const JetDatePicker: React.FC<datePickerType> = ({label, format, name, views, initialValue, disabled}) => {
     const {control, setValue, getValues} = useFormContext();
-
+    const [time, setTime] = useState<Moment | null>(moment());
+    
     useEffect(() => {
-        setValue(name, moment());
+        setValue(name, initialValue || moment());
+        setTime(initialValue || moment());
         console.log(getValues());
     }, [])
 
-    const [time, setTime] = useState<Moment | null>(moment());
+    
     const handleChange = (newValue: Moment | null) => {
         setValue(name, newValue);
         setTime(newValue);
@@ -41,6 +45,7 @@ const JetDatePicker: React.FC<datePickerType> = ({label, format, name, views}) =
                             onChange={handleChange}
                             renderInput={(params) => <TextField {...params} />}
                             views={!!views?.length ? views : ['year', 'day']}
+                            disabled={disabled || false}
                         />
                     </LocalizationProvider>
                 )}

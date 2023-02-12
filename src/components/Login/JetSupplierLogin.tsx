@@ -6,8 +6,8 @@ import JetInput  from '../common/form-components/JetInput';
 import JetSelect from '../common/form-components/JetSelect';
 import JetDatePicker from '../common/form-components/JetDatePicker';
 import style from './JetLogin.module.css';
-import { flexBetweenCenter, dFlexCol } from '../../themes/commonStyles';
-import { IProviderForm } from '../../models/login';
+import { flexBetweenCenter, dFlexCol, flexBetween, flexAround } from '../../themes/commonStyles';
+import { ISupplierLoginForm } from '../../models/login';
 import { useNavigate } from 'react-router-dom';
 
 
@@ -17,7 +17,7 @@ const JetSupplierLogin: React.FC<{}> = () => {
   const [activeStep, setActiveStep] = useState<number>(0);
   const navigate = useNavigate();
 
-  const methods = useForm<IProviderForm>();
+  const methods = useForm<ISupplierLoginForm>();
 
   const handleStep = async (step: number) => {
     console.log('step', step);
@@ -39,10 +39,10 @@ const JetSupplierLogin: React.FC<{}> = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
-  const handleCompleteReg = (data: IProviderForm) => {
+  const handleCompleteReg = (data: ISupplierLoginForm) => {
     console.log('complete registration', data);
-    navigate(`/supplier/1/my`);
-
+    //navigate(`/supplier/1/my`);
+    navigate(`/my/main`);
 
   };
   return (
@@ -82,8 +82,8 @@ const JetSupplierLogin: React.FC<{}> = () => {
                             <Typography className={style.providerInfoSubtitleTxt}>Укажите ФИО</Typography>
                           </Box>
                           <Box sx={{display:'flex', justifyContent:'space-between'}}>
-                            <JetInput name={'surname'} label={'Фамилия'} placeholder={'Фамилия'} sx={{ mr:2 }} />
-                            <JetInput name={'name'} label={'Имя'} placeholder={'Имя'} sx={{ mr:2 }} />
+                            <JetInput name={'firstname'} label={'Фамилия'} placeholder={'Фамилия'} sx={{ mr:2 }} />
+                            <JetInput name={'lastname'} label={'Имя'} placeholder={'Имя'} sx={{ mr:2 }} />
                             <JetInput name={'patronymic'} label={'Отчество'} placeholder={'Отчество'} />
                           </Box>
                         </Box>
@@ -110,13 +110,24 @@ const JetSupplierLogin: React.FC<{}> = () => {
                     ( activeStep == 1 )
                     ?
                       <Box>
-                        <Box className={style.providerInfoContainer}>
+                        <Box sx={{...flexBetweenCenter, mb:2, width:'60vw'}}>
                           <JetSelect 
                             selectLabel='Страна' 
                             selectName='country' 
                             options={[{label: 'Россия', value: 'rus'}]}
                             sx={{width:'7rem'}}
                           />
+
+                          <JetSelect 
+                            selectLabel='Регион' 
+                            selectName='region' 
+                            options={[{label: 'Краснодарский край', value: '23'}]}
+                            sx={{width:'12rem'}}
+                          />
+                          <JetInput name={'city'} label={'Город'} placeholder={'Город'} />
+                          <JetInput name={'street'} label={'Улица'} placeholder={'Улица'} />
+                          <JetInput name={'housenumber'} label={'Дом'} placeholder={'Дом'} />
+                          
                         </Box>
 
                         <Box className={style.providerInfoContainer}>
@@ -133,10 +144,10 @@ const JetSupplierLogin: React.FC<{}> = () => {
                           <Typography variant='inherit'>Введите ИНН вашей организации. Мы его проверим и автоматически заполним основные данные</Typography>
                         </Box>
                         
-                        <Box sx={flexBetweenCenter}>
+                        <Box sx={{...flexBetweenCenter, width:'50vw'}}>
                           <Box sx={dFlexCol}>
                             <JetInput name={'inn'} label={'ИНН'} placeholder={'ИНН'} inputProps={{maxLength:10}} sx={{width:'13rem', mb: 1}} />                          
-                            <JetInput name={'providerName'} label={'Наименование поставщика'} placeholder={'Наименование поставщика'} sx={{width:'13rem', mb:1}} />
+                            <JetInput name={'supplierName'} label={'Наименование поставщика'} placeholder={'Наименование поставщика'} sx={{width:'13rem', mb:1}} />
                           </Box>
 
                           <Box sx={dFlexCol}>
@@ -151,7 +162,7 @@ const JetSupplierLogin: React.FC<{}> = () => {
                       <Box>
                         <Box sx={dFlexCol}>
                           <JetInput 
-                            name='decNum' 
+                            name='declarationNum' 
                             variant='outlined' 
                             label='Номер декларация ТР ТС' 
                             placeholder='Номер декларация ТР ТС' 
@@ -159,7 +170,7 @@ const JetSupplierLogin: React.FC<{}> = () => {
                             sx={{width:'13rem', mb: 5}} 
                           />
                           <JetDatePicker 
-                            name='decDt' 
+                            name='dtDeclaration' 
                             label='Дата регистрации декларации ТР ТС' 
                             format='DD.MM.YYYY'
                           />
