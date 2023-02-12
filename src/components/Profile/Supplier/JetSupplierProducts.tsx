@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Badge, Box, Button, DialogActions, DialogContent, DialogTitle, Fab, IconButton, TextField, Typography } from '@mui/material'
+import { Badge, Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, Divider, Fab, IconButton, TextField, Typography } from '@mui/material'
 import JetHrzProductCard from '../../ProductCards/ProductCard/JetHrzProductCard';
 import style from './JetSupplier.module.css';
 import JetDialog from '../../common/JetDialog';
@@ -8,9 +8,10 @@ import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
 import { Charak, IFullProduct } from '../../../models/product';
 import JetSelect from '../../common/form-components/JetSelect';
 import JetInput from '../../common/form-components/JetInput';
-import { flexAround, flexBetweenCenter } from '../../../themes/commonStyles';
+import { flexAround, flexEnd } from '../../../themes/commonStyles';
 import JetAddProdCharak from '../../common/JetAddProdCharak';
 import JetAddProdPhotos from '../../common/JetAddProdPhotos';
+import JetSnackbar from '../../common/JetSnackbar';
 
 const JetSupplierProducts = () => {
   let tmpCards = [
@@ -20,28 +21,41 @@ const JetSupplierProducts = () => {
 
   let [dialog, handleDialog] = useState<boolean>(false);
   let [charaks, setCharak] = useState<Charak[]>([]);
-  let [photos, setPhoto] = useState([1,2,3,4,5,6,7,8,9]);
+  let [photos, setPhoto] = useState([1, 2, 3, 4, 5, 6, 7, 8, 9]);
+  let [snackbar, setSnackbar] = useState<boolean>(false);
   const methods = useForm<IFullProduct>();
 
   const addCharak = () => {
+    let charaksLen = charaks.length;
+    
+    if(charaksLen > 0 && !charaks[charaksLen-1].charakName || !charaks[charaksLen-1]?.charakValue) {
+      setSnackbar(true);
+      return;
+    }
+
     let newCharaks = [...charaks, { id: charaks.length + 1, charakName: '', charakValue: '' }];
     setCharak(newCharaks);
+    
   }
 
   const addPhoto = () => {
-    setPhoto([...photos,4]);
+    setPhoto([...photos, 4]);
   }
 
-  
+
   const onCloseDialog = () => {
     handleDialog(false);
+  }
+
+  const onCloseSnackbar = () => {
+    setSnackbar(false);
   }
 
   const onSubmit: SubmitHandler<IFullProduct> = (data: IFullProduct) => {
     console.log('data:', data);
     console.log('Charak', charaks);
     let newCard = {
-      id: tmpCards.length+1,
+      id: tmpCards.length + 1,
       image: 'https://images.unsplash.com/photo-1611171711912-e3f6b536f532?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NHx8ZmlzaCUyMGZvb2R8ZW58MHx8MHx8&w=1000&q=80',
       name: data.productName,
       qty: data.productQty,
@@ -54,8 +68,12 @@ const JetSupplierProducts = () => {
   }
 
   useEffect(() => {
-    addCharak();
-  },[])
+    if(!charaks.length) {
+      let newCharaks = [...charaks, { id: charaks.length + 1, charakName: '', charakValue: '' }];
+      setCharak(newCharaks);
+    }
+    
+  }, [])
 
   return (
     <>
@@ -79,86 +97,97 @@ const JetSupplierProducts = () => {
         </Box>
 
         <JetDialog open={dialog} onClose={onCloseDialog} fullwidth={true}>
-          <Box sx={{ p: 1 }}>
-            <DialogTitle sx={{ display: 'flex', justifyContent: 'space-between', fontSize: '1.25rem', fontWeight: '700' }}>
-              <Box sx={{ fontSize: '24px' }}>
-                Создать новый заказа
-              </Box>
-              <IconButton sx={{ cursor: 'pointer' }} onClick={onCloseDialog}>
-                <Close />
-              </IconButton>
-            </DialogTitle>
+          <DialogTitle sx={{ display: 'flex', justifyContent: 'space-between', fontSize: '1.25rem', fontWeight: '700' }}>
+            <Box sx={{ fontSize: '24px' }}>
+              Создать новый заказа
+            </Box>
+            <IconButton sx={{ cursor: 'pointer' }} onClick={onCloseDialog}>
+              <Close />
+            </IconButton>
+          </DialogTitle>
+
+          <DialogContent dividers={true}>
             <FormProvider {...methods}>
               <form onSubmit={methods.handleSubmit(onSubmit)}>
-                <DialogContent dividers={true}>
-                  <Box>
-                    <Box sx={{ mt: 1 }}>
-                      <Box sx={{mb:1}}>
-                        <JetSelect
-                          selectLabel='Укажите категорию товара'
-                          selectName='productCategory'
-                          options={[{ label: 'Мясо', value: 'meat' }, { label: 'Рыба', value: 'fish' }]}
-                          sx={{ height:'2.2rem', mt: 1 }}
-                        />
-                      </Box>
-
-                      <Box sx={{mb:4}}>
-                        <JetInput
-                          name='productName'
-                          label='Укажите название продукта'
-                          placeholder='Название продукта'
-                          fullWidth={true}
-                        />
-                      </Box>
-
-                      <Box sx={{mb:4}}>
-                        <JetInput
-                          name='productDesc'
-                          label='Описание продукта'
-                          placeholder='Описание продукта'
-                          fullWidth={true}
-                          multiline={true}
-                          variant='filled'
-                        />
-                      </Box>
-
-                      <Box sx={{...flexAround, mb:4}}>
-                        <Box sx={{ display: 'flex', alignItems: 'flex-end', mb:1 }}>
-                          <CurrencyRuble color='secondary' fontSize='small' sx={{ mb: 1 }} />
-                          <JetInput name='productCost' label='Цена за 1 кг' placeholder='Цена' />
-                        </Box>
-                        <Box>
-                          <JetInput
-                            name='productQty'
-                            label='Укажите количесвто продукта'
-                            placeholder='Укажите количесвто продукта'
-                          />
-                        </Box>
-                        <Box>
-                          <JetInput
-                            name='productSl'
-                            label='Укажите срок годности'
-                            placeholder='Укажите срок годности'
-                          />
-                        </Box>
-                      </Box>
+                <Box>
+                  <Box sx={{ mt: 1 }}>
+                    <Box sx={{ mb: 1 }}>
+                      <JetSelect
+                        selectLabel='Укажите категорию товара'
+                        selectName='productCategory'
+                        options={[{ label: 'Мясо', value: 'meat' }, { label: 'Рыба', value: 'fish' }]}
+                        sx={{ height: '2.2rem', mt: 1 }}
+                      />
                     </Box>
 
-                    <JetAddProdCharak charaks={charaks} addCharak={addCharak} />
+                    <Box sx={{ mb: 4 }}>
+                      <JetInput
+                        name='productName'
+                        label='Укажите название продукта'
+                        placeholder='Название продукта'
+                        fullWidth={true}
+                      />
+                    </Box>
 
-                    <Box sx={{fontSize: '20px', fontWeight: '600', mb:2}}>Добавьте фотографии товара</Box>
-                    <JetAddProdPhotos photos={photos} addPhoto={addPhoto} />
+                    <Box sx={{ mb: 4 }}>
+                      <JetInput
+                        name='productDesc'
+                        label='Описание продукта'
+                        placeholder='Описание продукта'
+                        fullWidth={true}
+                        multiline={true}
+                        variant='filled'
+                      />
+                    </Box>
+
+                    <Box sx={{ ...flexAround, mb: 4 }}>
+                      <Box sx={{ display: 'flex', alignItems: 'flex-end', mb: 1 }}>
+                        <CurrencyRuble color='secondary' fontSize='small' sx={{ mb: 1 }} />
+                        <JetInput name='productCost' label='Цена за 1 кг' placeholder='Цена' />
+                      </Box>
+                      <Box>
+                        <JetInput
+                          name='productQty'
+                          label='Укажите количесвто продукта'
+                          placeholder='Укажите количесвто продукта'
+                        />
+                      </Box>
+                      <Box>
+                        <JetInput
+                          name='productSl'
+                          label='Укажите срок годности'
+                          placeholder='Укажите срок годности'
+                        />
+                      </Box>
+                    </Box>
                   </Box>
-                </DialogContent>
 
-                <DialogActions>
-                  <Button type='submit' sx={{fontWeight:'500', fontSize:'0.875rem', textTransform:'uppercase'}}>
+                  <JetAddProdCharak charaks={charaks} addCharak={addCharak} />
+
+                  <Box sx={{ fontSize: '20px', fontWeight: '600', mb: 2 }}>Добавьте фотографии товара</Box>
+                  <JetAddProdPhotos photos={photos} addPhoto={addPhoto} />
+                </Box>
+
+                <Divider />
+
+                <Box sx={{...flexEnd, mt:3}}>
+                  <Button 
+                    type='submit' 
+                    className={style.submitBtn}
+                  >
                     Сохранить
                   </Button>
-                </DialogActions>
+                </Box>
+
+                <JetSnackbar 
+                  open={snackbar}
+                  onClose={onCloseSnackbar}
+                  severity='error'
+                  msg='Не все характеристики заполнены'
+                />
               </form>
             </FormProvider>
-          </Box>
+          </DialogContent>
         </JetDialog>
 
         <Fab color="primary" sx={{ position: 'fixed', right: '100px', bottom: '100px' }} onClick={() => handleDialog(true)}>

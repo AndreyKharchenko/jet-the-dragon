@@ -17,3 +17,9 @@
     display: flex;
     justify-content: flex-start;
 }
+
+.submitBtn {
+    font-weight: 500!important;
+    font-size: 0.875rem!important;
+    text-transform: uppercase!important;
+}

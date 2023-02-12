@@ -16,7 +16,7 @@ const JetDialog: React.FC<PropsType> = (props) => {
                 open={props.open}
                 onClose={props.onClose}
                 fullWidth={props.fullwidth || false}
-                scroll='paper'
+                scroll={'paper'}
             >
                 {props.children}
             </Dialog>

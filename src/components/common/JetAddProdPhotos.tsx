@@ -21,9 +21,9 @@ const JetAddProdPhotos: React.FC<IAddProdPhotos> = ({ photos, addPhoto }) => {
         </Box>
 
         {
-          photos.map(photo => {
+          photos.map((photo, index) => {
             return (
-              <Box className={style.prodPhoto}>
+              <Box className={style.prodPhoto} key={index}>
                 {photo}
               </Box>
             )
