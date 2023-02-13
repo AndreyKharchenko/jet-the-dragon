@@ -5,7 +5,7 @@ import { Add } from '@mui/icons-material';
 
 
 interface IAddProdPhotos {
-  photos: Array<number>,
+  photos: Array<string>,
   addPhoto: () => void
 }
 
@@ -23,9 +23,12 @@ const JetAddProdPhotos: React.FC<IAddProdPhotos> = ({ photos, addPhoto }) => {
         {
           photos.map((photo, index) => {
             return (
-              <Box className={style.prodPhoto} key={index}>
-                {photo}
-              </Box>
+              <Box 
+                component="img"
+                className={style.prodPhoto} 
+                key={index} 
+                src={photo}
+              />
             )
           })
         }

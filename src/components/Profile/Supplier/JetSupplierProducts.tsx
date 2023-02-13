@@ -21,7 +21,13 @@ const JetSupplierProducts = () => {
 
   let [dialog, handleDialog] = useState<boolean>(false);
   let [charaks, setCharak] = useState<Charak[]>([]);
-  let [photos, setPhoto] = useState([1, 2, 3, 4, 5, 6, 7, 8, 9]);
+  let [photos, setPhoto] = useState([
+    'https://images.unsplash.com/photo-1611171711912-e3f6b536f532?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NHx8ZmlzaCUyMGZvb2R8ZW58MHx8MHx8&w=1000&q=80',
+    'https://images.unsplash.com/photo-1611171711912-e3f6b536f532?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NHx8ZmlzaCUyMGZvb2R8ZW58MHx8MHx8&w=1000&q=80',
+    'https://images.unsplash.com/photo-1611171711912-e3f6b536f532?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NHx8ZmlzaCUyMGZvb2R8ZW58MHx8MHx8&w=1000&q=80',
+    'https://images.unsplash.com/photo-1611171711912-e3f6b536f532?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NHx8ZmlzaCUyMGZvb2R8ZW58MHx8MHx8&w=1000&q=80',
+    'https://images.unsplash.com/photo-1611171711912-e3f6b536f532?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NHx8ZmlzaCUyMGZvb2R8ZW58MHx8MHx8&w=1000&q=80',
+  ]);
   let [snackbar, setSnackbar] = useState<boolean>(false);
   const methods = useForm<IFullProduct>();
 
@@ -39,7 +45,7 @@ const JetSupplierProducts = () => {
   }
 
   const addPhoto = () => {
-    setPhoto([...photos, 4]);
+    setPhoto([...photos, 'https://images.unsplash.com/photo-1611171711912-e3f6b536f532?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NHx8ZmlzaCUyMGZvb2R8ZW58MHx8MHx8&w=1000&q=80']);
   }
 
 
@@ -141,22 +147,22 @@ const JetSupplierProducts = () => {
                     </Box>
 
                     <Box sx={{ ...flexAround, mb: 4 }}>
-                      <Box sx={{ display: 'flex', alignItems: 'flex-end', mb: 1 }}>
+                      <Box sx={{ display: 'flex', alignItems: 'flex-end', mr:1  }}>
                         <CurrencyRuble color='secondary' fontSize='small' sx={{ mb: 1 }} />
                         <JetInput name='productCost' label='Цена за 1 кг' placeholder='Цена' />
                       </Box>
-                      <Box>
+                      <Box sx={{mr:1}}>
                         <JetInput
                           name='productQty'
-                          label='Укажите количесвто продукта'
-                          placeholder='Укажите количесвто продукта'
+                          label='Количесвто продукта'
+                          placeholder='Количесвто продукта'
                         />
                       </Box>
                       <Box>
                         <JetInput
                           name='productSl'
-                          label='Укажите срок годности'
-                          placeholder='Укажите срок годности'
+                          label='Срок годности'
+                          placeholder='Срок годности'
                         />
                       </Box>
                     </Box>
