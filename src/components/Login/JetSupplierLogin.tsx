@@ -13,7 +13,7 @@ import { useAppDispatch, useAppSelector } from '../../hooks/useRedux';
 import { updateCustomer, createCustomer, createSupplier, userActions } from '../../store/slices/userSlice';
 import { IUpdateCustomer } from '../../models/user';
 import JetSpinner from '../common/JetSpinner';
-
+import * as userSelectors from '../../store/selectors/userSelectors';
 
 const steps = ['Информация о физическом лице', 'Сведения об ИП', 'Декларация соответствия ТР ТС', 'Сведения о санитарной книге', 'Почти готово!'];
 
@@ -21,8 +21,8 @@ const JetSupplierLogin: React.FC<{}> = () => {
   const [activeStep, setActiveStep] = useState<number>(0);
   const [disabled, setDisabled] = useState<boolean>(false);
   const dispatch = useAppDispatch();
-  const getCustomerProfile = useAppSelector((state) => state.user.customerProfile);
-  const getLoader = useAppSelector((state) => state.user.loader);
+  const getCustomerProfile = useAppSelector(userSelectors.customerProfile);
+  const getLoader = useAppSelector(userSelectors.loader);
   const navigate = useNavigate();
 
   const methods = useForm<ICustomerLoginForm>();
@@ -113,14 +113,14 @@ const JetSupplierLogin: React.FC<{}> = () => {
   return (
     <Grid>
       <Paper elevation={10} sx={{ padding: 20, height: '55vh', width: '55vw', margin: '20px auto' }}>
-        <Grid container alignItems='center' flexDirection='column' sx={{ position: 'absolute', top: '80px', left: '0px' }}>
+        <Grid container item alignItems='center' flexDirection='column' sx={{ position: 'absolute', top: '80px', left: '0px' }}>
           <Avatar sx={{ backgroundColor: '#3853D8' }}><LockOutlined /></Avatar>
           <Box sx={{ textTransform: 'uppercase' }}>
             <h2>Регистрация поставщика</h2>
           </Box>
         </Grid>
 
-        <Grid container alignItems='center' flexDirection='row' sx={{ justifyContent: 'center', mt: 3, cursor: 'pointer' }}>
+        <Grid container item alignItems='center' flexDirection='row' sx={{ justifyContent: 'center', mt: 3, cursor: 'pointer' }}>
           <Stepper alternativeLabel activeStep={activeStep}>
             {
               steps.map((step, index) => (
@@ -134,7 +134,7 @@ const JetSupplierLogin: React.FC<{}> = () => {
           </Stepper>
         </Grid>
 
-        <Grid container alignItems='center' sx={{ mt: 4 }}>
+        <Grid container item alignItems='center' sx={{ mt: 4 }}>
           <Box sx={{width: (activeStep > 3) ? '100%' : 'auto'}}>
             {
               (activeStep == 0)

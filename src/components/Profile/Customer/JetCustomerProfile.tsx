@@ -11,7 +11,7 @@ import JetCustomerReturns from './JetCustomerReturns'
 import JetCustomerPrchd from './JetCustomerPrchd'
 import JetCustomerFavourites from './JetCustomerFavourites'
 import JetOrder from '../../Orders/JetOrder'
-import { ICustomer } from '../../../models/user'
+import * as userSelectors from '../../../store/selectors/userSelectors';
 import { useAppSelector } from '../../../hooks/useRedux'
 
 
@@ -39,7 +39,7 @@ type listItem = {id: number, label: string, icon: string, page: string};
 
 const JetCustomerProfile: React.FC<IUserProfileProps> = ({orderId, page}) => {
     const [selectedItem, setSelectedItem] = useState<listItem>(listItems[0]);
-    const getLoader = useAppSelector((state) => state.user.loader);
+    const getLoader = useAppSelector(userSelectors.loader);
     const navigate = useNavigate();
     
 

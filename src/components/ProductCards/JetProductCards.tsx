@@ -6,7 +6,7 @@ import { IProduct } from '../../models/product';
 import { cartActions } from '../../store/slices/cartSlice';
 import { useNavigate } from "react-router-dom";
 import style from './JetProductCard.module.css'
-import JetAddProdPhotos from "../common/JetAddProdPhotos";
+import * as catalogSelectors from '../../store/selectors/catalogSelectors';
 import JetProductSkeleton from "../common/JetProductSkeleton";
 
 interface IJetProductCard {
@@ -65,7 +65,7 @@ const JetProductCards: React.FC<IJetProductCard> = ({prodTitle}) => {
         cards: tmpCards
     })
 
-    const getLoader = useAppSelector(state => state.catalog.loader);
+    const getLoader = useAppSelector(catalogSelectors.loader);
 
     return(
         <>
@@ -77,11 +77,11 @@ const JetProductCards: React.FC<IJetProductCard> = ({prodTitle}) => {
             </Box>
             }
             <Box sx={{mx:2}}>
-                <Grid container>
+                <Grid container item>
                     {getLoader &&
                         [0,1,2,3,4,5,6,7].map(it => {
                             return(
-                                <Grid key={it} xs={12} sm={2} md={4} lg={3}>
+                                <Grid item key={it} xs={12} sm={2} md={4} lg={3}>
                                     <JetProductSkeleton /> 
                                 </Grid>
                             )
@@ -91,7 +91,7 @@ const JetProductCards: React.FC<IJetProductCard> = ({prodTitle}) => {
                     {!getLoader &&
                         value.cards.map(card => {
                             return(
-                                <Grid key={card.id} xs={12} sm={2} md={4} lg={3}>
+                                <Grid item key={card.id} xs={12} sm={2} md={4} lg={3}>
                                     <JetProductCard 
                                         card={card} 
                                         addToCart={addToCart} 

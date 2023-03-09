@@ -14,6 +14,8 @@ import { useAppDispatch, useAppSelector } from '../../../hooks/useRedux';
 import { getSupplierData, updateCustomer, updateSupplier } from '../../../store/slices/userSlice';
 import JetSpinner from '../../common/JetSpinner';
 import { IUpdateCustomer, IUpdateSupplier } from '../../../models/user';
+import * as userSelectors from '../../../store/selectors/userSelectors';
+import * as authSelectors from '../../../store/selectors/authSelectors';
 
 const CUSTOMER_FIELDS = ['firstName', 'lastName', 'phone', 'email', 'country', 'region', 'city', 'street', 'houseNumber'];
 
@@ -24,9 +26,9 @@ const JetSupplierMain = () => {
   const methods2 = useForm<ISupplierLoginForm>();
   let [disabled, setDisabled] = useState<boolean>(true);
   
-  const getSupplierProfile = useAppSelector(state => state.user.supplierProfile);
-  const getLoader = useAppSelector(state => state.user.loader);
-  const getToken = useAppSelector((state) => state.auth.token);
+  const getSupplierProfile = useAppSelector(userSelectors.supplierProfile);
+  const getLoader = useAppSelector(userSelectors.loader);
+  const getToken = useAppSelector(authSelectors.accessToken);
   const dispatch = useAppDispatch();
 
   const onSubmit = async () => {

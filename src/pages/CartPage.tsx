@@ -1,6 +1,5 @@
 import React from 'react';
 import { Box, Container } from '@mui/material';
-import { useAppDispatch, useAppSelector } from '../hooks/useRedux';
 import JetHeader from "../components/Header/JetHeader";
 import JetFooter from '../components/Footer/JetFooter';
 import JetCart from '../components/Cart/JetCart';

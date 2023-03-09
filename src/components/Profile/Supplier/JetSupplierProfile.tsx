@@ -9,9 +9,8 @@ import JetSupplierAnalytics from './JetSupplierAnalytics';
 import JetSupplierMain from './JetSupplierMain';
 import JetSupplierProducts from './JetSupplierProducts';
 import { useAppSelector } from '../../../hooks/useRedux';
-
+import * as userSelectors from '../../../store/selectors/userSelectors';
 interface ISupplierProfileProps {
-  //id: number | string | null,
   page: string | null
 }
 
@@ -28,7 +27,7 @@ const JetSupplierProfile: React.FC<ISupplierProfileProps> = ({ page }) => {
 
   const [selectedItem, setSelectedItem] = useState<mocItem>(mocdata[0]);
   const navigate = useNavigate();
-  const getLoader = useAppSelector((state) => state.user.loader);
+  const getLoader = useAppSelector(userSelectors.loader);
 
   const handleListItemClick = (item: mocItem) => {
 

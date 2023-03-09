@@ -6,6 +6,7 @@ import JetFooter from "../components/Footer/JetFooter";
 import { Box, Button, Container, DialogContent, DialogTitle, IconButton } from '@mui/material';
 import JetDialog from "../components/common/JetDialog";
 import * as userSelectors from '../store/selectors/userSelectors';
+import * as authSelectors from '../store/selectors/authSelectors';
 import { useAppDispatch, useAppSelector } from "../hooks/useRedux";
 import { getCustomerData, getSupplierData } from "../store/slices/userSlice";
 import JetIcon from "../components/common/JetIcon";
@@ -14,7 +15,7 @@ import { useNavigate } from "react-router-dom";
 
 const CatalogPage: React.FC<{}> = () => {
     const [dialog, handleDialog] = useState<boolean>(false);
-    const getToken = useAppSelector((state) => state.auth.token); 
+    const getToken = useAppSelector(authSelectors.accessToken); 
     const getCustomerProfile = useAppSelector(userSelectors.customerProfile);
     const getSupplierProfile = useAppSelector(userSelectors.supplierProfile);
     const dispatch = useAppDispatch();

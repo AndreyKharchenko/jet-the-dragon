@@ -9,11 +9,12 @@ import { flexAround } from '../../themes/commonStyles';
 import { cartActions } from '../../store/slices/cartSlice';
 import { IProduct } from '../../models/product';
 import {Close} from '@mui/icons-material';
+import * as cartSelectors from '../../store/selectors/cartSelectors';
 import style from './JetCart.module.css';
 
 
 const JetCart: React.FC<{}> = () => {
-    const products = useAppSelector(state => state.cart.products);
+    const products = useAppSelector(cartSelectors.products);
     const dispatch = useAppDispatch();
     const [dialog, handleDialog] = useState<boolean>(false);
     

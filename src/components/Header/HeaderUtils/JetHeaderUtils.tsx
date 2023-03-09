@@ -8,8 +8,8 @@ import style from '../JetHeader.module.css';
 import { useInput } from '../../../hooks/useInput';
 import JetIcon from '../../common/JetIcon';
 import { login, mgr } from '../../../api/userManager';
-import { User } from 'oidc-client';
-import { authAPI } from "../../../api/api";
+import * as cartSelectors from '../../../store/selectors/cartSelectors';
+import * as authSelectors from '../../../store/selectors/authSelectors';
 import { authActions } from '../../../store/slices/authSlice';
 
 
@@ -18,9 +18,10 @@ const JetHeaderUtils: React.FC<{}> = () => {
     const [regMenu, setRegMenu] = useState<boolean>(false);
     const [regChange, setRegChange] = useState<boolean>(false);
     const input = useInput();
-    const products = useAppSelector(state => state.cart.products);
+    const products = useAppSelector(cartSelectors.products);
+    const token = useAppSelector(authSelectors.accessToken);
+
     const dispatch = useAppDispatch();
-    const token = useAppSelector((state) => state.auth.token);
     const navigate = useNavigate();
 
     const onOpenReg = (e: React.MouseEvent<HTMLButtonElement>) => {

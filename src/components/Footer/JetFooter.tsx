@@ -79,7 +79,7 @@ const JetFooter: React.FC<{}> = (props) => {
                                 {
                                     marketPlaceLinks.map(link => {
                                         return(
-                                            <Link href="#" underline="none">
+                                            <Link href="#" underline="none" key={link.id}>
                                                 {link.text}
                                             </Link>
                                         )
@@ -93,7 +93,7 @@ const JetFooter: React.FC<{}> = (props) => {
                                 {
                                     customerLinks.map(link => {
                                         return(
-                                            <Link href="#" underline="none">
+                                            <Link href="#" underline="none" key={link.id}>
                                                 {link.text}
                                             </Link>
                                         )
@@ -107,7 +107,7 @@ const JetFooter: React.FC<{}> = (props) => {
                                 {
                                     supplierLinks.map(link => {
                                         return(
-                                            <Link href="#" underline="none">
+                                            <Link href="#" underline="none" key={link.id}>
                                                 {link.text}
                                             </Link>
                                         )
@@ -119,9 +119,9 @@ const JetFooter: React.FC<{}> = (props) => {
                             <Box className={style.columnTitle}>Правовая информация</Box>
                             <Box className={style.columnLink}>
                                 {
-                                    legalPolicyLinks.map(link => {
+                                    legalPolicyLinks.map((link) => {
                                         return(
-                                            <Link href="#" underline="none">
+                                            <Link href="#" underline="none" key={link.id}>
                                                 {link.text}
                                             </Link>
                                         )

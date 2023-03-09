@@ -8,11 +8,12 @@ import {Star, IosShare, FavoriteBorder, InfoOutlined} from '@mui/icons-material'
 import style from './JetProduct.module.css';
 import Carousel from 'react-material-ui-carousel';
 import JetTabPanel from '../common/JetTabPanel';
+import * as catalogSelectors from '../../store/selectors/catalogSelectors';
 
 const JetProduct = () => {
   const params = useParams();
   const dispatch = useAppDispatch();
-  const productInfo = useAppSelector(state => state.catalog.currentProduct);
+  const productInfo = useAppSelector(catalogSelectors.currentProduct);
   const navigate = useNavigate();
 
   const [prodCount, setProdCount] = React.useState<number>(0);

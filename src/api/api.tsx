@@ -1,10 +1,9 @@
 import axios from "axios";
-import { useAppSelector } from "../hooks/useRedux";
 import { ICustomerLoginForm, ISupplierLoginForm } from "../models/login";
 import { IUpdateSupplier } from "../models/user";
 
 const token = localStorage.getItem('TOKEN');
-console.log('TOKEN', token)
+//console.log('TOKEN', token)
 
 const instance = axios.create({
     baseURL: 'https://localhost:7099/',

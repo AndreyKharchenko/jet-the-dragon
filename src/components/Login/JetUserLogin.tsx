@@ -9,7 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import { dFlex, flexAround, flexBetween } from '../../themes/commonStyles';
 import { useAppDispatch, useAppSelector } from '../../hooks/useRedux';
 import { createCustomer } from '../../store/slices/userSlice';
-
+import * as authSelectors from '../../store/selectors/authSelectors';
 // Sign-in or sign-up
 type actionType = {
   isSignIn: boolean,
@@ -27,7 +27,7 @@ const JetUserLogin: React.FC<{}> = (props) => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const methods = useForm<ICustomerLoginForm>();
-  const token = useAppSelector((state) => state.auth.token);
+  const token = useAppSelector(authSelectors.accessToken);
 
   const onSubmit: SubmitHandler<ICustomerLoginForm> = async (data: ICustomerLoginForm) => {
       console.log('data:', data);
@@ -54,7 +54,7 @@ const JetUserLogin: React.FC<{}> = (props) => {
   return (
     <Grid>
       <Paper elevation={10} sx={{padding:20, height: '57vh', width: 280, margin: '20px auto'}}>
-          <Grid container alignItems='center' flexDirection='column' sx={{position:'absolute', top:'80px', left:'0px'}}>
+          <Grid container item alignItems='center' flexDirection='column' sx={{position:'absolute', top:'80px', left:'0px'}}>
             <Avatar sx={{backgroundColor: '#3853D8'}}><LockOutlined /></Avatar>
             <Box sx={{textTransform: 'uppercase'}}>
               {/*<h2>{action.text}</h2>*/}

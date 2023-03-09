@@ -1,26 +1,23 @@
-import { AppBar, Box, Container, Drawer } from '@mui/material'
 import React, { useEffect } from 'react'
-import { Route, Routes, useNavigate, useParams, useSearchParams } from 'react-router-dom'
-import JetFooter from '../components/Footer/JetFooter'
+import { Box, Container, Drawer } from '@mui/material'
+import { useParams, useSearchParams } from 'react-router-dom'
 import JetHeader from '../components/Header/JetHeader'
 import JetCustomerProfile from '../components/Profile/Customer/JetCustomerProfile'
 import JetSupplierProfile from '../components/Profile/Supplier/JetSupplierProfile'
-import { dFlex } from '../themes/commonStyles'
-import JetSidebar from '../components/Sidebar/JetSidebar'
 import { useAppSelector } from '../hooks/useRedux'
-
+import * as userSelectors from '../store/selectors/userSelectors';
 
 const PROFILE_TYPES = {
   SUPPLIER: 'SUPPLIER'
 }
 
-const ProfilePage = () => {
+const ProfilePage: React.FC<{}> = () => {
 
   const params = useParams();
 
   let [searchParams, setSearchParams] = useSearchParams();
   
-  const getRole = useAppSelector(state => state.user.role);
+  const getRole = useAppSelector(userSelectors.role);
   const orderId = searchParams.get('order');
 
   useEffect(() => {

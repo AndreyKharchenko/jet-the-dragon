@@ -9,7 +9,8 @@ import { ICustomerLoginForm } from '../../../models/login';
 import { flexBetween, flexCenter } from '../../../themes/commonStyles';
 import { useAppDispatch, useAppSelector } from '../../../hooks/useRedux';
 import { getCustomerData, updateCustomer } from '../../../store/slices/userSlice';
-import { IUpdateCustomer } from '../../../models/user';
+import * as userSelectors from '../../../store/selectors/userSelectors';
+import * as authSelectors from '../../../store/selectors/authSelectors';
 import JetSpinner from '../../common/JetSpinner';
 
 
@@ -18,9 +19,9 @@ import JetSpinner from '../../common/JetSpinner';
 const JetCustomerMain = () => {
   const methods = useForm<ICustomerLoginForm>();
   let [disabled, setDisabled] = useState<boolean>(true);
-  const getProfile = useAppSelector(state => state.user.customerProfile);
-  const getLoader = useAppSelector(state => state.user.loader);
-  const getToken = useAppSelector((state) => state.auth.token); 
+  const getProfile = useAppSelector(userSelectors.customerProfile);
+  const getLoader = useAppSelector(userSelectors.loader);
+  const getToken = useAppSelector(authSelectors.accessToken); 
   const dispatch = useAppDispatch();
   
   const onSubmit: SubmitHandler<ICustomerLoginForm> = async (data: ICustomerLoginForm) => {
