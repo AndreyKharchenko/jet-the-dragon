@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Avatar, Box, Button, Fab, IconButton } from '@mui/material'
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
-import { ISupplierLoginForm } from '../../../models/login';
+import { ICustomerLoginForm, ISupplierLoginForm } from '../../../models/login';
 import PhotoCamera from '@mui/icons-material/PhotoCamera';
 import EditIcon from '@mui/icons-material/Edit';
 import JetInput from '../../common/form-components/JetInput';
@@ -9,63 +9,110 @@ import style from './JetSupplier.module.css';
 import { dFlex, flexBetweenCenter } from '../../../themes/commonStyles';
 import JetSelect from '../../common/form-components/JetSelect';
 import JetDatePicker from '../../common/form-components/JetDatePicker';
-import moment, {Moment} from 'moment';
+import moment, { Moment } from 'moment';
+import { useAppDispatch, useAppSelector } from '../../../hooks/useRedux';
+import { getSupplierData, updateCustomer, updateSupplier } from '../../../store/slices/userSlice';
+import JetSpinner from '../../common/JetSpinner';
+import { IUpdateCustomer, IUpdateSupplier } from '../../../models/user';
+
+const CUSTOMER_FIELDS = ['firstName', 'lastName', 'phone', 'email', 'country', 'region', 'city', 'street', 'houseNumber'];
+
+
 
 const JetSupplierMain = () => {
-  const methods = useForm<ISupplierLoginForm>();
+  const methods = useForm<ICustomerLoginForm>();
+  const methods2 = useForm<ISupplierLoginForm>();
   let [disabled, setDisabled] = useState<boolean>(true);
-  const onSubmit: SubmitHandler<ISupplierLoginForm> = (data: ISupplierLoginForm) => {
-    console.log('data:', data);
+  
+  const getSupplierProfile = useAppSelector(state => state.user.supplierProfile);
+  const getLoader = useAppSelector(state => state.user.loader);
+  const getToken = useAppSelector((state) => state.auth.token);
+  const dispatch = useAppDispatch();
+
+  const onSubmit = async () => {
+    // Собираем данные по Customer and Supplier
+    let customerValues = methods.getValues();
+    let supplierValues = methods2.getValues();
+    
+    // Предобработка данных
+    delete supplierValues.customerId; 
+    let supplierParams: IUpdateSupplier = {
+      ...supplierValues, 
+      supplierId: getSupplierProfile?.id || ''
+    };
+    let customerParams: IUpdateCustomer = {
+      ...customerValues, 
+      customerId: getSupplierProfile?.customerId || '', 
+      flatNumber: getSupplierProfile?.flatNumber || ''
+    };
+    
+    // Запросы на обновление
+    try {
+      await dispatch(updateCustomer(customerParams));
+      await dispatch(updateSupplier({data: supplierParams, email: getSupplierProfile?.email || ''}));
+    } catch (error) {
+      console.error('ERR: UpdateSupplier');
+    }
     setDisabled(true);
   }
 
   useEffect(() => {
-    methods.setValue('firstname', 'Андрей');
-    methods.setValue('lastname', 'Харченко');
-    methods.setValue('patronymic', 'Олегович');
-    methods.setValue('phone', '+79184561288');
-    methods.setValue('email', '111@mail.ru');
-    methods.setValue('city', 'Краснодар');
-    methods.setValue('street', 'Кореновская');
-    methods.setValue('housenumber', '34');
-    methods.setValue('inn', '11111111111');
-    methods.setValue('supplierName', 'ООО "Такси"');
-    methods.setValue('chiefName', 'Харченко А.О.');
-    methods.setValue('ogrnip', '11111111111');
-    methods.setValue('declarationNum', '38');
-    methods.setValue('sanBookNum', '99');
-    
+    const getProfileData = async () => {
+      if (!getSupplierProfile) {
+        await dispatch(getSupplierData(getToken?.profile.name));
+      }
+    }
+
+    getProfileData();
+
+    for(let i in getSupplierProfile) {
+      let name = i as any;
+      let value = (getSupplierProfile as any)[i];
+      if(name != 'id' || name != 'customerId') {
+        if(CUSTOMER_FIELDS.indexOf(name) != -1) {
+          methods.setValue(name, value || ''); 
+        } else {
+          methods2.setValue(name, value || ''); 
+        }
+        
+      }
+    }
+
   }, [])
 
   return (
-    <Box>
-      <FormProvider {...methods}>
-        <form onSubmit={methods.handleSubmit(onSubmit)}>
-          <Box sx={{ml:'5%'}}>
-            <Box sx={{ ml: 8 }}>
-              <Avatar
-                sx={{ width: '100px', height: '100px' }}
-              >
-                OP
-              </Avatar>
-              <IconButton color="primary" aria-label="upload picture" component="label" sx={{ position: 'relative', top: '-30px', left: '70px' }}>
-                <input hidden accept="image/*" type="file" />
-                <PhotoCamera />
-              </IconButton>
-            </Box>
+    <>
+      {getLoader && 
+        <Box sx={{mt:10}}>
+          <JetSpinner />
+        </Box>
+      }
 
-            <Box sx={{...flexBetweenCenter, mt:'-80px'}}>
+
+      {!getLoader && 
+      <Box sx={{ ml: '5%' }}>
+        <Box sx={{ ml: 8 }}>
+          <Avatar
+            sx={{ width: '100px', height: '100px' }}
+          >
+            OP
+          </Avatar>
+          <IconButton color="primary" aria-label="upload picture" component="label" sx={{ position: 'relative', top: '-30px', left: '70px' }}>
+            <input hidden accept="image/*" type="file" />
+            <PhotoCamera />
+          </IconButton>
+        </Box>
+
+        <Box sx={{ ...flexBetweenCenter, mt: '-60px' }}>
+          <FormProvider {...methods}>
+            <form>
               <Box sx={{ width: '30vw' }}>
                 <Box className={style.defaultInput}>
-                  <JetInput name='firstname' label='Имя' placeholder='Имя' disabled={disabled} />
+                  <JetInput name='firstName' label='Имя' placeholder='Имя' disabled={disabled} />
                 </Box>
 
                 <Box className={style.defaultInput}>
-                  <JetInput name='lastname' label='Фамилия' placeholder='Фамилия' disabled={disabled} />
-                </Box>
-
-                <Box className={style.defaultInput}>
-                  <JetInput name='patronymic' label='Отчество' placeholder='Отчество' disabled={disabled} />
+                  <JetInput name='lastName' label='Фамилия' placeholder='Фамилия' disabled={disabled} />
                 </Box>
 
                 <Box className={style.defaultInput}>
@@ -77,61 +124,54 @@ const JetSupplierMain = () => {
                 </Box>
 
                 <Box className={style.defaultInput}>
-                  <JetInput name='supplierName' label='Наименование поставщика' placeholder='Наименование поставщика' disabled={disabled} />
+                  <JetInput name={'country'} label={'Страна'} placeholder={'Страна'} disabled={disabled} />
                 </Box>
 
                 <Box className={style.defaultInput}>
-                  <JetInput name='chiefName' label='ФИО руководителя' placeholder='ФИО руководителя' disabled={disabled} />
+                  <JetInput name={'region'} label={'Регион'} placeholder={'Регион'} disabled={disabled} />
                 </Box>
 
-              </Box>
-
-              <Box sx={{ mt:'80px' }}>
-                <Box sx={{...flexBetweenCenter, mb:1}}>
-                  <JetSelect
-                    selectLabel='Страна'
-                    selectName='country'
-                    initValue='us'
-                    options={[{ label: 'Россия', value: 'rus' }, { label: 'США', value: 'us' }]}
-                    disabled={disabled}
-                    sx={{ width: '7rem' }}
-                  />
-
-                  <JetSelect
-                    selectLabel='Регион'
-                    selectName='region'
-                    initValue='25'
-                    options={[{ label: 'Краснодарский край', value: '23' }, { label: 'Приморский край', value: '25' }]}
-                    disabled={disabled}
-                    sx={{ width: '12rem' }}
-                  />
-                </Box>
-
-                <Box sx={{mb:5, ...flexBetweenCenter}}>
+                <Box className={style.defaultInput}>
                   <JetInput name={'city'} label={'Город'} placeholder={'Город'} disabled={disabled} />
-                  <JetInput name={'street'} label={'Улица'} placeholder={'Улица'} disabled={disabled} />
-                  <JetInput name={'housenumber'} label={'Дом'} placeholder={'Дом'} disabled={disabled} />
                 </Box>
 
+                <Box className={style.defaultInput}>
+                  <JetInput name={'street'} label={'Улица'} placeholder={'Улица'} disabled={disabled} />
+                </Box>
+
+                <Box className={style.defaultInput}>
+                  <JetInput name={'houseNumber'} label={'Дом'} placeholder={'Дом'} disabled={disabled} />
+                </Box>
+              </Box>
+            </form>
+          </FormProvider>
+
+          <FormProvider {...methods2}>
+            <form>
+              <Box sx={{mt:5}}>
                 <Box className={style.defaultInput}>
                   <JetSelect
                     selectLabel='Форма организации'
-                    selectName='orgFormat'
-                    options={[{ label: 'ИП', value: 'ip' }]}
+                    selectName='orgType'
+                    options={[{ label: 'ИП', value: 'ip' }, { label: 'ООО', value: 'ooo' }, { label: 'АО', value: 'ao' }, { label: 'ОАО', value: 'oao' }]}
                     disabled={disabled}
-                    sx={{ width: '7rem' }}  
+                    sx={{ width: '7rem' }}
                   />
                 </Box>
 
                 <Box className={style.defaultInput}>
-                  <JetInput name={'inn'} label={'ИНН'} placeholder={'ИНН'} disabled={disabled} />
+                  <JetInput name={'inn'} label={'ИНН'} placeholder={'ИНН'} inputProps={{ maxLength: 10 }} disabled={disabled} />
                 </Box>
 
                 <Box className={style.defaultInput}>
                   <JetInput name={'ogrnip'} label={'ОГРНИП'} placeholder={'ОГРНИП'} disabled={disabled} />
                 </Box>
 
-                <Box sx={{...flexBetweenCenter, mt:3, mb:3}}>
+                <Box className={style.defaultInput}>
+                  <JetInput name={'name'} label={'Наименование поставщика'} placeholder={'Наименование поставщика'} disabled={disabled} />
+                </Box>
+
+                <Box sx={{ ...flexBetweenCenter, mt: 3, mb: 3 }}>
                   <JetInput
                     name='declarationNum'
                     variant='outlined'
@@ -143,10 +183,10 @@ const JetSupplierMain = () => {
                   />
 
                   <JetDatePicker
-                    name='dtDeclaration'
+                    name='declarationDate'
                     label='Дата регистрации декларации ТР ТС'
                     format='DD.MM.YYYY'
-                    initialValue={moment().add(1,'month')}
+                    initialValue={ moment(getSupplierProfile?.declarationDate) }
                     disabled={disabled}
                   />
                 </Box>
@@ -163,34 +203,44 @@ const JetSupplierMain = () => {
                   />
 
                   <JetDatePicker
-                    name='sanBookDt'
+                    name='sanBookDate'
                     label='Дата получения санитраной книги'
                     format='DD.MM.YYYY'
-                    initialValue={moment().add(3,'month')}
+                    initialValue={ moment(getSupplierProfile?.sanBookDate) }
                     disabled={disabled}
                   />
-
+                </Box>
+                
+                <Box>
+                  <JetInput
+                    name='description'
+                    label='Описание'
+                    placeholder='Описание'
+                    variant='filled'
+                    multiline={true}
+                    sx={{ width: '60%', mt: 3 }}
+                    disabled={disabled}
+                  />
                 </Box>
               </Box>
-            </Box>
+            </form>
+          </FormProvider>
+        </Box>
 
-            <Button
-              type='submit'
-              color='primary'
-              variant='contained'
-              sx={{ margin: '1rem 0', width: '250px', borderRadius: 5 }}
-            >Сохранить
-            </Button>
-          </Box>
+        <Button
+          onClick={onSubmit}
+          color='primary'
+          variant='contained'
+          sx={{ width: '250px', borderRadius: 5 }}
+        >Сохранить
+        </Button>
+      </Box>
+      }
 
-          <Fab color="primary" sx={{ position:'fixed', right: '100px', bottom: '60px' }} onClick={() => setDisabled(false)}>
-            <EditIcon />
-          </Fab>
-
-        </form>
-      </FormProvider>
-      
-    </Box>
+      <Fab color="primary" sx={{ position: 'fixed', right: '100px', bottom: '60px' }} onClick={() => setDisabled(false)}>
+        <EditIcon />
+      </Fab>
+    </>
 
   )
 }

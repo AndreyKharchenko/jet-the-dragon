@@ -14,12 +14,9 @@ export interface IFullProduct {
     productSupplier: string,
     productName: string,
     productDesc: string,
-    productCost: number,
-    isStock: boolean,
-    //expirationDt: Date,
+    productPrice: number,
     productSl: number,
-    //manufactureDt: Date,
-    //charaks: Charak[]
+    manufactureDt: Date,
     productQty: number
 }
 

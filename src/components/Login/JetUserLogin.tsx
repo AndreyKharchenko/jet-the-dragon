@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import { Avatar, Button, FormControlLabel, Grid, Paper, TextField, Typography, Link, Checkbox, Box, Autocomplete } from '@mui/material';
 import { LockOutlined } from '@mui/icons-material';
 import { ICustomerLoginForm } from '../../models/login';
@@ -7,6 +7,8 @@ import { JetInput } from '../common/form-components/JetInput';
 import { JetCheckbox } from '../common/form-components/JetCheckbox';
 import { useNavigate } from 'react-router-dom';
 import { dFlex, flexAround, flexBetween } from '../../themes/commonStyles';
+import { useAppDispatch, useAppSelector } from '../../hooks/useRedux';
+import { createCustomer } from '../../store/slices/userSlice';
 
 // Sign-in or sign-up
 type actionType = {
@@ -17,19 +19,37 @@ type actionType = {
 
 
 const JetUserLogin: React.FC<{}> = (props) => {
-  const [action, setAction] = useState<actionType>({
+  /*const [action, setAction] = useState<actionType>({
     isSignIn: true,
     text: 'Войти'
-  });
+  });*/
 
   const navigate = useNavigate();
-
+  const dispatch = useAppDispatch();
   const methods = useForm<ICustomerLoginForm>();
+  const token = useAppSelector((state) => state.auth.token);
 
-  const onSubmit: SubmitHandler<ICustomerLoginForm> = (data: ICustomerLoginForm) => {
+  const onSubmit: SubmitHandler<ICustomerLoginForm> = async (data: ICustomerLoginForm) => {
       console.log('data:', data);
-      navigate(`/my/main`);
+      try {
+        const res: any = await dispatch(createCustomer(data));
+        console.log('res', res);
+        if(!!res.customerId) {
+          navigate(`/my/main`);
+        }
+      } catch (error) {
+        console.error('ERR: Submit Customer Login Form', error);
+      }
+      
   }
+
+  useEffect(() => {
+    //setAction({isSignIn: !action.isSignIn, text: (!action.isSignIn) ? 'Войти' : 'Создать профиль'});
+    if(token?.profile.name) {
+      methods.setValue('email', token?.profile.name);
+    }
+    
+  },[])
 
   return (
     <Grid>
@@ -37,12 +57,13 @@ const JetUserLogin: React.FC<{}> = (props) => {
           <Grid container alignItems='center' flexDirection='column' sx={{position:'absolute', top:'80px', left:'0px'}}>
             <Avatar sx={{backgroundColor: '#3853D8'}}><LockOutlined /></Avatar>
             <Box sx={{textTransform: 'uppercase'}}>
-              <h2>{action.text}</h2>
+              {/*<h2>{action.text}</h2>*/}
+              <h2>Войти</h2>
             </Box>
           </Grid>
 
-          {
-            (action.isSignIn)
+          {/*{*/}
+            {/*(action.isSignIn)
             ?
               <Box sx={{mb: 1}}>
                 <FormProvider {...methods}>
@@ -64,7 +85,7 @@ const JetUserLogin: React.FC<{}> = (props) => {
                   </form>
                 </FormProvider>
               </Box>
-            :
+            :*/}
               <Box sx={{mb: 1}}>
                 <FormProvider {...methods}>
                   <form onSubmit={methods.handleSubmit(onSubmit)}>
@@ -72,14 +93,14 @@ const JetUserLogin: React.FC<{}> = (props) => {
                     <JetInput name='lastname' label='Фамилия' placeholder='Фамилия' fullWidth={true} sx={{mb:1}} />
 
                     <Box sx={{...flexAround}}>
-                      <JetInput name='email' label='E-mail' placeholder='E-mail' mask='email' sx={{mr:1}} />
+                      <JetInput name='email' label='E-mail' placeholder='E-mail' mask='email' sx={{mr:1}} disabled={true} />
                       <JetInput name='phone' label='Телефон' placeholder='Телефон' mask='phone' />
                     </Box>
 
-                    <Box sx={{...flexAround}}>
+                    {/*<Box sx={{...flexAround}}>
                       <JetInput name='password' label='Пароль' placeholder='Пароль' type={'password'}  sx={{mr:1}} />
                       <JetInput name='checkPwd' label='Подтвердите пароль' placeholder='Подтвердите пароль' type={'password'} />
-                    </Box>
+                    </Box>*/}
 
                     <JetInput name='country' label='Страна' placeholder='Страна' fullWidth={true} />
 
@@ -93,7 +114,7 @@ const JetUserLogin: React.FC<{}> = (props) => {
                       <JetInput name='flatnumber' label='Квартира' placeholder='Квартира' sx={{width:'80px'}} required={false} />
                     </Box>
 
-                    <JetCheckbox name='rememberMe' label='Запомнить меня' value={false} />
+                    {/*<JetCheckbox name='rememberMe' label='Запомнить меня' value={false} />*/}
 
                     <Button 
                       type='submit' 
@@ -101,14 +122,16 @@ const JetUserLogin: React.FC<{}> = (props) => {
                       variant='contained' 
                       sx={{margin: '1rem 0', borderRadius: 5}} 
                       fullWidth
-                    >{action.text}
+                    >
+                      {/*action.text*/}
+                      Создать
                     </Button>
                   </form>
                 </FormProvider>
               </Box>
-          }
+          {/*}*/}
 
-          {
+          {/*
             (action.isSignIn)
             ?
               <Box>
@@ -127,7 +150,7 @@ const JetUserLogin: React.FC<{}> = (props) => {
               </Box>
             :
               <></>
-          }
+                  */}
       </Paper>
     </Grid>
   )

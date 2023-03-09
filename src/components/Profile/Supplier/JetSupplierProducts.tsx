@@ -12,6 +12,7 @@ import { flexAround, flexEnd } from '../../../themes/commonStyles';
 import JetAddProdCharak from '../../common/JetAddProdCharak';
 import JetAddProdPhotos from '../../common/JetAddProdPhotos';
 import JetSnackbar from '../../common/JetSnackbar';
+import JetDatePicker from '../../common/form-components/JetDatePicker';
 
 const JetSupplierProducts = () => {
   let tmpCards = [
@@ -33,15 +34,15 @@ const JetSupplierProducts = () => {
 
   const addCharak = () => {
     let charaksLen = charaks.length;
-    
-    if(charaksLen > 0 && !charaks[charaksLen-1].charakName || !charaks[charaksLen-1]?.charakValue) {
+
+    if (charaksLen > 0 && !charaks[charaksLen - 1].charakName || !charaks[charaksLen - 1]?.charakValue) {
       setSnackbar(true);
       return;
     }
 
     let newCharaks = [...charaks, { id: charaks.length + 1, charakName: '', charakValue: '' }];
     setCharak(newCharaks);
-    
+
   }
 
   const addPhoto = () => {
@@ -65,7 +66,7 @@ const JetSupplierProducts = () => {
       image: 'https://images.unsplash.com/photo-1611171711912-e3f6b536f532?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NHx8ZmlzaCUyMGZvb2R8ZW58MHx8MHx8&w=1000&q=80',
       name: data.productName,
       qty: data.productQty,
-      price: data.productCost,
+      price: data.productPrice,
       isChoose: false,
       isFavourite: false
     };
@@ -74,11 +75,11 @@ const JetSupplierProducts = () => {
   }
 
   useEffect(() => {
-    if(!charaks.length) {
+    if (!charaks.length) {
       let newCharaks = [...charaks, { id: charaks.length + 1, charakName: '', charakValue: '' }];
       setCharak(newCharaks);
     }
-    
+
   }, [])
 
   return (
@@ -147,11 +148,11 @@ const JetSupplierProducts = () => {
                     </Box>
 
                     <Box sx={{ ...flexAround, mb: 4 }}>
-                      <Box sx={{ display: 'flex', alignItems: 'flex-end', mr:1  }}>
+                      <Box sx={{ display: 'flex', alignItems: 'flex-end', mr: 1 }}>
                         <CurrencyRuble color='secondary' fontSize='small' sx={{ mb: 1 }} />
-                        <JetInput name='productCost' label='Цена за 1 кг' placeholder='Цена' />
+                        <JetInput name='productPrice' label='Цена за 1 кг' placeholder='Цена' />
                       </Box>
-                      <Box sx={{mr:1}}>
+                      <Box sx={{ mr: 1 }}>
                         <JetInput
                           name='productQty'
                           label='Количесвто продукта'
@@ -166,6 +167,16 @@ const JetSupplierProducts = () => {
                         />
                       </Box>
                     </Box>
+
+                    <Box sx={{ mb: 4 }}>
+                      <JetDatePicker
+                        name='manufactureDt'
+                        label='Дата изготовления продукта'
+                        format='DD.MM.YYYY'
+                      />
+                    </Box>
+
+
                   </Box>
 
                   <JetAddProdCharak charaks={charaks} addCharak={addCharak} />
@@ -176,16 +187,16 @@ const JetSupplierProducts = () => {
 
                 <Divider />
 
-                <Box sx={{...flexEnd, mt:3}}>
-                  <Button 
-                    type='submit' 
+                <Box sx={{ ...flexEnd, mt: 3 }}>
+                  <Button
+                    type='submit'
                     className={style.submitBtn}
                   >
                     Сохранить
                   </Button>
                 </Box>
 
-                <JetSnackbar 
+                <JetSnackbar
                   open={snackbar}
                   onClose={onCloseSnackbar}
                   severity='error'

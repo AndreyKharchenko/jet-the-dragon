@@ -1,32 +1,27 @@
-import React, { useState } from 'react';
-import { Badge, Box, Button, IconButton, Stack, Menu, TextField } from '@mui/material';
+import React, { useEffect, useState } from 'react';
+import { Badge, Box, Button, IconButton, Stack, Menu, TextField, Tooltip } from '@mui/material';
 import { flexAround, flexBetween, flexCenter } from '../../../themes/commonStyles';
 import {KeyboardArrowDown,KeyboardArrowUp, AccountCircle, ShoppingCartOutlined, Close} from '@mui/icons-material';
-import MenuIcon from '@mui/icons-material/Menu';
-import JetMenu from '../../common/JetMenu';
 import { useNavigate } from 'react-router-dom';
-import { useAppSelector } from '../../../hooks/useRedux';
+import { useAppDispatch, useAppSelector } from '../../../hooks/useRedux';
 import style from '../JetHeader.module.css';
 import { useInput } from '../../../hooks/useInput';
+import JetIcon from '../../common/JetIcon';
+import { login, mgr } from '../../../api/userManager';
+import { User } from 'oidc-client';
+import { authAPI } from "../../../api/api";
+import { authActions } from '../../../store/slices/authSlice';
+
 
 const JetHeaderUtils: React.FC<{}> = () => {
     const [anchormElm, setAnchormElm] = useState<null | HTMLElement>(null);
-    const [listMenu, setListMenu] = useState<boolean>(false);
     const [regMenu, setRegMenu] = useState<boolean>(false);
     const [regChange, setRegChange] = useState<boolean>(false);
     const input = useInput();
     const products = useAppSelector(state => state.cart.products);
+    const dispatch = useAppDispatch();
+    const token = useAppSelector((state) => state.auth.token);
     const navigate = useNavigate();
-
-    const onCloseListMenu = () => {
-        setAnchormElm(null);
-        setListMenu(false);
-    }
-
-    const onOpenListMenu = (e: React.MouseEvent<HTMLElement>) => {
-        setAnchormElm(e.currentTarget);
-        setListMenu(true);
-    }
 
     const onOpenReg = (e: React.MouseEvent<HTMLButtonElement>) => {
         setAnchormElm(e.currentTarget);
@@ -38,15 +33,22 @@ const JetHeaderUtils: React.FC<{}> = () => {
         setRegMenu(false);
     }
 
-    const onLogin = (loginType: string) => { navigate(`/login/${loginType}`); }
+    const onLogin = async (loginType: string) => {
+        
+        if(token) {  
+            navigate(`/my/main`); // Переход на личный кабинет
+        } else {
+            try {
+                const t = await mgr.signinRedirectCallback();
+                dispatch(authActions.userSigned({token: t}));
+            } catch (error) {
+                login();
+            }
+            
+        }
+        
+    }
     const onCart = () => { navigate('/cart'); }
-
-    const tmpMenuItems = [
-        {id: 1, txt: 'Профиль', icon: { name: 'jet-account-outline', style: {mr:1} }, method: onCloseListMenu},
-        {id: 2, txt: 'Зарегистрироваться', icon: { name: 'jet-add-person', style: {mr:1} }, method: () => onLogin('user')},
-        {id: 3, txt: 'Стать поставщиком', icon: { name:'jet-add-group-outline', style: {mr:1} }, method: () => onLogin('provider')},
-        {id: 4, txt: 'Выйти', icon: { name:'jet-logout', style: {mr:1} }, color: '#f44336', method: onCloseListMenu},
-    ]
 
     const mocRegion = 'Краснодарский край';
     
@@ -61,33 +63,23 @@ const JetHeaderUtils: React.FC<{}> = () => {
                     >
                         {mocRegion}
                     </Button>
-                    <Button
-                        onClick={onOpenListMenu}
-                        sx={{
-                            borderRadius:10,
-                            border: '1px solid #ddd'
-                        }}
-                    >
-                        <Stack>
-                            <MenuIcon fontSize='medium' />
-                            <AccountCircle fontSize='medium' />
-                        </Stack>
-
-                    </Button>
-                    <IconButton onClick={onCart} color='primary'>
-                        <Badge badgeContent={products.length} color="primary">
-                            <ShoppingCartOutlined fontSize="medium" />
-                        </Badge>
-                    </IconButton>
+                    <Box sx={{...flexBetween}}>
+                        <Tooltip title="Войти">
+                            <IconButton onClick={() => onLogin('customer')} color='primary' size='large'>
+                                <JetIcon icon='jet-account-outline' fontSize='medium' />
+                            </IconButton>
+                        </Tooltip>
+                            
+                        <Tooltip title='Корзина'>
+                            <IconButton onClick={onCart} color='primary' size='large'>
+                                <Badge badgeContent={products.length} color="primary">
+                                    <ShoppingCartOutlined fontSize="medium" />
+                                </Badge>
+                            </IconButton>
+                        </Tooltip>
+                    </Box>
                 </Stack>
             </Box>
-
-           <JetMenu 
-                open={listMenu} 
-                onClose={onCloseListMenu}  
-                anchorEl={anchormElm} 
-                menuItems={tmpMenuItems}
-            /> 
 
             <Menu
                 open={regMenu}   

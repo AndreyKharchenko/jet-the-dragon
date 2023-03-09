@@ -1,45 +1,25 @@
-/*export interface CountryType {
-    code: string;
-    label: string;
-    phone: string;
-    suggested?: boolean;
-}*/
-
 export interface ICustomerLoginForm {
-    /*username: string;
-    password: string;
-    email?: string;
-    city?: string;*/
-    firstname: string,
-    lastname: string,
-    password: string;
+    firstName: string,
+    lastName: string,
     phone: string,
     email: string,
     country: string,
+    region?: string,
     city: string,
     street: string,
-    housenumber: string,
-    flatnumber: string
+    houseNumber: string,
+    flatNumber: string
 }
 
-export interface ISupplierLoginForm {
-    firstname: string;
-    lastname: string;
-    patronymic: string;
-    phone: string;
-    email: string;
-    country: string;
-    region: string;// DO
-    city: string,// DO
-    street: string,// DO
-    housenumber: string, // DO
-    orgFormat: string;
+export interface ISupplierLoginForm { 
+    customerId?: number | string,
+    orgType: string;
     inn: string;
-    supplierName: string;
-    chiefName: string;
+    name: string;
     ogrnip: string;
     declarationNum: string;
-    dtDeclaration: object;
+    declarationDate: object;
     sanBookNum: string;
-    dtSanBook: object;
+    sanBookDate: object;
+    description: string
 }

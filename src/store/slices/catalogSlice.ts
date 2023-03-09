@@ -3,7 +3,8 @@ import { IProduct } from "../../models/product";
 
 interface ICatalogState {
     products: IProduct[],
-    currentProduct: IProduct | null | undefined
+    currentProduct: IProduct | null | undefined,
+    loader: boolean
 }
 
 const initialState: ICatalogState = {
@@ -21,7 +22,8 @@ const initialState: ICatalogState = {
         {id: 11, image: 'https://images.unsplash.com/photo-1611171711912-e3f6b536f532?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NHx8ZmlzaCUyMGZvb2R8ZW58MHx8MHx8&w=1000&q=80', name: 'Meat', qty: 1, price: 2000, isChoose: false, isFavourite: false},
         {id: 12, image: 'https://media.istockphoto.com/photos/various-fresh-dairy-products-picture-id544807136?k=20&m=544807136&s=612x612&w=0&h=iqb23gbUKWgewmunHXd_yzJbYsZDa0fMDz64Ux6OJSc=', name: 'Meat', qty: 1, price: 2000, isChoose: false, isFavourite: false},
     ],
-    currentProduct: null
+    currentProduct: null,
+    loader: false
 }
 
 const catalogSlice = createSlice({

@@ -15,29 +15,27 @@ type InputProps = {
     helperText?: string | '',
     required?: boolean,
     disabled?: boolean,
-    multiline?: boolean
+    multiline?: boolean,
+    initialVal?: string
 }
 
 type variantType = 'standard' | 'filled' | 'outlined';
 
 
-export const JetInput: React.FC<InputProps> = ({name, label, placeholder, mask, type, fullWidth, inputProps, variant, sx, helperText, required, disabled, multiline}) => {
-    const {control, setValue, setError, clearErrors, register} = useFormContext();
+export const JetInput: React.FC<InputProps> = ({name, label, placeholder, mask, type, fullWidth, inputProps, variant, sx, helperText, required, disabled, multiline, initialVal}) => {
+    const {control, setValue, setError, clearErrors, register, getValues} = useFormContext();
 
     const handleInputChange = (val: string) => {
         setValue(name, val);
-
         if(!(!!val)) {
             setError(name, {type: 'onChange', message: `Поле ${label} обязательно`});
             return;
         } 
-        clearErrors(name);
-
         
+        clearErrors(name);
     }
 
     const emailHandler = (val: string) => {
-        console.log('VAL', val);
         const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         if(!re.test(val)) {
             setError(name, {type: 'onChange', message:'Некорректный E-mail'});
@@ -50,7 +48,6 @@ export const JetInput: React.FC<InputProps> = ({name, label, placeholder, mask, 
     const phoneHandler = (val: string) => {
         const re = /^(\+7|7|8)?[\s\-]?\(?[489][0-9]{2}\)?[\s\-]?[0-9]{3}[\s\-]?[0-9]{2}[\s\-]?[0-9]{2}$/;
         if(!re.test(val)) {
-            console.log('VAL:', val)
             setError(name, {type: 'onChange', message:'Некорректный номер телефона'});
         }else {
             clearErrors(name);
@@ -75,8 +72,6 @@ export const JetInput: React.FC<InputProps> = ({name, label, placeholder, mask, 
         clearErrors(name);
     }
 
-    
-
     return (
         <>
         {
@@ -100,7 +95,7 @@ export const JetInput: React.FC<InputProps> = ({name, label, placeholder, mask, 
                             fullWidth={fullWidth}
                             sx={sx}
                             inputProps={inputProps}
-                            value={value}
+                            
                             helperText={!!error ? error.message : helperText}  
                             error={!!error}
                             disabled={disabled || false}

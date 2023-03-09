@@ -9,7 +9,6 @@ export const useInput = (initialValue = ''): InputReturn => {
     const [value, setValue] = useState(initialValue);
 
     const onChange = (event: ChangeEvent<HTMLInputElement>) => {
-        console.log(event.target.value);
         setValue(event.target.value);
     }
 

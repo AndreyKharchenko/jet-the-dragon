@@ -1,13 +1,14 @@
 import React, { useState } from 'react'
 import { Box, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import { dFlex } from '../../../themes/commonStyles';
+import { dFlex, flexCenter } from '../../../themes/commonStyles';
 import JetIcon from '../../common/JetIcon';
 import JetLogo from '../../common/JetLogo';
 import JetSidebar from '../../Sidebar/JetSidebar';
 import JetSupplierAnalytics from './JetSupplierAnalytics';
 import JetSupplierMain from './JetSupplierMain';
 import JetSupplierProducts from './JetSupplierProducts';
+import { useAppSelector } from '../../../hooks/useRedux';
 
 interface ISupplierProfileProps {
   //id: number | string | null,
@@ -27,6 +28,7 @@ const JetSupplierProfile: React.FC<ISupplierProfileProps> = ({ page }) => {
 
   const [selectedItem, setSelectedItem] = useState<mocItem>(mocdata[0]);
   const navigate = useNavigate();
+  const getLoader = useAppSelector((state) => state.user.loader);
 
   const handleListItemClick = (item: mocItem) => {
 
@@ -70,7 +72,7 @@ const JetSupplierProfile: React.FC<ISupplierProfileProps> = ({ page }) => {
             }
           </Box>
         </JetSidebar>
-        <Box sx={{ mt: 2 }}>
+        <Box sx={(!getLoader) ? {mt:2} : {width:'100%',...flexCenter}}>
           {
             (page?.toUpperCase() == 'MAIN')
             ?

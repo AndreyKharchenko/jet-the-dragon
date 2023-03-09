@@ -7,6 +7,7 @@ import JetCustomerProfile from '../components/Profile/Customer/JetCustomerProfil
 import JetSupplierProfile from '../components/Profile/Supplier/JetSupplierProfile'
 import { dFlex } from '../themes/commonStyles'
 import JetSidebar from '../components/Sidebar/JetSidebar'
+import { useAppSelector } from '../hooks/useRedux'
 
 
 const PROFILE_TYPES = {
@@ -19,12 +20,10 @@ const ProfilePage = () => {
 
   let [searchParams, setSearchParams] = useSearchParams();
   
-  const mocRole = 'supplier'
+  const getRole = useAppSelector(state => state.user.role);
   const orderId = searchParams.get('order');
 
   useEffect(() => {
-    console.log('searchParams', searchParams.get('order'))
-    console.log('PARAMS', params)
   },[params,searchParams])
 
   return (
@@ -36,12 +35,15 @@ const ProfilePage = () => {
         
         
         <Container maxWidth="xl" sx={{height:'100%'}}>
-            {
-              (mocRole.toUpperCase() == PROFILE_TYPES['SUPPLIER'])
+            {!!getRole &&
+              (getRole.toUpperCase() == PROFILE_TYPES['SUPPLIER'])
               ?
                 <JetSupplierProfile page={params.page || null} />
               :
-                <JetCustomerProfile page={params.page || null} orderId={orderId || null} />
+                <JetCustomerProfile 
+                  page={params.page || null} 
+                  orderId={orderId || null} 
+                />
             }
         </Container>
       </Box>

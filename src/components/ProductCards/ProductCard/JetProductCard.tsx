@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import { Box, Card, CardActions, CardContent, CardMedia, IconButton, Typography } from "@mui/material";
-import AddBoxOutlinedIcon from '@mui/icons-material/AddBoxOutlined';
-import StarIcon from '@mui/icons-material/Star';
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import {AddBoxOutlined, Star, Favorite, FavoriteBorder} from '@mui/icons-material';
 import style from '../JetProductCard.module.css';
 import { dFlex, flexBetween } from "../../../themes/commonStyles";
 import { IProduct } from '../../../models/product';
@@ -47,12 +45,12 @@ const JetProductCard: React.FC<PropsType> = (props) => {
                             {
                                 isNew ? 
                                 <React.Fragment>
-                                    <StarIcon className={style.productRaiting} />
+                                    <Star className={style.productRaiting} />
                                     <Typography component="h5">New</Typography>
                                 </React.Fragment>
                                 : 
                                 <React.Fragment>
-                                    <StarIcon className={style.productRaiting} />
+                                    <Star className={style.productRaiting} />
                                     <Typography component="h5">5.0</Typography>
                                 </React.Fragment>
                             }     
@@ -66,9 +64,9 @@ const JetProductCard: React.FC<PropsType> = (props) => {
                         {
                             (props.card.isChoose)
                             ?
-                            <AddBoxOutlinedIcon color="primary" />
+                            <AddBoxOutlined color="primary" />
                             :
-                            <AddBoxOutlinedIcon />
+                            <AddBoxOutlined />
                         }
                     </IconButton>
 
@@ -76,9 +74,9 @@ const JetProductCard: React.FC<PropsType> = (props) => {
                         {
                             (props.card.isFavourite)
                             ?
-                            <FavoriteBorderIcon color="error" />
+                            <Favorite color="error" />
                             :
-                            <FavoriteBorderIcon />
+                            <FavoriteBorder />
                         }
                         
                     </IconButton>

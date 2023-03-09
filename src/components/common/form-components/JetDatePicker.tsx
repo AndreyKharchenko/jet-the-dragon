@@ -24,7 +24,6 @@ const JetDatePicker: React.FC<datePickerType> = ({label, format, name, views, in
     useEffect(() => {
         setValue(name, initialValue || moment());
         setTime(initialValue || moment());
-        console.log(getValues());
     }, [])
 
     

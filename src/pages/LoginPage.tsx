@@ -4,14 +4,14 @@ import JetSupplierLogin from '../components/Login/JetSupplierLogin';
 import { useParams } from 'react-router-dom';
 
 const LOGIN_TYPES = {
-  PROVIDER: 'PROVIDER'
+  SUPPLIER: 'SUPPLIER'
 }
 
 const LoginPage:React.FC<{}> = () => {
   const {id} = useParams();
-  console.log('TYPE', id);
+
   return (
-    (id?.toUpperCase() == LOGIN_TYPES['PROVIDER'])
+    (id?.toUpperCase() == LOGIN_TYPES['SUPPLIER'])
     ?
       <JetSupplierLogin />
     :

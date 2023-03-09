@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import JetProductCard from "./ProductCard/JetProductCard";
 import { Badge, Box, Grid } from "@mui/material";
-import { useAppDispatch } from "../../hooks/useRedux";
+import { useAppDispatch, useAppSelector } from "../../hooks/useRedux";
 import { IProduct } from '../../models/product';
 import { cartActions } from '../../store/slices/cartSlice';
 import { useNavigate } from "react-router-dom";
 import style from './JetProductCard.module.css'
+import JetAddProdPhotos from "../common/JetAddProdPhotos";
+import JetProductSkeleton from "../common/JetProductSkeleton";
 
 interface IJetProductCard {
     prodTitle?: string;
@@ -56,15 +58,14 @@ const JetProductCards: React.FC<IJetProductCard> = ({prodTitle}) => {
         {id: 10, image: 'https://media.istockphoto.com/photos/fresh-ribeye-steaks-at-the-butcher-shop-picture-id174479270?b=1&k=20&m=174479270&s=170667a&w=0&h=TYgt4dvEDrINqUr_BqgPWvWul7KTcBGz6L1-STZfNJ8=', name: 'Meat', qty: 1, price: 2000, isChoose: false, isFavourite: false},
         {id: 11, image: 'https://images.unsplash.com/photo-1611171711912-e3f6b536f532?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NHx8ZmlzaCUyMGZvb2R8ZW58MHx8MHx8&w=1000&q=80', name: 'Meat', qty: 1, price: 2000, isChoose: false, isFavourite: false},
         {id: 12, image: 'https://media.istockphoto.com/photos/various-fresh-dairy-products-picture-id544807136?k=20&m=544807136&s=612x612&w=0&h=iqb23gbUKWgewmunHXd_yzJbYsZDa0fMDz64Ux6OJSc=', name: 'Meat', qty: 1, price: 2000, isChoose: false, isFavourite: false},
+        
     ];
 
     const [value, setValue] = useState({
         cards: tmpCards
     })
 
-    if(!(!!value.cards)) {
-        return null;
-    }
+    const getLoader = useAppSelector(state => state.catalog.loader);
 
     return(
         <>
@@ -77,7 +78,17 @@ const JetProductCards: React.FC<IJetProductCard> = ({prodTitle}) => {
             }
             <Box sx={{mx:2}}>
                 <Grid container>
-                    {
+                    {getLoader &&
+                        [0,1,2,3,4,5,6,7].map(it => {
+                            return(
+                                <Grid key={it} xs={12} sm={2} md={4} lg={3}>
+                                    <JetProductSkeleton /> 
+                                </Grid>
+                            )
+                        }) 
+                        
+                    }
+                    {!getLoader &&
                         value.cards.map(card => {
                             return(
                                 <Grid key={card.id} xs={12} sm={2} md={4} lg={3}>
