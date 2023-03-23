@@ -4,7 +4,7 @@ import JetProductCards from '../../ProductCards/JetProductCards'
 const JetCustomerPrchd: React.FC<{}> = () => {
   return (
     <>
-      <JetProductCards prodTitle='Купленные товары' />
+      <JetProductCards prodTitle='Купленные товары' products={[]} />
     </>
   )
 }

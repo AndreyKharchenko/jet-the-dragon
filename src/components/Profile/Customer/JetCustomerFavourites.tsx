@@ -5,7 +5,7 @@ import JetProductCards from '../../ProductCards/JetProductCards'
 const JetCustomerFavourites: React.FC<{}> = () => {
   return (
     <>
-      <JetProductCards prodTitle='Избранное' />
+      <JetProductCards prodTitle='Избранное' products={[]} />
     </>
   )
 }

@@ -24,7 +24,7 @@ const JetSupplier: React.FC<{}> = () => {
         </Box>
         <Box className={style.title}>Все товары</Box>
         <Box>
-            <JetProductCards />
+            <JetProductCards products={[]} />
         </Box>
     </>
   )

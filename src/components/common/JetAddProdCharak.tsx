@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Box, Button, TextField } from '@mui/material'
 import { Charak } from '../../models/product'
 import { flexBetweenCenter } from '../../themes/commonStyles'
@@ -15,15 +15,20 @@ const JetAddProdCharak: React.FC<IAddProdCharak> = ({charaks, addCharak}) => {
 
         if (!!charak) {
             if(field.toUpperCase() == 'VALUE') {
-                charak.charakValue = e.target.value;
+                charak.value = e.target.value;
             } else {
-                charak.charakName = e.target.value;
+                charak.key = e.target.value;
             }
              
         }
 
         console.log('CHARAK', charak);
     }
+
+    useEffect(() => {
+        console.log('CHARAKS', charaks)
+        
+    },[charaks])
     return (
         <>
             <Box>
@@ -33,18 +38,20 @@ const JetAddProdCharak: React.FC<IAddProdCharak> = ({charaks, addCharak}) => {
                         return (
                             <Box sx={flexBetweenCenter} key={ch.id}>
                                 <TextField
-                                    name={ch.charakName}
+                                    name={ch.key}
                                     label='Название характеристики'
                                     placeholder='Название характеристики'
                                     variant="standard"
                                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleCharakInput(ch.id, 'name', e)}
+                                    defaultValue={ch.key}
                                 />
                                 <TextField
-                                    name={ch.charakValue}
+                                    name={ch.value}
                                     label='Значение'
                                     placeholder='Значение'
                                     variant="standard"
                                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleCharakInput(ch.id, 'value', e)}
+                                    defaultValue={ch.value}
                                 />
                             </Box>
                         )

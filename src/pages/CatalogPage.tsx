@@ -7,17 +7,19 @@ import { Box, Button, Container, DialogContent, DialogTitle, IconButton } from '
 import JetDialog from "../components/common/JetDialog";
 import * as userSelectors from '../store/selectors/userSelectors';
 import * as authSelectors from '../store/selectors/authSelectors';
+import * as catalogSelectors from '../store/selectors/catalogSelectors';
 import { useAppDispatch, useAppSelector } from "../hooks/useRedux";
 import { getCustomerData, getSupplierData } from "../store/slices/userSlice";
 import JetIcon from "../components/common/JetIcon";
 import { useNavigate } from "react-router-dom";
-
+import { getCatalogProducts } from "../store/slices/catalogSlice";
 
 const CatalogPage: React.FC<{}> = () => {
     const [dialog, handleDialog] = useState<boolean>(false);
     const getToken = useAppSelector(authSelectors.accessToken); 
     const getCustomerProfile = useAppSelector(userSelectors.customerProfile);
     const getSupplierProfile = useAppSelector(userSelectors.supplierProfile);
+    const catalogProducts = useAppSelector(catalogSelectors.products);
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
     
@@ -44,7 +46,6 @@ const CatalogPage: React.FC<{}> = () => {
             
             if(!res.payload) {
                 const customer = await dispatch(getCustomerData(getToken?.profile.name));
-                
                 navigate(`/login/supplier`);
             } else {
                 navigate(`/my/main`);
@@ -54,17 +55,38 @@ const CatalogPage: React.FC<{}> = () => {
         }
     }
 
+    const getProducts = async (categoryId: string | number| null) => {
+        if(!!categoryId) {
+            await dispatch( getCatalogProducts({categoryId: categoryId}) );
+        } else {
+            await dispatch( getCatalogProducts({}) );
+        }
+    }
+
     const onCloseDialog = () => {
         handleDialog(false);
     }
 
+    const onChangeTab = (tabId: string | number) => {
+        if(tabId == 'all') {
+            getProducts(null);
+        } else {
+            getProducts(tabId);
+        }
+    }
+
+    
+
     useEffect(() => {
-        console.log('getSupplierProfile', getSupplierProfile);
         const token = localStorage.getItem('TOKEN');
         if(!!token && !!getToken && getCustomerProfile == null && getSupplierProfile == null) { 
             handleDialog(true);
         }
     },[getToken])
+
+    useEffect(() => {
+        getProducts(null);
+    },[])
     return(
         <Box sx={{
             display: 'flex',
@@ -73,7 +95,7 @@ const CatalogPage: React.FC<{}> = () => {
           }}>
             <Box>
                 <JetHeader headerType="main" />
-                <JetOptionsTab />
+                <JetOptionsTab onChangeTab={onChangeTab} />
             </Box>
             
             <Box sx={{
@@ -84,7 +106,7 @@ const CatalogPage: React.FC<{}> = () => {
                 overflowY: 'scroll'
             }}>
                 <Container maxWidth="xl" sx={{mb:3}}>
-                    <JetProductCards />
+                    <JetProductCards products={catalogProducts} />
                 </Container>
 
                 <JetDialog open={dialog}  onClose={onCloseDialog}>

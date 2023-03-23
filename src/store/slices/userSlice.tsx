@@ -1,20 +1,23 @@
 import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
 import { User } from "oidc-client";
-import { userAPI } from "../../api/api";
+import { imagesAPI, userAPI } from "../../api/api";
 import { ICustomerLoginForm, ISupplierLoginForm } from "../../models/login";
+import { ICreateProduct, IFullProduct, IUpdateProduct } from "../../models/product";
 import { ICustomer, ISupplier, IUpdateCustomer, IUpdateSupplier } from "../../models/user";
 
 interface IUserState {
     customerProfile: null | ICustomer,
     supplierProfile: null | ISupplier,
     role: 'customer' | 'supplier' | null,
+    supplierProducts: IFullProduct[] | [],
     loader: boolean
 }
 
 const initialState: IUserState = {
     customerProfile: null,
     supplierProfile: null,
-    role: null,
+    supplierProducts: [],
+    role: 'supplier',
     loader: false
 }
 
@@ -114,6 +117,61 @@ export const updateSupplier = createAsyncThunk<{}, {data: IUpdateSupplier, email
     }
 );
 
+// // Получение продуктов поставщика
+export const getSupplierProducts = createAsyncThunk<IFullProduct[]>(
+    'user/getSupplierProducts',
+    async function(_, {rejectWithValue}) {
+        try {
+            const response = await userAPI.getSupplierProducts();
+            console.log('RES-SUPPLIER-PRODUCTS-GET', response.data)
+            return response.data;
+        } catch (error) {
+            console.error('ERR:', error)
+            rejectWithValue(error)
+            return false;
+        }
+    }
+);
+
+
+// Создание продукта (доступно только поставщику)
+export const createProduct = createAsyncThunk<{}, {productData: ICreateProduct, images: []}>(
+    'user/createProduct',
+    async function(product, {rejectWithValue, dispatch}) {
+        try {
+            const response = await userAPI.createProduct(product.productData);
+            console.log('RESPONCE-CREATE-PRODUCT', response)
+
+            const {productId} = response.data;
+            if(!!productId) {
+                await imagesAPI.createImages({subjectId: productId, images: product.images});
+            }
+
+            await dispatch(getSupplierProducts());
+        } catch (error) {
+            console.error('ERR:', error)
+            rejectWithValue(error)
+            return false;
+        }
+    }
+);
+
+// Обновление продукта (доступно только поставщику)
+export const updateProduct = createAsyncThunk<{}, {productData: IUpdateProduct, images: []}>(
+    'user/updateProduct',
+    async function(product, {rejectWithValue, dispatch}) {
+        try {
+            const response = await userAPI.updateProduct(product.productData);
+            console.log('RESPONCE-UPDATE-PRODUCT', response)
+            await dispatch(getSupplierProducts());
+        } catch (error) {
+            console.error('ERR:', error)
+            rejectWithValue(error)
+            return false;
+        }
+    }
+);
+
 const userSlice = createSlice({
     name: 'user',
     initialState,
@@ -142,9 +200,21 @@ const userSlice = createSlice({
                 state.loader = true;
             })
             .addCase(getSupplierData.fulfilled, (state, action) => {
-                console.log('ACTION', action.payload)
                 state.supplierProfile = action.payload;
                 state.role = 'supplier';
+                state.loader = false;
+            })
+            .addCase(createProduct.pending, (state, action) => {
+                state.loader = true;
+            })
+            .addCase(createProduct.fulfilled, (state, action) => {
+                state.loader = false;
+            })
+            .addCase(getSupplierProducts.pending, (state, action) => {
+                state.loader = true;
+            })
+            .addCase(getSupplierProducts.fulfilled, (state, action) => {
+                state.supplierProducts = action.payload;
                 state.loader = false;
             })
             

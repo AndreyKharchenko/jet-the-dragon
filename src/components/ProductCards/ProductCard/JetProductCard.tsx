@@ -3,12 +3,12 @@ import { Box, Card, CardActions, CardContent, CardMedia, IconButton, Typography 
 import {AddBoxOutlined, Star, Favorite, FavoriteBorder} from '@mui/icons-material';
 import style from '../JetProductCard.module.css';
 import { dFlex, flexBetween } from "../../../themes/commonStyles";
-import { IProduct } from '../../../models/product';
+import { IFullProduct } from '../../../models/product';
 
 interface PropsType {
-    card: IProduct,
-    addToCart: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>, product: IProduct) => void,
-    addToFavourite: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>,product: IProduct) => void,
+    card: IFullProduct,
+    addToCart: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>, product: IFullProduct) => void,
+    addToFavourite: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>,product: IFullProduct) => void,
     onProduct: (id: number | string) => void
 }
 
@@ -31,13 +31,13 @@ const JetProductCard: React.FC<PropsType> = (props) => {
                     height={275}
                     className={style.productImage}
                     component="img"
-                    image={props.card.image}
+                    image={'https://media.istockphoto.com/photos/fresh-ribeye-steaks-at-the-butcher-shop-picture-id174479270?b=1&k=20&m=174479270&s=170667a&w=0&h=TYgt4dvEDrINqUr_BqgPWvWul7KTcBGz6L1-STZfNJ8='}
                 />
                 <CardContent className={style.productContent}>
                     <Box sx={flexBetween}>
                         <Box>
                             <Typography component="h5" className={style.productCardName}>{props.card.name}</Typography>
-                            <Typography component="h5" color={theme => theme.palette.secondary.main}>Описание Описание Описание Описание</Typography>
+                            <Typography component="h5" color={theme => theme.palette.secondary.main}>{props.card.description}</Typography>
                             <Typography component="h5" className={style.productCardPrice}>{props.card.price}₽</Typography>
                         </Box>
                         <Box>
@@ -61,24 +61,25 @@ const JetProductCard: React.FC<PropsType> = (props) => {
                 </CardContent>
                 <CardActions className={style.productActions}>
                     <IconButton onClick={(e) => props.addToCart(e, props.card)}>
-                        {
+                        {/*
                             (props.card.isChoose)
                             ?
                             <AddBoxOutlined color="primary" />
                             :
                             <AddBoxOutlined />
-                        }
+                        */}
+                        <AddBoxOutlined />
                     </IconButton>
 
                     <IconButton onClick={(e) => props.addToFavourite(e, props.card)}>
-                        {
+                        {/*
                             (props.card.isFavourite)
                             ?
                             <Favorite color="error" />
                             :
                             <FavoriteBorder />
-                        }
-                        
+                        */}
+                        <FavoriteBorder />
                     </IconButton>
                 </CardActions>
             </Card>

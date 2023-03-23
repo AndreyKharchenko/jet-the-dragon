@@ -3,7 +3,8 @@ import { useMemo, useEffect } from 'react';
 import {Apple, Egg, KebabDining, SetMeal, AccountCircleOutlined, Logout, PersonAddAltOutlined, 
   GroupAddOutlined, ShoppingCartOutlined, ShoppingBagOutlined,
   ShoppingCartCheckoutOutlined, InventoryOutlined, BookmarkBorderOutlined,
-  ExitToAppOutlined, Inventory, Timeline, SupervisedUserCircleOutlined} from '@mui/icons-material';
+  ExitToAppOutlined, Inventory, Timeline, SupervisedUserCircleOutlined, Storefront,
+  BakeryDining, DinnerDining, DonutSmall, BrightnessLow, Cake} from '@mui/icons-material';
 type PropsType = {
     icon: string,
     fontSize?: 'small' | 'medium' | 'large'
@@ -15,6 +16,12 @@ const SvgIcon: React.FC<PropsType> = (props) => {
     { icon: <SetMeal fontSize={props.fontSize || 'medium'} />, name: 'jet-fish', label: 'Рыба' },
     { icon: <Egg fontSize={props.fontSize || 'medium'} />, name: 'jet-egg', label: 'Свежие яйца' },
     { icon: <Apple fontSize={props.fontSize || 'medium'} />, name: 'jet-fruit', label: 'Фрукты' },
+    { icon: <Storefront fontSize={props.fontSize || 'medium'} />, name: 'jet-all-products' },
+    { icon: <BakeryDining fontSize={props.fontSize || 'medium'} />, name: 'jet-flour' },
+    { icon: <DinnerDining fontSize={props.fontSize || 'medium'} />, name: 'jet-pasta' },
+    { icon: <DonutSmall fontSize={props.fontSize || 'medium'} />, name: 'jet-beans' },
+    { icon: <BrightnessLow fontSize={props.fontSize || 'medium'} />, name: 'jet-vegetables' },
+    { icon: <Cake fontSize={props.fontSize || 'medium'} />, name: 'jet-candy' },
     { icon: <AccountCircleOutlined fontSize={props.fontSize || 'medium'} />, name: 'jet-account-outline',  },
     { icon: <Logout fontSize={props.fontSize || 'medium'} />, name: 'jet-logout',  },
     { icon: <PersonAddAltOutlined fontSize={props.fontSize || 'medium'} />, name: 'jet-add-person' },

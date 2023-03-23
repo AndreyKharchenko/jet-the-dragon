@@ -5,8 +5,8 @@ import { Add } from '@mui/icons-material';
 
 
 interface IAddProdPhotos {
-  photos: Array<string>,
-  addPhoto: () => void
+  photos: Array<File>,
+  addPhoto: (event: any) => void
 }
 
 const JetAddProdPhotos: React.FC<IAddProdPhotos> = ({ photos, addPhoto }) => {
@@ -14,8 +14,8 @@ const JetAddProdPhotos: React.FC<IAddProdPhotos> = ({ photos, addPhoto }) => {
     <>
       <Box className={style.addPhotosContainer}>
         <Box className={style.addPhotoBtn}>
-          <IconButton color="primary" aria-label="upload picture" component="label" onClick={addPhoto}>
-            <input hidden accept="image/*" type="file" />
+          <IconButton color="primary" aria-label="upload picture" component="label">
+            <input hidden accept="image/*" type="file" onChange={addPhoto} />
             <Add fontSize='large' />
           </IconButton>
         </Box>
@@ -27,7 +27,7 @@ const JetAddProdPhotos: React.FC<IAddProdPhotos> = ({ photos, addPhoto }) => {
                 component="img"
                 className={style.prodPhoto} 
                 key={index} 
-                src={photo}
+                src={URL.createObjectURL(photo)}
               />
             )
           })

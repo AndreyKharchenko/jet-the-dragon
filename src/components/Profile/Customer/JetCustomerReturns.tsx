@@ -25,16 +25,16 @@ const JetCustomerReturns = () => {
         </Badge>
       </Box>
       <Box sx={{ml:4}}>
-        {
+        {/*
           tmpCards.map(it => {
             return(
               <JetHrzProductCard 
-                key={it.id} 
+                data={it}
                 image={it.image}
               />
             )
           })
-        }
+        */}
       </Box>
       
     </>

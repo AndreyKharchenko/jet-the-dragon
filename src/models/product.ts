@@ -1,4 +1,6 @@
-export interface IProduct {
+import { Moment } from "moment"
+// СОДЕРЖИТ ИНТЕРФЕЙСЫ ПРОДУКТОВ
+export interface IProduct { // TO-DO: remove
     id: number,
     name: string,
     qty: number,
@@ -8,20 +10,46 @@ export interface IProduct {
     isFavourite?: boolean
 }
 
-export interface IFullProduct {
-    //productId: number,
-    productCategory: string,
-    productSupplier: string,
-    productName: string,
-    productDesc: string,
-    productPrice: number,
-    productSl: number,
-    manufactureDt: Date,
-    productQty: number
+// Информация о продукте (используем при создании)
+export interface ICreateProduct {
+    categoryId: string,
+    supplierId: string | number,
+    name: string,
+    description: string,
+    price: number,
+    count: number,
+    shelfLife: number,
+    manufactureDate: Moment | object,
+    rating: number,
+    productCharaks: CharakValue[]
 }
 
-export type Charak = {
-    id: number,
-    charakName: string,
-    charakValue: string
+export interface IFullProduct extends ICreateProduct {
+    id: string | number,
+    /*categoryId: string,
+    supplierId: string | number,
+    name: string,
+    description: string,
+    price: number,
+    count: number,
+    shelfLife: number,
+    manufactureDate: Moment | object,
+    rating: number,
+    productCharaks: Charak[]*/
 }
+
+export interface IUpdateProduct extends ICreateProduct {
+    productId: string | number
+}
+
+export interface CharakValue {
+    key: string,
+    value: string
+}
+
+export interface Charak extends CharakValue {
+    id: number,
+    //key: string,
+    //value: string
+}
+

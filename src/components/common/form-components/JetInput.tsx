@@ -16,7 +16,7 @@ type InputProps = {
     required?: boolean,
     disabled?: boolean,
     multiline?: boolean,
-    initialVal?: string
+    initialVal?: string | number
 }
 
 type variantType = 'standard' | 'filled' | 'outlined';
@@ -72,6 +72,10 @@ export const JetInput: React.FC<InputProps> = ({name, label, placeholder, mask, 
         clearErrors(name);
     }
 
+    useEffect(() => {
+        setValue(name, initialVal);
+    },[initialVal])
+
     return (
         <>
         {
@@ -95,7 +99,6 @@ export const JetInput: React.FC<InputProps> = ({name, label, placeholder, mask, 
                             fullWidth={fullWidth}
                             sx={sx}
                             inputProps={inputProps}
-                            
                             helperText={!!error ? error.message : helperText}  
                             error={!!error}
                             disabled={disabled || false}

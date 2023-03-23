@@ -1,5 +1,8 @@
 import axios from "axios";
+import { IGetCategory, IProductFilter } from "../models/catalog";
+import { IImages } from "../models/images";
 import { ICustomerLoginForm, ISupplierLoginForm } from "../models/login";
+import { ICreateProduct, IUpdateProduct } from "../models/product";
 import { IUpdateSupplier } from "../models/user";
 
 const token = localStorage.getItem('TOKEN');
@@ -16,6 +19,7 @@ export const authAPI = {
     
 }
 
+// Запросы для поставщиков и покупателей
 export const userAPI = {
     getCustomerData(email: string | undefined) {
         return instance.get(`customer`, {params: {Email: email}});
@@ -34,5 +38,34 @@ export const userAPI = {
     },
     updateSupplier(data: IUpdateSupplier) {
         return instance.put(`supplier`, data);
+    },
+    getSupplierProducts() {
+        return instance.get(`supplierproducts`);
+    },
+    createProduct(data: ICreateProduct) {
+        return instance.post(`products`, data);
+    },
+    updateProduct(data: IUpdateProduct) {
+        return instance.put(`products`, data);
+    }
+}
+
+export const catalogAPI = {
+    getCategories(data: IGetCategory) {
+        return instance.get(`category`, {params: data});
+    },
+    getCatalogProducts(data: IProductFilter) {
+        if(Object.keys(data).length) {
+            return instance.get(`products`, {params: data});
+        } else {
+            return instance.get(`products`);
+        }
+        
+    }
+}
+
+export const imagesAPI = {
+    createImages(data: IImages) {
+        return instance.post(`image`);
     }
 }

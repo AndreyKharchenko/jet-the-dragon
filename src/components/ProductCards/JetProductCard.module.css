@@ -19,7 +19,7 @@
 
 .productRaiting {
     font-size: 1rem!important;
-    margin-top: 0.2rem;
+    margin-top: 0.3rem;
 }
 
 .productCardName {
@@ -65,6 +65,8 @@
 .itemHeader {
     position: absolute!important;
     top: 10px!important;
+    font-weight: 600;
+    font-size: 18px;
 }
 
 .itemAvatar {
@@ -75,4 +77,15 @@
     font-size: 18px!important;
     font-weight: 600;
     margin-right: 0.5rem;
+}
+
+.itemName {
+    font-size: 18px;
+    font-weight: 600;
+    margin-top: -1rem;
+    margin-bottom: 0.5rem;
+}
+
+.productCode {
+    font-weight: 400;
 }

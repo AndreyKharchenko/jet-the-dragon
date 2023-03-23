@@ -66,16 +66,16 @@ const JetOrder: React.FC<IJetOrder> = ({id}) => {
 
       </Box>
       <Box sx={{mt: 2}}>
-        {
+        {/*
           tmpCards.map(it => {
             return(
               <JetHrzProductCard 
-                key={it.id} 
+                id={it.id} 
                 image={it.image}
               />
             )
           })
-        }
+        */}
       </Box>
     </>
   )

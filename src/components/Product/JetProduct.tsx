@@ -1,21 +1,25 @@
 import React, { useEffect, useState } from 'react'
 import { Box, Button, Card, Tabs, Tab, Paper, Slider, Tooltip, Typography, List, ListItem, ListItemText } from '@mui/material';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks/useRedux';
-import { catalogActions } from '../../store/slices/catalogSlice';
 import { dFlex, flexAround, flexBetween, flexEnd } from '../../themes/commonStyles';
 import {Star, IosShare, FavoriteBorder, InfoOutlined} from '@mui/icons-material';
 import style from './JetProduct.module.css';
 import Carousel from 'react-material-ui-carousel';
 import JetTabPanel from '../common/JetTabPanel';
 import * as catalogSelectors from '../../store/selectors/catalogSelectors';
+import { IFullProduct } from '../../models/product';
 
-const JetProduct = () => {
-  const params = useParams();
+interface IJetProduct {
+  product: IFullProduct
+}
+
+const JetProduct: React.FC<IJetProduct> = ({product}) => {
   const dispatch = useAppDispatch();
-  const productInfo = useAppSelector(catalogSelectors.currentProduct);
   const navigate = useNavigate();
 
+  const productInfo = useAppSelector(catalogSelectors.currentProduct);
+  
   const [prodCount, setProdCount] = React.useState<number>(0);
   const [isBuy, setBuy] = useState<boolean>(false);
   const [tab, setTab] = useState<number>(0);
@@ -58,7 +62,7 @@ const JetProduct = () => {
   
 
   useEffect(() => {
-    dispatch(catalogActions.setCurrentProduct( {id: Number(params.id)} ));
+    //dispatch(catalogActions.setCurrentProduct( {id: Number(params.id)} ));
   }, [])
 
   const sliderData = [
