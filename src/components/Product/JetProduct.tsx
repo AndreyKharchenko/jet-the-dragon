@@ -7,8 +7,11 @@ import {Star, IosShare, FavoriteBorder, InfoOutlined} from '@mui/icons-material'
 import style from './JetProduct.module.css';
 import Carousel from 'react-material-ui-carousel';
 import JetTabPanel from '../common/JetTabPanel';
-import * as catalogSelectors from '../../store/selectors/catalogSelectors';
+import * as authSelectors from '../../store/selectors/authSelectors';
+import * as userSelectors from '../../store/selectors/userSelectors';
 import { IFullProduct } from '../../models/product';
+import moment from 'moment';
+import { getSupplierData } from '../../store/slices/userSlice';
 
 interface IJetProduct {
   product: IFullProduct
@@ -17,9 +20,10 @@ interface IJetProduct {
 const JetProduct: React.FC<IJetProduct> = ({product}) => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const supplierId = useAppSelector(userSelectors.supplierId);
+  const supplierData = useAppSelector(userSelectors.supplierProfile);
+  const getToken = useAppSelector(authSelectors.accessToken); 
 
-  const productInfo = useAppSelector(catalogSelectors.currentProduct);
-  
   const [prodCount, setProdCount] = React.useState<number>(0);
   const [isBuy, setBuy] = useState<boolean>(false);
   const [tab, setTab] = useState<number>(0);
@@ -34,8 +38,10 @@ const JetProduct: React.FC<IJetProduct> = ({product}) => {
     setTab(newValue);
   };
 
-  const onSupplier = (id: number) => {
-    navigate(`/supplier/${id}`);
+  const onSupplier = (id: string) => {
+    if(!!id) {
+      navigate(`/supplier/${id}`);
+    }
   }
 
   const valueLabelFormat = (value: number) => {
@@ -59,34 +65,44 @@ const JetProduct: React.FC<IJetProduct> = ({product}) => {
       'aria-controls': `tabpanel-${index}`,
     };
   }
+
+  const getSupplierInfo = async () => {
+    try {
+      console.log('111s',getToken);
+      await dispatch(getSupplierData(getToken?.profile.name));
+      console.log('supplierData', supplierData)
+    } catch (error) {
+      console.error('ERR: getSupplierData', error);
+    }
+  }
   
 
   useEffect(() => {
-    //dispatch(catalogActions.setCurrentProduct( {id: Number(params.id)} ));
+    if(product.supplierId != supplierId) {
+      console.log('SUPPLIER NO');
+      getSupplierInfo();
+      
+    }
+    console.log('PRODUCT', product)
   }, [])
 
   const sliderData = [
     {id:1, img: 'https://media.istockphoto.com/photos/fresh-ribeye-steaks-at-the-butcher-shop-picture-id174479270?b=1&k=20&m=174479270&s=170667a&w=0&h=TYgt4dvEDrINqUr_BqgPWvWul7KTcBGz6L1-STZfNJ8='},
-    {id:2, img: 'https://images.unsplash.com/photo-1611171711912-e3f6b536f532?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NHx8ZmlzaCUyMGZvb2R8ZW58MHx8MHx8&w=1000&q=80'},
-    {id:3, img: 'https://media.istockphoto.com/photos/various-fresh-dairy-products-picture-id544807136?k=20&m=544807136&s=612x612&w=0&h=iqb23gbUKWgewmunHXd_yzJbYsZDa0fMDz64Ux6OJSc='},
   ]
   
   return (
     <Box className={style.productContainer}>
       <Box className={style.productTitle}>
-        <span className={style.productTitleTxt}>{productInfo?.name}</span>
+        <span className={style.productTitleTxt}>{product.name}</span>
       </Box>
       <Box className={style.productUtils}>
         <Box sx={flexBetween}>
           <Box sx={dFlex}>
             <Star className={style.productRaiting} />
-            <Typography component="h5" sx={{mt:0.2, ml: 0.5}}>5.0</Typography>
-          </Box>
-          <Box className={style.productFeedBack}>
-            169 отзывов
+            <Typography component="h5" sx={{ml:0.5, mt:0, mr:1}}>{product.rating}</Typography>
           </Box>
           <Box>
-            Россия, Краснодарский край, г. Краснодар
+            { supplierData?.country + ", " + supplierData?.region + ", " + supplierData?.city }
           </Box>
         </Box>
         <Box sx={flexBetween}>
@@ -127,13 +143,13 @@ const JetProduct: React.FC<IJetProduct> = ({product}) => {
             >
               <Box sx={flexBetween}>
                 <Box className={style.productCost}> 
-                  <span>345 ₽ </span>
+                  <span>{product.price} </span>
                   <span className={style.productUnit}>за кг</span>
                 </Box>
                 <Box sx={dFlex}>
                   <Box sx={dFlex}>
                     <Star className={style.productRaiting} />
-                    <Typography component="h5" sx={{mt:0.2, ml: 0.5}}>5.0</Typography>
+                    <Typography component="h5" sx={{mt:0.2, ml: 0.5}}>{product.rating}</Typography>
                   </Box>
                   <Box className={style.productFeedBack}>
                     169 отзывов
@@ -148,7 +164,7 @@ const JetProduct: React.FC<IJetProduct> = ({product}) => {
                   min={100}
                   max={10000}
                   defaultValue={100}
-                  step={50}
+                  step={100}
                   getAriaValueText={valueLabelFormat}
                   valueLabelFormat={valueLabelFormat}
                   onChange={handleCountChange}
@@ -158,13 +174,12 @@ const JetProduct: React.FC<IJetProduct> = ({product}) => {
               </Box>
 
               <Box sx={{ mb: 2 }}>
-                <Typography sx={{fontSize:'16px'}}>Доставка - 0 ₽</Typography>
-                <Typography variant="body2" color="secondary" sx={{fontSize:'14px'}}>Дата доставки</Typography>
+                <Typography sx={{fontSize:'16px'}}>Дата изготовления - { moment(product.manufactureDate).format('DD.MM.YYYY') }</Typography>
               </Box>
 
               <Box sx={{ mb: 2 }}>
-                <Typography sx={{fontSize:'16px'}}>Пункты выдачи  - 0 ₽</Typography>
-                <Typography variant="body2" color="secondary" sx={{fontSize:'14px'}}>Дата доставки</Typography>
+                <Typography sx={{fontSize:'16px'}}>Дата доставки  - { moment(product.manufactureDate).add('days', 2).format('DD.MM.YYYY') }</Typography>
+                <Typography variant="body2" color="secondary" sx={{fontSize:'14px'}}>Пункт выдачи - торговая точка производителя</Typography>
               </Box>
 
               {
@@ -191,11 +206,11 @@ const JetProduct: React.FC<IJetProduct> = ({product}) => {
               }
 
               <Box sx={{mt: 2}}>
-                <Typography sx={{fontSize:'16px'}} color="secondary" component='span'>
+                <Typography sx={{fontSize:'16px', mr:1}} color="secondary" component='span'>
                   Продавец: 
                 </Typography>
-                <Typography component='span' color="primary" onClick={() => onSupplier(1)} sx={{cursor:'pointer'}}>
-                  Роджерс 
+                <Typography component='span' color="primary" onClick={() => onSupplier(supplierId || '')} sx={{cursor:'pointer'}}>
+                  {supplierData?.name} 
                   <Tooltip title="Информация о фирме" placement="top">
                     <InfoOutlined color='secondary' fontSize='small' sx={{cursor:'pointer'}} />
                   </Tooltip>
@@ -216,7 +231,7 @@ const JetProduct: React.FC<IJetProduct> = ({product}) => {
           <Box className={style.tabContainer}>
             <Typography className={style.tabTitle}>О Товаре</Typography>
             <Box>
-              Здесь информация о товаре
+              {product.description}
             </Box>
           </Box>
         </JetTabPanel>
@@ -227,8 +242,26 @@ const JetProduct: React.FC<IJetProduct> = ({product}) => {
               <ListItem sx={flexBetween}>
                   <Box className={style.nameSpec}>Код товара</Box>
                   <Box className={style.space}></Box>
-                  <Box>100043551842</Box>
+                  <Box>{product.id}</Box>
               </ListItem>
+
+              <ListItem sx={flexBetween}>
+                  <Box className={style.nameSpec}>Срок годности (дни)</Box>
+                  <Box className={style.space}></Box>
+                  <Box>{product.shelfLife}</Box>
+              </ListItem>
+
+              {
+                product.productCharaks.map(charak => {
+                  return(
+                    <ListItem sx={flexBetween}>
+                        <Box className={style.nameSpec}>{charak.key}</Box>
+                        <Box className={style.space}></Box>
+                        <Box>{charak.value}</Box>
+                    </ListItem>
+                  )
+                })
+              }
             </List>
           </Box>
         </JetTabPanel>
@@ -236,7 +269,7 @@ const JetProduct: React.FC<IJetProduct> = ({product}) => {
           <Box className={style.tabContainer}>
             <Typography className={style.tabTitle}>О производителе</Typography>
             <Box>
-              Здесь информация о производителе
+              {supplierData?.description}
             </Box>
           </Box>
         </JetTabPanel>

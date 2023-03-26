@@ -110,6 +110,7 @@ const JetSupplierProducts = () => {
   }
 
   const onCreateProduct = () => {
+    setEdit(false);
     handleDialog({title:'Создать новый заказа', value: true});
     setCurrentProduct(defaultFormVal);
   }
@@ -153,7 +154,6 @@ const JetSupplierProducts = () => {
     }
 
     if(!supplierProducts.length) {
-      console.log('1100')
       getProducts();
     }
     

@@ -12,7 +12,7 @@ import { useAppDispatch, useAppSelector } from "../hooks/useRedux";
 import { getCustomerData, getSupplierData } from "../store/slices/userSlice";
 import JetIcon from "../components/common/JetIcon";
 import { useNavigate } from "react-router-dom";
-import { getCatalogProducts } from "../store/slices/catalogSlice";
+import { getProductsByFilter } from "../store/slices/catalogSlice";
 
 const CatalogPage: React.FC<{}> = () => {
     const [dialog, handleDialog] = useState<boolean>(false);
@@ -55,11 +55,11 @@ const CatalogPage: React.FC<{}> = () => {
         }
     }
 
-    const getProducts = async (categoryId: string | number| null) => {
+    const getProducts = async (categoryId: string | null) => {
         if(!!categoryId) {
-            await dispatch( getCatalogProducts({categoryId: categoryId}) );
+            await dispatch( getProductsByFilter({categoryId: categoryId}) );
         } else {
-            await dispatch( getCatalogProducts({}) );
+            await dispatch( getProductsByFilter({}) );
         }
     }
 
@@ -67,7 +67,7 @@ const CatalogPage: React.FC<{}> = () => {
         handleDialog(false);
     }
 
-    const onChangeTab = (tabId: string | number) => {
+    const onChangeTab = (tabId: string) => {
         if(tabId == 'all') {
             getProducts(null);
         } else {

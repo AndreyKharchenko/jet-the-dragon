@@ -25,7 +25,7 @@ export interface ICreateProduct {
 }
 
 export interface IFullProduct extends ICreateProduct {
-    id: string | number,
+    id: string,
     /*categoryId: string,
     supplierId: string | number,
     name: string,
@@ -39,7 +39,7 @@ export interface IFullProduct extends ICreateProduct {
 }
 
 export interface IUpdateProduct extends ICreateProduct {
-    productId: string | number
+    productId: string
 }
 
 export interface CharakValue {

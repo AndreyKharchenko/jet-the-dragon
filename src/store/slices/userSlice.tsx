@@ -144,7 +144,15 @@ export const createProduct = createAsyncThunk<{}, {productData: ICreateProduct, 
 
             const {productId} = response.data;
             if(!!productId) {
-                await imagesAPI.createImages({subjectId: productId, images: product.images});
+                let images = new FormData();
+                images.append('subjectId', productId);
+                images.append('images', new Blob([...product.images], {type: "octet/stream"}));
+                /*product.images.map(img => {
+                    images.append('images', img);
+                })*/
+                console.log('FORM DATA', images.get('images'));
+                console.log('FORM DATA2', images);
+                await imagesAPI.createImages(images);
             }
 
             await dispatch(getSupplierProducts());
@@ -163,6 +171,17 @@ export const updateProduct = createAsyncThunk<{}, {productData: IUpdateProduct, 
         try {
             const response = await userAPI.updateProduct(product.productData);
             console.log('RESPONCE-UPDATE-PRODUCT', response)
+
+            let images = new FormData();
+            images.append('subjectId', product.productData.productId);
+            images.append('images', new Blob([...product.images], {type: "octet/stream"}));
+            /*product.images.map(img => {
+                images.append('images', img);
+            })*/
+            console.log('FORM DATA', images.get('images'));
+            console.log('FORM DATA2', images);
+            await imagesAPI.createImages(images);
+
             await dispatch(getSupplierProducts());
         } catch (error) {
             console.error('ERR:', error)

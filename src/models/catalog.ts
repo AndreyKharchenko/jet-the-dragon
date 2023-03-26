@@ -15,7 +15,8 @@ export interface IGetCategory {
 }
 
 export interface IProductFilter {
-    categoryId?: string | number,
+    categoryId?: string,
+    supplierId?: string,
     minShelfLife?:number,
     maxShelfLife?:number,
     minManufactureDate?: Moment,

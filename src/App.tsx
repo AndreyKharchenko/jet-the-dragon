@@ -15,11 +15,11 @@ function App() {
   return (
     <div>
       <Routes>
-        <Route path="/" element={<CatalogPage />} />
-        <Route path="/login/:id" element={<LoginPage />} />
+        <Route path="/" element={<CatalogPage />} /> 
+        <Route path="/login/:id" element={<LoginPage />} /> 
         <Route path="/cart" element={<CartPage />} />
-        <Route path="product/:id" element={<ProductPage />} />
-        <Route path="supplier/:id" element={<SupplierPage />} />
+        <Route path="product/:id" element={<ProductPage />} /> 
+        <Route path="supplier/:id" element={<SupplierPage />} /> 
         <Route path="my/:page" element={ <ProfilePage /> } /> 
       </Routes>
     </div>

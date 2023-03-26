@@ -26,12 +26,12 @@ export const getCategories = createAsyncThunk<ICategory[], IGetCategory>(
 );
 
 // Получение продуктов 
-export const getCatalogProducts = createAsyncThunk<IFullProduct[], IProductFilter>(
-    'user/getCatalogProducts',
+export const getProductsByFilter = createAsyncThunk<IFullProduct[], IProductFilter>(
+    'user/getProducts',
     async function(params, {rejectWithValue}) {
         try {
             console.log('PARAMS', params);
-            let response = await catalogAPI.getCatalogProducts(params);
+            let response = await catalogAPI.getProductsByFilter(params);
             console.log('RES-PRODUCTS-GET', response.data);
             return response.data;
         } catch (error) {
@@ -54,7 +54,7 @@ const catalogSlice = createSlice({
     name: 'catalog',
     initialState,
     reducers: {
-        setCurrentProduct(state: ICatalogState, action: PayloadAction<{id: number}>): void {
+        setCurrentProduct(state: ICatalogState, action: PayloadAction<{id: string}>): void {
             const currentProduct = state.products.find(it => it.id == action.payload.id);
             state.currentProduct = currentProduct;
         }
@@ -68,10 +68,10 @@ const catalogSlice = createSlice({
                 state.productCategories = action.payload;
                 state.loader = false;
             })
-            .addCase(getCatalogProducts.pending, (state, action) => {
+            .addCase(getProductsByFilter.pending, (state, action) => {
                 state.loader = true;
             })
-            .addCase(getCatalogProducts.fulfilled, (state, action) => {
+            .addCase(getProductsByFilter.fulfilled, (state, action) => {
                 state.products = action.payload;
                 state.loader = false;
             })

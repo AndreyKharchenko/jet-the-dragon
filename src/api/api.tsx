@@ -54,7 +54,7 @@ export const catalogAPI = {
     getCategories(data: IGetCategory) {
         return instance.get(`category`, {params: data});
     },
-    getCatalogProducts(data: IProductFilter) {
+    getProductsByFilter(data: IProductFilter) {
         if(Object.keys(data).length) {
             return instance.get(`products`, {params: data});
         } else {
@@ -65,7 +65,7 @@ export const catalogAPI = {
 }
 
 export const imagesAPI = {
-    createImages(data: IImages) {
-        return instance.post(`image`);
+    createImages(data: FormData) {
+        return instance.post(`image`, data);
     }
 }

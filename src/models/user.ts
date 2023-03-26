@@ -13,7 +13,7 @@ export interface ICustomer {
 }
 // Профиль поставщика = покупатель + поставщик
 export interface ISupplier {
-    id: string | number,
+    id: string,
     customerId?: string | number,
     firstName: string,
     lastName: string,
@@ -33,6 +33,7 @@ export interface ISupplier {
     declarationDate: object;
     sanBookNum: string;
     sanBookDate: object;
+    description: string;
 }
 
 export interface IUpdateCustomer {
