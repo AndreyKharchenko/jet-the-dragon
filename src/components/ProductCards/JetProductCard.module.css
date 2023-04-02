@@ -63,8 +63,9 @@
 }
 
 .itemHeader {
-    position: absolute!important;
-    top: 10px!important;
+    /*position: absolute!important;
+    top: 10px!important;*/
+    margin-bottom: -1rem!important;
     font-weight: 600;
     font-size: 18px;
 }

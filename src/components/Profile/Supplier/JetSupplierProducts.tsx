@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import { Badge, Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, Divider, Fab, IconButton, TextField, Typography } from '@mui/material'
+import { Badge, Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, Divider, Fab, IconButton, InputAdornment, TextField, Typography } from '@mui/material'
 import JetHrzProductCard from '../../ProductCards/ProductCard/JetHrzProductCard';
 import style from './JetSupplier.module.css';
 import JetDialog from '../../common/JetDialog';
@@ -16,14 +16,14 @@ import JetDatePicker from '../../common/form-components/JetDatePicker';
 import * as catalogSelectors from '../../../store/selectors/catalogSelectors';
 import * as userSelectors from '../../../store/selectors/userSelectors';
 import { useAppDispatch, useAppSelector } from '../../../hooks/useRedux';
-import { getSupplierProducts, createProduct, updateProduct } from '../../../store/slices/userSlice';
+import { getSupplierProducts, createProduct, updateProduct, deleteProduct } from '../../../store/slices/userSlice';
 import moment from 'moment';
 
 
 
-type selectOption = {label: string, value: string | number};
+type selectOption = { label: string, value: string | number };
 
-type dialogType = {title: 'Создать новый заказа' | 'Редактировать заказ', value: boolean}
+type dialogType = { title: 'Создать новый заказа' | 'Редактировать заказ', value: boolean }
 
 const defaultFormVal: IFullProduct = {
   id: '',
@@ -36,6 +36,7 @@ const defaultFormVal: IFullProduct = {
   shelfLife: 0,
   manufactureDate: moment(),
   rating: 0,
+  unit: '1000GRM',
   productCharaks: []
 }
 
@@ -46,7 +47,7 @@ const JetSupplierProducts = () => {
 
   const dispatch = useAppDispatch();
 
-  let [dialog, handleDialog] = useState<dialogType>({title:'Создать новый заказа', value: false});
+  let [dialog, handleDialog] = useState<dialogType>({ title: 'Создать новый заказа', value: false });
   let [edit, setEdit] = useState<boolean>(false);
   let [charaks, setCharak] = useState<Charak[]>([]);
   let [photos, setPhoto] = useState<any>([]);
@@ -75,8 +76,8 @@ const JetSupplierProducts = () => {
     }
   }
 
-  const closeDialog = useCallback(() => handleDialog({...dialog, value: false}), [handleDialog]);
-  const onCloseSnackbar = () => {setSnackbar(false)}
+  const closeDialog = useCallback(() => handleDialog({ ...dialog, value: false }), [handleDialog]);
+  const onCloseSnackbar = () => { setSnackbar(false) }
 
   const onSetForm = (product: IFullProduct) => {
     let form: IFullProduct = {
@@ -90,12 +91,13 @@ const JetSupplierProducts = () => {
       shelfLife: product.shelfLife,
       manufactureDate: product.manufactureDate,
       rating: product.rating,
+      unit: product.unit,
       productCharaks: []
     };
 
-    let charaks:Charak[] = [];
-    product.productCharaks.map((it,index) => {
-      charaks.push({id: index+1, key: it.key, value:it.value});
+    let charaks: Charak[] = [];
+    product.productCharaks.map((it, index) => {
+      charaks.push({ id: index + 1, key: it.key, value: it.value });
     })
 
     setCharak(charaks);
@@ -104,42 +106,50 @@ const JetSupplierProducts = () => {
 
   const onEdit = (id: string | number) => {
     setEdit(true);
-    handleDialog({title:'Редактировать заказ', value:true})
+    handleDialog({ title: 'Редактировать заказ', value: true })
     const index = supplierProducts.findIndex(it => it.id == id);
     onSetForm(supplierProducts[index]);
   }
 
+  const onDelete = async (id: string) => {
+    try {
+      await dispatch(deleteProduct({productId: id}));
+    } catch (error) {
+      console.error('ERR: onDelete()');
+    } 
+  }
+
   const onCreateProduct = () => {
     setEdit(false);
-    handleDialog({title:'Создать новый заказа', value: true});
+    handleDialog({ title: 'Создать новый заказа', value: true });
     setCurrentProduct(defaultFormVal);
   }
-  
+
 
   const onSubmit: SubmitHandler<ICreateProduct> = async (data: ICreateProduct) => {
     console.log('DATA', data);
     console.log('PHOTOS', photos);
     console.log('CHARAKS', charaks);
-    if(!!getSupplierId) {
+    if (!!getSupplierId) {
       data.supplierId = getSupplierId;
     }
 
-    if(charaks.length) {
+    if (charaks.length) {
       data.productCharaks = [];
       charaks.map(charak => {
-        data.productCharaks.push({key: charak.key, value: charak.value});
+        data.productCharaks.push({ key: charak.key, value: charak.value });
       })
     }
 
-    if(!edit) {
+    if (!edit) {
       // Создание
       data.rating = 0;
-      await dispatch(createProduct({productData: data, images: photos}));
+      await dispatch(createProduct({ productData: data, images: photos }));
     } else {
       console.log('UPD')
       // Обновление
       data.rating = currentProduct.rating;
-      await dispatch(updateProduct({productData: {...data, productId: currentProduct.id}, images: photos}));
+      await dispatch(updateProduct({ productData: { ...data, productId: currentProduct.id }, images: photos }));
     }
 
     setEdit(false);
@@ -153,11 +163,11 @@ const JetSupplierProducts = () => {
       await dispatch(getSupplierProducts());
     }
 
-    if(!supplierProducts.length) {
+    if (!supplierProducts.length) {
       getProducts();
     }
-    
-    
+
+
     // Инициализируем inputs для характеристик
     if (!charaks.length) {
       let newCharaks = [...charaks, { id: charaks.length + 1, key: '', value: '' }];
@@ -165,17 +175,17 @@ const JetSupplierProducts = () => {
     }
 
     // Заполняем категории
-    if(!!productCategories?.length) {
-      let options : selectOption[] = [];
+    if (!!productCategories?.length) {
+      let options: selectOption[] = [];
       productCategories.map(category => {
-        options.push({label: category.name, value: category.id});
+        options.push({ label: category.name, value: category.id });
       })
 
       setProductCatOpts(options);
     }
   }, [])
 
- 
+
 
 
   return (
@@ -194,6 +204,7 @@ const JetSupplierProducts = () => {
                   data={it}
                   edit={true}
                   onEdit={onEdit}
+                  onDelete={onDelete}
                 />
               )
             })
@@ -219,11 +230,11 @@ const JetSupplierProducts = () => {
                       <JetSelect
                         selectLabel='Укажите категорию товара'
                         selectName='categoryId'
-                        options={ productCatOpts || [] }
+                        options={productCatOpts || []}
                         sx={{ height: '2.2rem', mt: 1 }}
                         initValue={currentProduct.categoryId}
                       />
-                  </Box>
+                    </Box>
 
                     <Box sx={{ mb: 4 }}>
                       <JetInput
@@ -249,8 +260,17 @@ const JetSupplierProducts = () => {
 
                     <Box sx={{ ...flexAround, mb: 4 }}>
                       <Box sx={{ display: 'flex', alignItems: 'flex-end', mr: 1 }}>
-                        <CurrencyRuble color='secondary' fontSize='small' sx={{ mb: 1 }} />
-                        <JetInput name='price' label='Цена за 1 кг' placeholder='Цена' initialVal={currentProduct.price} />
+                        <JetInput 
+                          name='price' 
+                          label='Цена за 1 кг' 
+                          placeholder='Цена' 
+                          initialVal={currentProduct.price}
+                          InputProps={{startAdornment: (
+                            <InputAdornment position="start">
+                              <CurrencyRuble />
+                            </InputAdornment>
+                          )}} 
+                        />
                       </Box>
                       <Box sx={{ mr: 1 }}>
                         <JetInput
@@ -270,13 +290,25 @@ const JetSupplierProducts = () => {
                       </Box>
                     </Box>
 
-                    <Box sx={{ mb: 4 }}>
-                      <JetDatePicker
-                        name='manufactureDate'
-                        label='Дата изготовления продукта'
-                        format='DD.MM.YYYY'
-                        initialValue={ moment(currentProduct.manufactureDate) }
-                      />
+                    <Box sx={{ ...flexAround, mb: 4 }}>
+                      <Box>
+                        <JetDatePicker
+                          name='manufactureDate'
+                          label='Дата изготовления продукта'
+                          format='DD.MM.YYYY'
+                          initialValue={moment(currentProduct.manufactureDate)}
+                        />
+                      </Box>
+
+                      <Box>
+                        <JetSelect
+                          selectLabel='Единица измерения'
+                          selectName='unit'
+                          options={[ { label: 'Граммы (1000г)', value: '1000GRM' }, { label: 'По штучно', value: 'PACK' } ]}
+                          sx={{ height: '2.2rem', mt: 1 }}
+                          initValue={currentProduct.unit}
+                        />
+                      </Box>
                     </Box>
 
 
@@ -306,11 +338,11 @@ const JetSupplierProducts = () => {
             </FormProvider>
           </DialogContent>
         </JetDialog>
-        
 
-        <Fab 
-          color="primary" 
-          sx={{ position: 'fixed', right: '100px', bottom: '100px' }} 
+
+        <Fab
+          color="primary"
+          sx={{ position: 'fixed', right: '100px', bottom: '100px' }}
           onClick={onCreateProduct}
         >
           <Add />

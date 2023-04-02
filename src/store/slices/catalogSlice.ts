@@ -27,7 +27,7 @@ export const getCategories = createAsyncThunk<ICategory[], IGetCategory>(
 
 // Получение продуктов 
 export const getProductsByFilter = createAsyncThunk<IFullProduct[], IProductFilter>(
-    'user/getProducts',
+    'catalog/getProducts',
     async function(params, {rejectWithValue}) {
         try {
             console.log('PARAMS', params);

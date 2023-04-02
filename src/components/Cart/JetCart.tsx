@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks/useRedux';
 import { Box, DialogContent, DialogTitle, IconButton } from '@mui/material';
 import JetCartTotal from './JetCartTotal';
@@ -6,83 +6,147 @@ import JetBankCard from '../common/JetBankCard';
 import JetCartList from './CartList/JetCartList';
 import JetDialog from '../common/JetDialog';
 import { flexAround } from '../../themes/commonStyles';
-import { cartActions } from '../../store/slices/cartSlice';
-import { IProduct } from '../../models/product';
-import {Close} from '@mui/icons-material';
+import { cartActions, createPayment, deleteOrder, updateCart, updateOrder } from '../../store/slices/cartSlice';
+import { IFullProduct, IProduct } from '../../models/product';
+import { Close } from '@mui/icons-material';
 import * as cartSelectors from '../../store/selectors/cartSelectors';
+import * as catalogSelectors from '../../store/selectors/catalogSelectors';
 import style from './JetCart.module.css';
+import { getOrders } from '../../store/slices/cartSlice';
+import { IFullOrder, IUpdateOrder } from '../../models/order';
+import { ICreatePayment, IUpdateCart, PaymentDetailsForm } from '../../models/cart';
 
 
 const JetCart: React.FC<{}> = () => {
-    const products = useAppSelector(cartSelectors.products);
+    const orders = useAppSelector(cartSelectors.orders);
+    const cartId = useAppSelector(cartSelectors.cartId);
+
     const dispatch = useAppDispatch();
     const [dialog, handleDialog] = useState<boolean>(false);
     
-    let totalPrice:number = 0;
-    products.map(product => {
-        totalPrice += product.price * product.qty;
+
+    let totalPrice: number = 0;
+    orders.map(order => {
+        totalPrice += order.productPrice * order.count;
     })
 
-    const removeCartItem = (cartItem: IProduct) => {
-        dispatch(cartActions.removeProduct(cartItem));
+    const onOpenDialog = () => { handleDialog(true); }
+
+    const onCloseDialog = () => { handleDialog(false); }
+
+    const removeCartItem = async (orderId: string) => {
+        if(!!cartId) {
+            try {
+                await dispatch(deleteOrder({orderId, cartId}));
+            } catch (error) {
+                console.error('ERR: removeCartItem()');
+            }
+        }
+        
     }
 
-    const incremntQty = (id: number) => {
-        dispatch(cartActions.incrementQty({id}))
+    const incremntQty = async (cartItem: IFullOrder) => {
+        if(!!cartId) {
+            const order: IUpdateOrder = {
+                productId: cartItem.productId,
+                cartId: cartId,
+                orderId: cartItem.id,
+                count: cartItem.count + 1
+            }
+            try {
+                await dispatch(updateOrder(order))
+            } catch (error) {
+                console.error('ERR: incremntQty()');
+            }
+        }
     }
 
-    const decrementQty = (id: number) => {
-        dispatch(cartActions.decrementQty({id}))
+    const decrementQty = async (cartItem: IFullOrder) => {
+        if(!!cartId) {
+            const order: IUpdateOrder = {
+                productId: cartItem.productId,
+                cartId: cartId,
+                orderId: cartItem.id,
+                count: cartItem.count - 1
+            }
+            try {
+                if(cartItem.count - 1 == 0) {
+                    await dispatch(deleteOrder({orderId: cartItem.id, cartId}));
+                    return;
+                }
+                await dispatch(updateOrder(order))
+            } catch (error) {
+                console.error('ERR: decrementQty()');
+            }
+        }
     }
 
-    const onOpenDialog = () => {
-        handleDialog(true);
+    const onConfirmPay = async (details: PaymentDetailsForm) => {
+        if(details.paymentType == 'bankCard') {
+            onOpenDialog();
+        }
+        
+        
+        if(!!cartId) {
+            try {
+                const updateCartData: IUpdateCart = {...details, cartId: cartId};
+                const paymentData: ICreatePayment = {cartId: cartId, payment: true};
+                console.log('updateCartData', updateCartData);
+                console.log('paymentData', paymentData)
+                await dispatch(updateCart(updateCartData)); 
+                await dispatch(createPayment(paymentData));
+            } catch (error) {
+                console.error('ERR: onConfirmPay');
+            }
+        }
     }
 
-    const onCloseDialog = () => {
-        handleDialog(false);
-    }
+    
+
+    useEffect(() => {
+
+    }, [])
 
     return (
         <>
-        <Box className={style.cartTitle}>Корзина</Box>
-        <Box sx={flexAround} className={style.cartContainer}>
-            {
-                !(!!products.length)
-                ?
-                    <Box className={style.noItems}>
-                        <h1>Корзина пуста</h1>
-                    </Box>
-                :
-                    <>
-                        <JetCartList 
-                            products={products} 
-                            removeCartItem={removeCartItem} 
-                            incremntQty={incremntQty}
-                            decrementQty={decrementQty}
-                        />
-                        <JetCartTotal 
-                            totalPrice={totalPrice} 
-                            onCheckout={onOpenDialog}
-                        />
-                    </>
-            }
-            
-        </Box>
-        <JetDialog open={dialog}  onClose={onCloseDialog}>
-            <DialogTitle sx={{display: 'flex', justifyContent: 'space-between', fontSize: '1.25rem', fontWeight: '700'}}>
-                <Box sx={{fontSize:'24px'}}>
-                    Оформление заказа
-                </Box>
-                <IconButton sx={{cursor: 'pointer'}} onClick={onCloseDialog}>
-                    <Close />
-                </IconButton>
-            </DialogTitle>
+            { !!orders.length && <Box className={style.cartTitle}>Корзина</Box> }
+            <Box sx={flexAround} className={style.cartContainer}>
+                {
+                    !(!!orders.length)
+                    ?
+                        <Box className={style.noItems}>
+                            <h1>Корзина пуста</h1>
+                        </Box>
+                    :
+                        <>
+                            <JetCartList 
+                                orders={orders} 
+                                removeCartItem={removeCartItem} 
+                                incremntQty={incremntQty}
+                                decrementQty={decrementQty}
+                            />
+                            <JetCartTotal 
+                                totalPrice={totalPrice} 
+                                onConfirmPay={onConfirmPay}
+                            />
+                        </>
+                }
 
-            <DialogContent>
-                <JetBankCard />
-            </DialogContent>
-        </JetDialog>
+            </Box>
+            <JetDialog open={dialog} onClose={onCloseDialog}>
+                <DialogTitle sx={{ display: 'flex', justifyContent: 'space-between', fontSize: '1.25rem', fontWeight: '700' }}>
+                    <Box sx={{ fontSize: '24px' }}>
+                        Оформление заказа
+                    </Box>
+                    <IconButton sx={{ cursor: 'pointer' }} onClick={onCloseDialog}>
+                        <Close />
+                    </IconButton>
+                </DialogTitle>
+
+                <DialogContent>
+                    <JetBankCard />
+                </DialogContent>
+            </JetDialog>
         </>
     )
 }

@@ -1,12 +1,13 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import JetProductCard from "./ProductCard/JetProductCard";
 import { Badge, Box, Grid } from "@mui/material";
 import { useAppDispatch, useAppSelector } from "../../hooks/useRedux";
 import { IFullProduct } from '../../models/product';
-import { cartActions } from '../../store/slices/cartSlice';
+import { cartActions, createOrder } from '../../store/slices/cartSlice';
 import { useNavigate } from "react-router-dom";
 import style from './JetProductCard.module.css'
 import * as catalogSelectors from '../../store/selectors/catalogSelectors';
+import * as cartSelectors from '../../store/selectors/cartSelectors';
 import JetProductSkeleton from "../common/JetProductSkeleton";
 
 interface IJetProductCard {
@@ -17,24 +18,40 @@ interface IJetProductCard {
 const JetProductCards: React.FC<IJetProductCard> = ({prodTitle, products}) => {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
-    const getLoader = useAppSelector(catalogSelectors.loader);
 
-    const addToCart = (event:React.MouseEvent<HTMLButtonElement, MouseEvent>, product: IFullProduct) => {
+    const getLoader = useAppSelector(catalogSelectors.loader);
+    const cartId = useAppSelector(cartSelectors.cartId);
+    const cartOrders = useAppSelector(cartSelectors.orders);
+
+    const [addedProducts, setAddedProducts] = useState<string[]>([]);
+    const [favourites, setFavourites] = useState<string[]>([]);
+
+    const addToCart = async (event:React.MouseEvent<HTMLButtonElement, MouseEvent>, product: IFullProduct) => {
         event.preventDefault();
         event.stopPropagation();
-        /*const newCards = value.cards.map(card => {
-            if(card.id == product.id) {
-                card = {...card, isChoose: !card.isChoose};
+        setAddedProducts([...addedProducts, product.id]);
+        try {
+            if(!!cartId) {
+                const order = {
+                    productId: product.id, 
+                    cartId: cartId, 
+                    count: 1,
+                };
+                await dispatch(createOrder(order));
             }
-            return card;
-        })
-        setValue({...value, cards: [...newCards]});
-        dispatch(cartActions.addProduct(product));*/
+
+            
+            
+        } catch (error) {
+            console.error('ERR: addToCart()');
+        }
+        
     }
 
     const addToFavourite = (event:React.MouseEvent<HTMLButtonElement, MouseEvent>, product: IFullProduct) => {
         event.preventDefault();
         event.stopPropagation();
+        setFavourites([...favourites, product.id]);
         /*const newCards = value.cards.map(card => {
             if(card.id == product.id) {
                 card = {...card, isFavourite: !card.isFavourite};
@@ -49,7 +66,10 @@ const JetProductCards: React.FC<IJetProductCard> = ({prodTitle, products}) => {
     }
 
 
-    
+    useEffect(() => {
+        const productsIds = cartOrders.map(order => order.productId);
+        setAddedProducts([...addedProducts, ...productsIds]);
+    },[])
 
     return(
         <>
@@ -81,6 +101,8 @@ const JetProductCards: React.FC<IJetProductCard> = ({prodTitle, products}) => {
                                         addToCart={addToCart} 
                                         addToFavourite={addToFavourite}
                                         onProduct={onProduct} 
+                                        isAdded={addedProducts.indexOf(card.id) != -1}
+                                        isFavourite={favourites.indexOf(card.id) != -1}
                                     />
                                 </Grid>
                             )

@@ -57,8 +57,14 @@ const JetBankCard = () => {
     }
 
     useEffect(() => {
-        const cardnumber = methods.watch('cardnumber').trim();
-        definePaySystem(cardnumber);
+        console.log('11', methods.watch('cardnumber'));
+        const cardnumber = methods.watch('cardnumber');
+        if(!!cardnumber) {
+            definePaySystem(cardnumber.trim());
+        }
+        
+        //const cardnumber = methods.watch('cardnumber').trim();
+        //definePaySystem(cardnumber);
         
     },[methods.watch('cardnumber')])
 
@@ -67,82 +73,76 @@ const JetBankCard = () => {
     return (
         <FormProvider {...methods}>
             <form onSubmit={methods.handleSubmit(onSubmit)}>
-            <Box className={style.cardWrapper}>
-                <Box className={style.cardBack}>
-                    <Box className={style.cardBackLine}></Box>
-                    <Box className={style.cvv}>
-                        <JetInput 
-                            name='cvv' 
-                            label='CVV/CVC' 
-                            placeholder='000' 
-                            type={'password'} 
-                            inputProps={{maxLength:3}}  
-                            variant='outlined'  
-                            helperText='три цифры с обратной стороны карты'
-                        />
-                    </Box>
-                    
-                </Box>
-                <Box className={style.cardFront}>
-                    
-                    {
-                        (!!syst)
-                            ?
-                        <Box sx={{...flexEnd, mt:1, mr: 1}}>
-                            <Box>
-                                <img src={syst.value} className={style.paySystLarge} />
-                            </Box>
-                        </Box>
-                            :
-                        <Box sx={{...flexAround, mt: 1}}>
-                            {
-                                PAY_SYST.map(it => {
-                                    return(
-                                        <Box>
-                                            <img src={it.value} className={style.paySyst} />
-                                        </Box>
-                                    )
-                                })
-                            }
+                <Box className={style.cardWrapper}>
+                    <Box className={style.cardBack}>
+                        <Box className={style.cardBackLine}></Box>
+                        <Box className={style.cvv}>
+                            <JetInput 
+                                name='cvv' 
+                                label='CVV/CVC' 
+                                placeholder='000' 
+                                type={'password'} 
+                                inputProps={{maxLength:3}}  
+                                variant='outlined'  
+                                helperText='три цифры с обратной стороны карты'
+                            />
                         </Box>
                         
-                    }
-                    
-
-                    <Box className={style.cardNumber}>
-                        <JetInput 
-                            mask='bankCard'
-                            name='cardnumber' 
-                            label='Номер карты' 
-                            placeholder='Номер карты' 
-                            variant='outlined' 
-                            inputProps={{maxLength:19}}
-                        />
                     </Box>
+                    <Box className={style.cardFront}>
+                        
+                        {
+                            (!!syst)
+                                ?
+                            <Box sx={{...flexEnd, mt:1, mr: 1}}>
+                                <Box>
+                                    <img src={syst.value} className={style.paySystLarge} />
+                                </Box>
+                            </Box>
+                                :
+                            <Box sx={{...flexAround, mt: 1}}>
+                                {
+                                    PAY_SYST.map(it => {
+                                        return(
+                                            <Box>
+                                                <img src={it.value} className={style.paySyst} />
+                                            </Box>
+                                        )
+                                    })
+                                }
+                            </Box>
+                            
+                        }
+                        
 
-                    <Box className={style.cardDt}>
-                        <JetDatePicker 
-                            name='cardDt' 
-                            label='Действует до: ММ/ГГ' 
-                            format='MM/YYYY'
-                            views={['month', 'year']}
-                        />
+                        <Box className={style.cardNumber}>
+                            <JetInput 
+                                mask='bankCard'
+                                name='cardnumber' 
+                                label='Номер карты' 
+                                placeholder='Номер карты' 
+                                variant='outlined' 
+                                inputProps={{maxLength:19}}
+                            />
+                        </Box>
+
+                        <Box className={style.cardDt}>
+                            <JetDatePicker 
+                                name='cardDt' 
+                                label='Действует до: ММ/ГГ' 
+                                format='MM/YYYY'
+                                views={['month', 'year']}
+                            />
+                        </Box>
                     </Box>
                 </Box>
-            </Box>
-            <Box>
-                <Button autoFocus type='submit' sx={{...defaultButton, fontSize:'16px'}} fullWidth variant='contained'>
-                    Оплатить
-                </Button>
-            </Box>
+                <Box>
+                    <Button autoFocus type='submit' sx={{...defaultButton, fontSize:'16px'}} fullWidth variant='contained'>
+                        Оплатить
+                    </Button>
+                </Box>
             </form>
         </FormProvider>
-        
-            
-            
-            
-
-        
     )
 }
 

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Card, CardActions, CardContent, CardMedia, IconButton, Typography } from "@mui/material";
 import {AddBoxOutlined, Star, Favorite, FavoriteBorder} from '@mui/icons-material';
 import style from '../JetProductCard.module.css';
@@ -9,7 +9,9 @@ interface PropsType {
     card: IFullProduct,
     addToCart: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>, product: IFullProduct) => void,
     addToFavourite: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>,product: IFullProduct) => void,
-    onProduct: (id: number | string) => void
+    onProduct: (id: number | string) => void,
+    isAdded: boolean,
+    isFavourite: boolean,
 }
 
 const JetProductCard: React.FC<PropsType> = (props) => {
@@ -18,6 +20,7 @@ const JetProductCard: React.FC<PropsType> = (props) => {
     const onMouseOut = () => setElevation(3);
 
     const isNew = true;
+    
     return(
         <Box sx={{flexGrow:1,position:'relative', ml: 3, mb: 3, cursor: 'pointer'}}>
             <Card 
@@ -43,15 +46,16 @@ const JetProductCard: React.FC<PropsType> = (props) => {
                         <Box>
                             <Box sx={dFlex}>
                             {
-                                isNew ? 
+                                (props.card.rating) 
+                                ? 
                                 <React.Fragment>
                                     <Star className={style.productRaiting} />
-                                    <Typography component="h5">New</Typography>
+                                    <Typography component="h5">{props.card.rating}</Typography>
                                 </React.Fragment>
                                 : 
                                 <React.Fragment>
                                     <Star className={style.productRaiting} />
-                                    <Typography component="h5">5.0</Typography>
+                                    <Typography component="h5" sx={{ml:0.5, mt:0.2}}>Новинка</Typography>
                                 </React.Fragment>
                             }     
                             </Box>
@@ -61,25 +65,25 @@ const JetProductCard: React.FC<PropsType> = (props) => {
                 </CardContent>
                 <CardActions className={style.productActions}>
                     <IconButton onClick={(e) => props.addToCart(e, props.card)}>
-                        {/*
-                            (props.card.isChoose)
+                        {
+                            (props.isAdded)
                             ?
                             <AddBoxOutlined color="primary" />
                             :
                             <AddBoxOutlined />
-                        */}
-                        <AddBoxOutlined />
+                        }
+                        
                     </IconButton>
 
                     <IconButton onClick={(e) => props.addToFavourite(e, props.card)}>
-                        {/*
-                            (props.card.isFavourite)
+                        {
+                            (props.isFavourite)
                             ?
                             <Favorite color="error" />
                             :
                             <FavoriteBorder />
-                        */}
-                        <FavoriteBorder />
+                        }
+                        
                     </IconButton>
                 </CardActions>
             </Card>

@@ -1,6 +1,6 @@
 
 import { FormControl, FormControlLabel, FormLabel, Radio, RadioGroup } from '@mui/material'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Controller, useFormContext } from 'react-hook-form'
 
 type RadioProps = {
@@ -11,24 +11,24 @@ type RadioProps = {
 type RadioGropProps = {
     radios: RadioProps[],
     radioGroupLabel: string,
-    radioGroupName: string,
+    name: string,
     isRow: boolean
 }
 
-const JetRadio: React.FC<RadioGropProps> = ({radios, radioGroupLabel, radioGroupName, isRow}) => {
-    const {control, formState: {errors}} = useFormContext();
+const JetRadioGroup: React.FC<RadioGropProps> = ({radios, radioGroupLabel, name, isRow}) => {
+    const {control, setValue} = useFormContext();
 
-    //const errorMessage = errors[name] ? errors[name] : null;
-
-
+    useEffect(() => {
+        setValue(name, radios[0].value);
+    }, [])
     return (
         <FormControl>
             <FormLabel id="radio-buttons-group">{radioGroupLabel}</FormLabel>
-            <RadioGroup
+            {/*<RadioGroup
                 aria-labelledby="radio-buttons-group-label"
                 row={isRow}
                 defaultValue={radios[0].value}
-                name={radioGroupName}
+                name={name}
             >
                 {
                     radios.map((radio, index) => {
@@ -36,9 +36,28 @@ const JetRadio: React.FC<RadioGropProps> = ({radios, radioGroupLabel, radioGroup
                     })
                 }
                 
-            </RadioGroup>
+            </RadioGroup>*/}
+            <Controller 
+                render={({field}) => (
+                    <RadioGroup
+                        {...field}
+                        row={isRow}
+                        defaultValue={radios[0].value}
+                        name={name}
+                    >
+                        {
+                            radios.map((radio, index) => {
+                                return <FormControlLabel value={radio.value} control={<Radio />} label={radio.label} key={index} />
+                            })
+                        }
+                        
+                    </RadioGroup>
+                )}
+                control={control}
+                name={name}
+            />
         </FormControl>
     )
 }
 
-export default JetRadio;
+export default JetRadioGroup;

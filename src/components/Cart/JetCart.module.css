@@ -20,6 +20,7 @@
     font-size: 22px;
     font-weight: 700;
     line-height: 24px;
+    width: 95%!important;
 }
 
 .cartItemAvatar {
@@ -43,12 +44,14 @@
 .cartTotalContainer {
     width: 25%;
     margin-top: 0.5rem;
+    margin-bottom: 1rem;
 }
 
 .cartTotal {
     width: '20vw';
     padding: 2rem;
     padding-top: 0;
+    padding-bottom: 1rem;
 }
 
 .cartTotal h4 {
@@ -88,5 +91,5 @@
 .cartTitle {
     font-size: 30px;
     font-weight: 700;
-    padding: 15px
+    padding: 15px;
 }

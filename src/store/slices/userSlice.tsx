@@ -2,7 +2,7 @@ import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
 import { User } from "oidc-client";
 import { imagesAPI, userAPI } from "../../api/api";
 import { ICustomerLoginForm, ISupplierLoginForm } from "../../models/login";
-import { ICreateProduct, IFullProduct, IUpdateProduct } from "../../models/product";
+import { ICreateProduct, IDeleteProduct, IFullProduct, IUpdateProduct } from "../../models/product";
 import { ICustomer, ISupplier, IUpdateCustomer, IUpdateSupplier } from "../../models/user";
 
 interface IUserState {
@@ -182,6 +182,22 @@ export const updateProduct = createAsyncThunk<{}, {productData: IUpdateProduct, 
             console.log('FORM DATA2', images);
             await imagesAPI.createImages(images);
 
+            await dispatch(getSupplierProducts());
+        } catch (error) {
+            console.error('ERR:', error)
+            rejectWithValue(error)
+            return false;
+        }
+    }
+);
+
+// Удаление продукта
+export const deleteProduct = createAsyncThunk<{}, IDeleteProduct>(
+    'user/deleteProduct',
+    async function(product, {rejectWithValue, dispatch}) {
+        try {
+            const response = await userAPI.deleteProduct(product);
+            console.log('RESPONCE-DELETE-PRODUCT', response);
             await dispatch(getSupplierProducts());
         } catch (error) {
             console.error('ERR:', error)

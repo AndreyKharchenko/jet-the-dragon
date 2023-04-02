@@ -34,3 +34,22 @@ export function getIcon(name: string) {
 
     return icon;
 }
+
+export function getCartStatus(name: string) {
+    let status = null;
+    switch (name.toUpperCase()) {
+        case 'CREATED':
+            status = 0;
+            break;
+        case 'CONFIRMPAY':
+            status = 1;
+            break;
+        case 'DELIVERED':
+            status = 2;
+            break;
+        default:
+            status = 0;
+    }
+
+    return status;
+}

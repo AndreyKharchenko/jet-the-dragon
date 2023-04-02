@@ -3,16 +3,19 @@ import JetHeader from "../components/Header/JetHeader";
 import JetOptionsTab from "../components/OptionsTab/JetOptionsTab";
 import JetProductCards from "../components/ProductCards/JetProductCards";
 import JetFooter from "../components/Footer/JetFooter";
+import JetIcon from "../components/common/JetIcon";
 import { Box, Button, Container, DialogContent, DialogTitle, IconButton } from '@mui/material';
 import JetDialog from "../components/common/JetDialog";
 import * as userSelectors from '../store/selectors/userSelectors';
 import * as authSelectors from '../store/selectors/authSelectors';
 import * as catalogSelectors from '../store/selectors/catalogSelectors';
+import * as cartSelectors from '../store/selectors/cartSelectors';
 import { useAppDispatch, useAppSelector } from "../hooks/useRedux";
 import { getCustomerData, getSupplierData } from "../store/slices/userSlice";
-import JetIcon from "../components/common/JetIcon";
 import { useNavigate } from "react-router-dom";
 import { getProductsByFilter } from "../store/slices/catalogSlice";
+import { createCart, getCart, getOrders } from "../store/slices/cartSlice";
+
 
 const CatalogPage: React.FC<{}> = () => {
     const [dialog, handleDialog] = useState<boolean>(false);
@@ -20,6 +23,7 @@ const CatalogPage: React.FC<{}> = () => {
     const getCustomerProfile = useAppSelector(userSelectors.customerProfile);
     const getSupplierProfile = useAppSelector(userSelectors.supplierProfile);
     const catalogProducts = useAppSelector(catalogSelectors.products);
+    const cartId = useAppSelector(cartSelectors.cartId);
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
     
@@ -56,10 +60,41 @@ const CatalogPage: React.FC<{}> = () => {
     }
 
     const getProducts = async (categoryId: string | null) => {
-        if(!!categoryId) {
-            await dispatch( getProductsByFilter({categoryId: categoryId}) );
-        } else {
-            await dispatch( getProductsByFilter({}) );
+        try {
+            if(!!categoryId) {
+                await dispatch( getProductsByFilter({categoryId: categoryId}) );
+            } else {
+                await dispatch( getProductsByFilter({}) );
+            }
+        } catch (error) {
+            console.error('ERR: getProducts()');
+        }
+        
+    }
+
+    const initialCart = async () => {
+        if(!!getCustomerProfile) {
+            console.log('1')
+            try {
+                const response = await dispatch(getCart({customerId: getCustomerProfile?.id}));
+                console.log('response', response);
+                
+                if(typeof response.payload == 'object' && !!response.payload && !Object.keys(response.payload).length) {
+                    console.log('СОЗДАЕМ КОРЗИНУ');
+                    await dispatch(createCart({deliveryType:'', paymentType: '', comment:''}));
+                }
+            } catch (error) {
+                console.error('ERR: initialCart()');
+            }
+            
+        }
+    }
+
+    const getOrdersByCartId = async () => {
+        try {
+            await dispatch(getOrders({cartId: cartId})); 
+        } catch (error) {
+            console.error('ERR: getOrdersByCartId()');
         }
     }
 
@@ -85,7 +120,14 @@ const CatalogPage: React.FC<{}> = () => {
     },[getToken])
 
     useEffect(() => {
+        // Получение продуктов 
         getProducts(null);
+
+        // Инициализация корзины
+        initialCart();
+
+        // Получение заказов
+        getOrdersByCartId();
     },[])
     return(
         <Box sx={{

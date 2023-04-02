@@ -21,24 +21,19 @@ export interface ICreateProduct {
     shelfLife: number,
     manufactureDate: Moment | object,
     rating: number,
+    unit: '1000GRM' | 'PACK',
     productCharaks: CharakValue[]
 }
 
 export interface IFullProduct extends ICreateProduct {
     id: string,
-    /*categoryId: string,
-    supplierId: string | number,
-    name: string,
-    description: string,
-    price: number,
-    count: number,
-    shelfLife: number,
-    manufactureDate: Moment | object,
-    rating: number,
-    productCharaks: Charak[]*/
 }
 
 export interface IUpdateProduct extends ICreateProduct {
+    productId: string
+}
+
+export interface IDeleteProduct {
     productId: string
 }
 
@@ -49,7 +44,6 @@ export interface CharakValue {
 
 export interface Charak extends CharakValue {
     id: number,
-    //key: string,
-    //value: string
 }
+
 

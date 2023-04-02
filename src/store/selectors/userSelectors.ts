@@ -1,6 +1,7 @@
 import { RootState } from "..";
 
 export const customerProfile = (state: RootState) => state.user.customerProfile;
+export const customerId = (state: RootState) => state.user.customerProfile?.id;
 export const supplierProfile = (state: RootState) => state.user.supplierProfile;
 export const supplierId = (state: RootState) => state.user.supplierProfile?.id;
 export const supplierProducts = (state: RootState) => state.user.supplierProducts;

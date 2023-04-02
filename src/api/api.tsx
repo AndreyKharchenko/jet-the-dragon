@@ -1,8 +1,10 @@
 import axios from "axios";
+import { ICartFilter, ICreateCart, ICreatePayment } from "../models/cart";
 import { IGetCategory, IProductFilter } from "../models/catalog";
 import { IImages } from "../models/images";
 import { ICustomerLoginForm, ISupplierLoginForm } from "../models/login";
-import { ICreateProduct, IUpdateProduct } from "../models/product";
+import { ICreateOrder, IDeleteOrder, IUpdateOrder } from "../models/order";
+import { ICreateProduct, IDeleteProduct, IUpdateProduct } from "../models/product";
 import { IUpdateSupplier } from "../models/user";
 
 const token = localStorage.getItem('TOKEN');
@@ -47,6 +49,9 @@ export const userAPI = {
     },
     updateProduct(data: IUpdateProduct) {
         return instance.put(`products`, data);
+    },
+    deleteProduct(data: IDeleteProduct) {
+        return instance.delete(`products`, {params: data});
     }
 }
 
@@ -64,8 +69,41 @@ export const catalogAPI = {
     }
 }
 
+export const ordersAPI = {
+    getOrders(data: any) {
+        return instance.get(`orders`, {params: data});
+    },
+    createOrder(data: ICreateOrder) {
+        return instance.post(`orders`, data);
+    },
+    updateOrder(data: IUpdateOrder) {
+        return instance.put(`orders`, data);
+    },
+    deleteOrder(data: IDeleteOrder) {
+        return instance.delete(`orders`, {params: data});
+    }
+}
+
+export const cartAPI = {
+    getCart(data: ICartFilter) {
+        return instance.get(`cart`, {params: data});
+    },
+    createCart(data: ICreateCart) {
+        return instance.post(`cart`, data);
+    },
+    updateCart(data: ICreateCart) {
+        return instance.put(`cart`, data);
+    }
+}
+
 export const imagesAPI = {
     createImages(data: FormData) {
         return instance.post(`image`, data);
+    }
+}
+
+export const paymentAPI = {
+    createPayment(data: ICreatePayment) {
+        return instance.post(`payment`, data);
     }
 }

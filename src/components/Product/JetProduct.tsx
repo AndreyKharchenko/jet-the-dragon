@@ -9,13 +9,19 @@ import Carousel from 'react-material-ui-carousel';
 import JetTabPanel from '../common/JetTabPanel';
 import * as authSelectors from '../../store/selectors/authSelectors';
 import * as userSelectors from '../../store/selectors/userSelectors';
+import * as cartSelectors from '../../store/selectors/cartSelectors';
 import { IFullProduct } from '../../models/product';
 import moment from 'moment';
 import { getSupplierData } from '../../store/slices/userSlice';
+import { createOrder } from '../../store/slices/cartSlice';
+import { ICreateOrder } from '../../models/order';
+import { deleteOrder } from '../../store/slices/cartSlice';
 
 interface IJetProduct {
   product: IFullProduct
 }
+
+type sliderSettingsType = {min: number, max: number, step: number, default: number};
 
 const JetProduct: React.FC<IJetProduct> = ({product}) => {
   const dispatch = useAppDispatch();
@@ -23,8 +29,11 @@ const JetProduct: React.FC<IJetProduct> = ({product}) => {
   const supplierId = useAppSelector(userSelectors.supplierId);
   const supplierData = useAppSelector(userSelectors.supplierProfile);
   const getToken = useAppSelector(authSelectors.accessToken); 
+  const cartId = useAppSelector(cartSelectors.cartId);
+  const orders = useAppSelector(cartSelectors.orders);
 
-  const [prodCount, setProdCount] = React.useState<number>(0);
+  const [prodCount, setProdCount] = React.useState<number>(500);
+  const [sliderSettings, setSliderSettings] = React.useState<sliderSettingsType>({min: 500, max: 10000, default: 500, step: 500});
   const [isBuy, setBuy] = useState<boolean>(false);
   const [tab, setTab] = useState<number>(0);
 
@@ -45,18 +54,23 @@ const JetProduct: React.FC<IJetProduct> = ({product}) => {
   }
 
   const valueLabelFormat = (value: number) => {
-    const units = ['Гр', 'Кг'];
-    console.log('value', value);
-  
+    const grmUnits = ['Гр', 'Кг'];
+    const packUnits = ['Шт'];
+
     let unitIndex = 0;
     let scaledValue = value;
-  
-    while (scaledValue >= 1000 && unitIndex < units.length - 1) {
-      unitIndex += 1;
-      scaledValue /= 1000;
-    }
-  
-    return `${scaledValue} ${units[unitIndex]}`;
+
+    if(product.unit == '1000GRM') {
+      while (scaledValue >= 1000 && unitIndex < grmUnits.length - 1) {
+        unitIndex += 1;
+        scaledValue /= 1000;
+      }
+    
+      return `${scaledValue} ${grmUnits[unitIndex]}`;
+    } else {
+
+      return `${scaledValue} ${packUnits[unitIndex]}`;
+    }  
   }
 
   const a11yProps = (index: number) => {
@@ -68,22 +82,54 @@ const JetProduct: React.FC<IJetProduct> = ({product}) => {
 
   const getSupplierInfo = async () => {
     try {
-      console.log('111s',getToken);
       await dispatch(getSupplierData(getToken?.profile.name));
-      console.log('supplierData', supplierData)
     } catch (error) {
       console.error('ERR: getSupplierData', error);
+    }
+  }
+
+  const addToCart = async () => {
+    setBuy(true);
+    try {
+      if(!!cartId) {
+        console.log('PRODCO', prodCount)
+        let count = prodCount;
+        if(product.unit == '1000GRM') {
+          console.log('111s')
+          count = Math.round(prodCount/1000);
+        }
+        console.log('co', count)
+        const order: ICreateOrder = {productId: product.id, cartId: cartId, count: count };
+        await dispatch(createOrder(order));
+      }
+      
+    } catch (error) {
+      console.error('ERR: addToCart()');
+    }
+  }
+
+  const removeOrder = async () => {
+    setBuy(false);
+    const order = orders.find(ord => ord.productId == product.id);
+    if(!!order?.id && !!cartId) {
+      try {
+        await dispatch(deleteOrder({orderId: order.id, cartId}));
+      } catch (error) {
+        console.error('ERR: removeOrder()');
+      }
     }
   }
   
 
   useEffect(() => {
     if(product.supplierId != supplierId) {
-      console.log('SUPPLIER NO');
       getSupplierInfo();
-      
     }
-    console.log('PRODUCT', product)
+    
+    if(product.unit == 'PACK') {
+      setProdCount(1);
+      setSliderSettings({min: 1, max: 100, default: 1, step: 1});
+    } 
   }, [])
 
   const sliderData = [
@@ -161,10 +207,10 @@ const JetProduct: React.FC<IJetProduct> = ({product}) => {
                 <Box>Укажите количество продукта: {valueLabelFormat(prodCount)}</Box>
                 <Slider
                   value={prodCount}
-                  min={100}
-                  max={10000}
-                  defaultValue={100}
-                  step={100}
+                  min={sliderSettings.min}
+                  max={sliderSettings.max}
+                  defaultValue={sliderSettings.default}
+                  step={sliderSettings.step}
                   getAriaValueText={valueLabelFormat}
                   valueLabelFormat={valueLabelFormat}
                   onChange={handleCountChange}
@@ -189,7 +235,7 @@ const JetProduct: React.FC<IJetProduct> = ({product}) => {
                   variant="contained" 
                   fullWidth={true} 
                   className={style.buyBtn}
-                  onClick={() => setBuy(false)}
+                  onClick={removeOrder}
                   color="inherit"
                 >
                   Убрать из корзины
@@ -199,7 +245,7 @@ const JetProduct: React.FC<IJetProduct> = ({product}) => {
                   variant="contained" 
                   fullWidth={true} 
                   className={style.buyBtn}
-                  onClick={() => setBuy(true)}
+                  onClick={addToCart}
                 >
                   Купить
                 </Button>

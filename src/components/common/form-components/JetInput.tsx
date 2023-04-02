@@ -11,6 +11,7 @@ type InputProps = {
     fullWidth?: boolean,
     sx?: object | {},
     inputProps?: object,
+    InputProps?: object,
     variant?: variantType,
     helperText?: string | '',
     required?: boolean,
@@ -22,7 +23,7 @@ type InputProps = {
 type variantType = 'standard' | 'filled' | 'outlined';
 
 
-export const JetInput: React.FC<InputProps> = ({name, label, placeholder, mask, type, fullWidth, inputProps, variant, sx, helperText, required, disabled, multiline, initialVal}) => {
+export const JetInput: React.FC<InputProps> = ({name, label, placeholder, mask, type, fullWidth, inputProps, InputProps, variant, sx, helperText, required, disabled, multiline, initialVal}) => {
     const {control, setValue, setError, clearErrors, register, getValues} = useFormContext();
 
     const handleInputChange = (val: string) => {
@@ -99,6 +100,7 @@ export const JetInput: React.FC<InputProps> = ({name, label, placeholder, mask, 
                             fullWidth={fullWidth}
                             sx={sx}
                             inputProps={inputProps}
+                            InputProps={InputProps}
                             helperText={!!error ? error.message : helperText}  
                             error={!!error}
                             disabled={disabled || false}

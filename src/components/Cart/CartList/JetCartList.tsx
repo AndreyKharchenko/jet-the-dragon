@@ -1,24 +1,25 @@
 import React from 'react'
 import { List } from '@mui/material'
 import JetCartItem from './JetCartItem'
-import { IProduct } from '../../../models/product'
+import { IFullOrder } from '../../../models/order'
 
 interface ICartList {
-    products: IProduct[],
-    removeCartItem: (cartItem: IProduct) => void,
-    decrementQty: (id: number) => void,
-    incremntQty: (id: number) => void,
+    orders: IFullOrder[],
+    removeCartItem: (id: string) => void,
+    decrementQty: (cartItem: IFullOrder) => void,
+    incremntQty: (cartItem: IFullOrder) => void,
 }
 
-const JetCartList: React.FC<ICartList> = ({products, removeCartItem, decrementQty, incremntQty}) => {
+const JetCartList: React.FC<ICartList> = ({orders, removeCartItem, decrementQty, incremntQty}) => {
   return (
     <>
         <List>
             {
-                products.map(val => {
+                orders.map(order => {
                     return(
                         <JetCartItem 
-                            product={val}
+                            key={order.id}
+                            order={order}
                             removeCartItem={removeCartItem}
                             decrementQty={decrementQty}
                             incremntQty={incremntQty}

@@ -18,7 +18,7 @@ const JetHeaderUtils: React.FC<{}> = () => {
     const [regMenu, setRegMenu] = useState<boolean>(false);
     const [regChange, setRegChange] = useState<boolean>(false);
     const input = useInput();
-    const products = useAppSelector(cartSelectors.products);
+    const orders = useAppSelector(cartSelectors.orders);
     const token = useAppSelector(authSelectors.accessToken);
 
     const dispatch = useAppDispatch();
@@ -73,7 +73,7 @@ const JetHeaderUtils: React.FC<{}> = () => {
                             
                         <Tooltip title='Корзина'>
                             <IconButton onClick={onCart} color='primary' size='large'>
-                                <Badge badgeContent={products.length} color="primary">
+                                <Badge badgeContent={orders.length} color="primary">
                                     <ShoppingCartOutlined fontSize="medium" />
                                 </Badge>
                             </IconButton>
