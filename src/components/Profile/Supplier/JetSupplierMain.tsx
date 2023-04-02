@@ -86,7 +86,7 @@ const JetSupplierMain = () => {
     <>
       {getLoader && 
         <Box sx={{mt:10}}>
-          <JetSpinner />
+          <JetSpinner size={85} />
         </Box>
       }
 

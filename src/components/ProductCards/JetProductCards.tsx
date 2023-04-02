@@ -19,17 +19,20 @@ const JetProductCards: React.FC<IJetProductCard> = ({prodTitle, products}) => {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
 
-    const getLoader = useAppSelector(catalogSelectors.loader);
+    const catalogLoader = useAppSelector(catalogSelectors.loader);
+    const cartLoader = useAppSelector(cartSelectors.loader);
     const cartId = useAppSelector(cartSelectors.cartId);
     const cartOrders = useAppSelector(cartSelectors.orders);
 
     const [addedProducts, setAddedProducts] = useState<string[]>([]);
     const [favourites, setFavourites] = useState<string[]>([]);
+    const [currentPrdId, setCurrentPrdId] = useState<string>();
 
     const addToCart = async (event:React.MouseEvent<HTMLButtonElement, MouseEvent>, product: IFullProduct) => {
         event.preventDefault();
         event.stopPropagation();
         setAddedProducts([...addedProducts, product.id]);
+        setCurrentPrdId(product.id);
         try {
             if(!!cartId) {
                 const order = {
@@ -39,9 +42,6 @@ const JetProductCards: React.FC<IJetProductCard> = ({prodTitle, products}) => {
                 };
                 await dispatch(createOrder(order));
             }
-
-            
-            
         } catch (error) {
             console.error('ERR: addToCart()');
         }
@@ -82,7 +82,7 @@ const JetProductCards: React.FC<IJetProductCard> = ({prodTitle, products}) => {
             }
             <Box sx={{mx:2}}>
                 <Grid container item>
-                    {getLoader &&
+                    {catalogLoader &&
                         [0,1,2,3,4,5,6,7].map(it => {
                             return(
                                 <Grid item key={it} xs={12} sm={2} md={4} lg={3}>
@@ -92,7 +92,7 @@ const JetProductCards: React.FC<IJetProductCard> = ({prodTitle, products}) => {
                         }) 
                         
                     }
-                    {!getLoader && products &&
+                    {!catalogLoader && products &&
                         products.map(card => {
                             return(
                                 <Grid item key={card.id} xs={12} sm={2} md={4} lg={3}>
@@ -103,6 +103,7 @@ const JetProductCards: React.FC<IJetProductCard> = ({prodTitle, products}) => {
                                         onProduct={onProduct} 
                                         isAdded={addedProducts.indexOf(card.id) != -1}
                                         isFavourite={favourites.indexOf(card.id) != -1}
+                                        loader={cartLoader && card.id == currentPrdId}
                                     />
                                 </Grid>
                             )

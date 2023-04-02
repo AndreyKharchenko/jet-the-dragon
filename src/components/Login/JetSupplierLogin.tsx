@@ -317,7 +317,7 @@ const JetSupplierLogin: React.FC<{}> = () => {
                             </Box>
                             :
                             <Box sx={flexCenter}>
-                              <JetSpinner />
+                              <JetSpinner size={85} />
                             </Box>
                     }
                   </form>

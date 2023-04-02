@@ -1,9 +1,13 @@
 import React from 'react'
 import { CircularProgress } from '@mui/material';
 
-const JetSpinner: React.FC<{}> = () => {
+interface IJetSpinner {
+    size: number
+}
+
+const JetSpinner: React.FC<IJetSpinner> = ({size}) => {
     return (
-        <CircularProgress thickness={3} size={85}/>
+        <CircularProgress thickness={3} size={size} />
     );
 }
 

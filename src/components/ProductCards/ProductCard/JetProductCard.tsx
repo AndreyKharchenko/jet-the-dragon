@@ -4,6 +4,7 @@ import {AddBoxOutlined, Star, Favorite, FavoriteBorder} from '@mui/icons-materia
 import style from '../JetProductCard.module.css';
 import { dFlex, flexBetween } from "../../../themes/commonStyles";
 import { IFullProduct } from '../../../models/product';
+import JetSpinner from "../../common/JetSpinner";
 
 interface PropsType {
     card: IFullProduct,
@@ -12,6 +13,7 @@ interface PropsType {
     onProduct: (id: number | string) => void,
     isAdded: boolean,
     isFavourite: boolean,
+    loader: boolean
 }
 
 const JetProductCard: React.FC<PropsType> = (props) => {
@@ -66,13 +68,12 @@ const JetProductCard: React.FC<PropsType> = (props) => {
                 <CardActions className={style.productActions}>
                     <IconButton onClick={(e) => props.addToCart(e, props.card)}>
                         {
-                            (props.isAdded)
+                            (props.loader)
                             ?
-                            <AddBoxOutlined color="primary" />
+                            <JetSpinner size={20} />
                             :
-                            <AddBoxOutlined />
+                            (props.isAdded) ? <AddBoxOutlined color="primary" /> : <AddBoxOutlined /> 
                         }
-                        
                     </IconButton>
 
                     <IconButton onClick={(e) => props.addToFavourite(e, props.card)}>
