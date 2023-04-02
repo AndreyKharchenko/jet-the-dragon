@@ -196,7 +196,7 @@ const JetSupplierProducts = () => {
             Мои товары
           </Badge>
         </Box>
-        <Box sx={{ ml: 4 }}>
+        <Box sx={{ ml: 4, mt: 10 }}>
           {!!supplierProducts &&
             supplierProducts.map(it => {
               return (

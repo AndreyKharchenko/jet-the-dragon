@@ -35,7 +35,7 @@ const JetCustomerOrdersList: React.FC<{}> = () => {
             Заказы
           </Badge>
         </Box>
-        <Box sx={{ml:4}}>
+        <Box sx={{ml:4, mt:10}}>
           {
             tmpCards.map(it => {
               return(

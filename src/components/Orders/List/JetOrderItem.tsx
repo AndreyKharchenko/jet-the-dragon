@@ -18,6 +18,7 @@ const JetOrderItem: React.FC<IJetOrderItem> = ({id, image, onclick}) => {
         className={style.item}
         key={id}
         onClick={ () => onclick(id)} 
+        sx={{zIndex:-1}}
       >
         <Box className={style.itemContainer}>
           <Box className={style.itemHeader}>

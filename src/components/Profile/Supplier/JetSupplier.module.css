@@ -16,6 +16,13 @@
     margin-bottom: 2rem;
     display: flex;
     justify-content: flex-start;
+
+    /*LAST*/
+    width: 60%;
+    height: 5%;
+    position: fixed;
+    top: 9%;
+    background-color: #FFF;
 }
 
 .submitBtn {

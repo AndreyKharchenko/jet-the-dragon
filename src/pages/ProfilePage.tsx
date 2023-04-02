@@ -25,24 +25,38 @@ const ProfilePage: React.FC<{}> = () => {
 
   return (
     <>
-      <Box>
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          height: '100vh',
+        }}
+      >
         <Box sx={{background: '#FFF'}}>
           <JetHeader headerType='profile' />
         </Box>
         
-        
-        <Container maxWidth="xl" sx={{height:'100%'}}>
-            {!!getRole &&
-              (getRole.toUpperCase() == PROFILE_TYPES['SUPPLIER'])
-              ?
-                <JetSupplierProfile page={params.page || null} />
-              :
-                <JetCustomerProfile 
-                  page={params.page || null} 
-                  orderId={orderId || null} 
-                />
-            }
-        </Container>
+        <Box sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            flexGrow: 1,
+            height: 100,
+            overflowY: 'scroll'
+          }}
+        >
+          <Container maxWidth="xl" sx={{height:'100%'}}>
+              {!!getRole &&
+                (getRole.toUpperCase() == PROFILE_TYPES['SUPPLIER'])
+                ?
+                  <JetSupplierProfile page={params.page || null} />
+                :
+                  <JetCustomerProfile 
+                    page={params.page || null} 
+                    orderId={orderId || null} 
+                  />
+              }
+          </Container>
+        </Box>
       </Box>
     </>
       
