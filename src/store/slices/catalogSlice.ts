@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { catalogAPI } from "../../api/api";
+import { catalogAPI, favouritiesAPI } from "../../api/api";
 import { ICategory, IGetCategory, IProductFilter } from "../../models/catalog";
 import { IFullProduct } from "../../models/product";
 
@@ -43,6 +43,8 @@ export const getProductsByFilter = createAsyncThunk<IFullProduct[], IProductFilt
 );
 
 
+
+
 const initialState: ICatalogState = {
     products: [],
     productCategories: null,
@@ -61,6 +63,7 @@ const catalogSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder
+            // КАТЕГОРИИ
             .addCase(getCategories.pending, (state, action) => {
                 state.loader = true;
             })
@@ -68,6 +71,7 @@ const catalogSlice = createSlice({
                 state.productCategories = action.payload;
                 state.loader = false;
             })
+            // ПРОДУКТЫ
             .addCase(getProductsByFilter.pending, (state, action) => {
                 state.loader = true;
             })
@@ -75,6 +79,8 @@ const catalogSlice = createSlice({
                 state.products = action.payload;
                 state.loader = false;
             })
+            
+            
     }
 })
 

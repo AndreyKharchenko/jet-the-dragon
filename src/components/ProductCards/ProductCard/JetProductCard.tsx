@@ -13,7 +13,8 @@ interface PropsType {
     onProduct: (id: number | string) => void,
     isAdded: boolean,
     isFavourite: boolean,
-    loader: boolean
+    addLoader: boolean,
+    favLoader: boolean
 }
 
 const JetProductCard: React.FC<PropsType> = (props) => {
@@ -68,7 +69,7 @@ const JetProductCard: React.FC<PropsType> = (props) => {
                 <CardActions className={style.productActions}>
                     <IconButton onClick={(e) => props.addToCart(e, props.card)}>
                         {
-                            (props.loader)
+                            (props.addLoader)
                             ?
                             <JetSpinner size={20} />
                             :
@@ -78,11 +79,12 @@ const JetProductCard: React.FC<PropsType> = (props) => {
 
                     <IconButton onClick={(e) => props.addToFavourite(e, props.card)}>
                         {
-                            (props.isFavourite)
+                            
+                            (props.favLoader)
                             ?
-                            <Favorite color="error" />
+                            <JetSpinner size={20} />
                             :
-                            <FavoriteBorder />
+                            (props.isFavourite) ? <Favorite color="error" /> : <FavoriteBorder />
                         }
                         
                     </IconButton>

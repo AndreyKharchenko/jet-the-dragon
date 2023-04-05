@@ -7,12 +7,10 @@ import JetCartList from './CartList/JetCartList';
 import JetDialog from '../common/JetDialog';
 import { flexAround } from '../../themes/commonStyles';
 import { cartActions, createPayment, deleteOrder, updateCart, updateOrder } from '../../store/slices/cartSlice';
-import { IFullProduct, IProduct } from '../../models/product';
 import { Close } from '@mui/icons-material';
 import * as cartSelectors from '../../store/selectors/cartSelectors';
 import * as catalogSelectors from '../../store/selectors/catalogSelectors';
 import style from './JetCart.module.css';
-import { getOrders } from '../../store/slices/cartSlice';
 import { IFullOrder, IUpdateOrder } from '../../models/order';
 import { ICreatePayment, IUpdateCart, PaymentDetailsForm } from '../../models/cart';
 

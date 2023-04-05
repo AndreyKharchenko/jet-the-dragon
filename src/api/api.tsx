@@ -4,7 +4,7 @@ import { IGetCategory, IProductFilter } from "../models/catalog";
 import { IImages } from "../models/images";
 import { ICustomerLoginForm, ISupplierLoginForm } from "../models/login";
 import { ICreateOrder, IDeleteOrder, IUpdateOrder } from "../models/order";
-import { ICreateProduct, IDeleteProduct, IUpdateProduct } from "../models/product";
+import { ICreateFavourite, ICreateProduct, IDeleteFavourite, IDeleteProduct, IFavouriteFilter, IUpdateProduct } from "../models/product";
 import { IUpdateSupplier } from "../models/user";
 
 const token = localStorage.getItem('TOKEN');
@@ -105,5 +105,17 @@ export const imagesAPI = {
 export const paymentAPI = {
     createPayment(data: ICreatePayment) {
         return instance.post(`payment`, data);
+    }
+}
+
+export const favouritiesAPI = {
+    getFavourities(data: IFavouriteFilter) {
+        return instance.get(`favourities`, {params: data});
+    },
+    createFavourite(data: ICreateFavourite) {
+        return instance.post(`favourities`, data);
+    },
+    deleteFavourite(data: IDeleteFavourite) {
+        return instance.delete(`favourities`, {params: data});
     }
 }

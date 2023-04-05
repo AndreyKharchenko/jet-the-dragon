@@ -1,8 +1,8 @@
 import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
 import { User } from "oidc-client";
-import { imagesAPI, userAPI } from "../../api/api";
+import { favouritiesAPI, imagesAPI, userAPI } from "../../api/api";
 import { ICustomerLoginForm, ISupplierLoginForm } from "../../models/login";
-import { ICreateProduct, IDeleteProduct, IFullProduct, IUpdateProduct } from "../../models/product";
+import { ICreateFavourite, ICreateProduct, IDeleteFavourite, IDeleteProduct, IFavourite, IFavouriteFilter, IFullProduct, IUpdateProduct } from "../../models/product";
 import { ICustomer, ISupplier, IUpdateCustomer, IUpdateSupplier } from "../../models/user";
 
 interface IUserState {
@@ -10,6 +10,7 @@ interface IUserState {
     supplierProfile: null | ISupplier,
     role: 'customer' | 'supplier' | null,
     supplierProducts: IFullProduct[] | [],
+    custFavourities: IFavourite[],
     loader: boolean
 }
 
@@ -17,6 +18,7 @@ const initialState: IUserState = {
     customerProfile: null,
     supplierProfile: null,
     supplierProducts: [],
+    custFavourities: [],
     role: 'supplier',
     loader: false
 }
@@ -174,11 +176,11 @@ export const updateProduct = createAsyncThunk<{}, {productData: IUpdateProduct, 
 
             let images = new FormData();
             images.append('subjectId', product.productData.productId);
-            images.append('images', new Blob([...product.images], {type: "octet/stream"}));
-            /*product.images.map(img => {
+            //images.append('images', new Blob([...product.images], {type: "octet/stream"}));
+            product.images.map(img => {
                 images.append('images', img);
-            })*/
-            console.log('FORM DATA', images.get('images'));
+            })
+            console.log('FORM DATA UPDATE', images.get('images'));
             console.log('FORM DATA2', images);
             await imagesAPI.createImages(images);
 
@@ -207,6 +209,64 @@ export const deleteProduct = createAsyncThunk<{}, IDeleteProduct>(
     }
 );
 
+// ИЗБРАННОЕ
+
+// Получение Избранных
+export const getFavourities = createAsyncThunk<IFavourite[], IFavouriteFilter>(
+    'user/getFavourities',
+    async function(filterParams, {rejectWithValue}) {
+        try {
+            const response = await favouritiesAPI.getFavourities(filterParams);
+            console.log('RESPONCE-GET-FAV', response);
+            return response.data;
+        } catch (error) {
+            console.error('ERR:', error)
+            rejectWithValue(error)
+            return false;
+        }
+    }
+);
+
+// Создание Избранного
+export const createFavourite = createAsyncThunk<{}, ICreateFavourite, {state: {user: IUserState}}>(
+    'user/createFavourite',
+    async function(favourite, {rejectWithValue, dispatch, getState}) {
+        try {
+            const response = await favouritiesAPI.createFavourite(favourite);
+            console.log('RESPONCE-CREATE-FAV', response);
+
+            const customerId = getState().user.customerProfile?.id;
+            if(!!customerId) {
+                await dispatch(getFavourities({customerId: customerId}));
+            }
+            
+        } catch (error) {
+            console.error('ERR:', error)
+            rejectWithValue(error)
+            return false;
+        }
+    }
+);
+
+// Удаление Избранного
+export const deleteFavourite = createAsyncThunk<{}, IDeleteFavourite, {state: {user: IUserState}}>(
+    'user/deleteFavourite',
+    async function(favourite, {rejectWithValue, dispatch, getState}) {
+        try {
+            const response = await favouritiesAPI.deleteFavourite(favourite);
+            console.log('RESPONCE-DELETE-FAV', response);
+            const customerId = getState().user.customerProfile?.id;
+            if(!!customerId) {
+                await dispatch(getFavourities({customerId: customerId}));
+            }
+        } catch (error) {
+            console.error('ERR:', error)
+            rejectWithValue(error)
+            return false;
+        }
+    }
+);
+
 const userSlice = createSlice({
     name: 'user',
     initialState,
@@ -217,6 +277,7 @@ const userSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder
+            // ПОЛЬЗОВАТЕЛЬСКАЯ ИНФОРМАЦИЯ
             .addCase(getCustomerData.pending, (state, action) => {
                 state.loader = true;
             })
@@ -239,6 +300,7 @@ const userSlice = createSlice({
                 state.role = 'supplier';
                 state.loader = false;
             })
+            // ПРОДУКТЫ
             .addCase(createProduct.pending, (state, action) => {
                 state.loader = true;
             })
@@ -250,6 +312,20 @@ const userSlice = createSlice({
             })
             .addCase(getSupplierProducts.fulfilled, (state, action) => {
                 state.supplierProducts = action.payload;
+                state.loader = false;
+            })
+            // ИЗБРАННОЕ
+            .addCase(getFavourities.pending, (state, action) => {
+                state.loader = true;
+            })
+            .addCase(getFavourities.fulfilled, (state, action) => {
+                state.custFavourities = action.payload;
+                state.loader = false;
+            })
+            .addCase(createFavourite.pending, (state, action) => {
+                state.loader = true;
+            })
+            .addCase(createFavourite.fulfilled, (state, action) => {
                 state.loader = false;
             })
             

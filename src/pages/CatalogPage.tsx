@@ -11,7 +11,7 @@ import * as authSelectors from '../store/selectors/authSelectors';
 import * as catalogSelectors from '../store/selectors/catalogSelectors';
 import * as cartSelectors from '../store/selectors/cartSelectors';
 import { useAppDispatch, useAppSelector } from "../hooks/useRedux";
-import { getCustomerData, getSupplierData } from "../store/slices/userSlice";
+import { getCustomerData, getFavourities, getSupplierData } from "../store/slices/userSlice";
 import { useNavigate } from "react-router-dom";
 import { getProductsByFilter } from "../store/slices/catalogSlice";
 import { createCart, getCart, getOrders } from "../store/slices/cartSlice";
@@ -23,6 +23,7 @@ const CatalogPage: React.FC<{}> = () => {
     const getCustomerProfile = useAppSelector(userSelectors.customerProfile);
     const getSupplierProfile = useAppSelector(userSelectors.supplierProfile);
     const catalogProducts = useAppSelector(catalogSelectors.products);
+    const favouriteProducts = useAppSelector(userSelectors.custFavourities);
     const cartId = useAppSelector(cartSelectors.cartId);
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
@@ -65,6 +66,17 @@ const CatalogPage: React.FC<{}> = () => {
                 await dispatch( getProductsByFilter({categoryId: categoryId}) );
             } else {
                 await dispatch( getProductsByFilter({}) );
+            }
+        } catch (error) {
+            console.error('ERR: getProducts()');
+        }
+        
+    }
+
+    const getFavouritiesProduct = async () => {
+        try {
+            if(!!getCustomerProfile) {
+                await dispatch(getFavourities({customerId: getCustomerProfile.id}));
             }
         } catch (error) {
             console.error('ERR: getProducts()');
@@ -128,6 +140,9 @@ const CatalogPage: React.FC<{}> = () => {
 
         // Получение заказов
         getOrdersByCartId();
+
+        // Получаем Избранное
+        getFavouritiesProduct();
     },[])
     return(
         <Box sx={{
@@ -148,7 +163,7 @@ const CatalogPage: React.FC<{}> = () => {
                 overflowY: 'scroll'
             }}>
                 <Container maxWidth="xl" sx={{mb:3}}>
-                    <JetProductCards products={catalogProducts} />
+                    <JetProductCards products={catalogProducts} favourities={favouriteProducts} />
                 </Container>
 
                 <JetDialog open={dialog}  onClose={onCloseDialog}>

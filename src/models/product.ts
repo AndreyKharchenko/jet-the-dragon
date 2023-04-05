@@ -1,14 +1,5 @@
 import { Moment } from "moment"
 // СОДЕРЖИТ ИНТЕРФЕЙСЫ ПРОДУКТОВ
-export interface IProduct { // TO-DO: remove
-    id: number,
-    name: string,
-    qty: number,
-    price: number,
-    image: string,
-    isChoose?: boolean,
-    isFavourite?: boolean
-}
 
 // Информация о продукте (используем при создании)
 export interface ICreateProduct {
@@ -44,6 +35,23 @@ export interface CharakValue {
 
 export interface Charak extends CharakValue {
     id: number,
+}
+
+export interface ICreateFavourite {
+    customerId: string,
+    productId: string
+}
+
+export interface IFavourite extends ICreateFavourite {
+    id: string
+}
+
+export interface IDeleteFavourite {
+    favouriteId: string
+}
+
+export interface IFavouriteFilter {
+    customerId: string
 }
 
 

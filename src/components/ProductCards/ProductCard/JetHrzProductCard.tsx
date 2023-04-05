@@ -23,8 +23,6 @@ const JetHrzProductCard: React.FC<IHrzProductCard> = ({data, image, type, edit, 
         className={style.item}
         key={data.id}
         onClick={onclick}
-        sx={{zIndex:-1}}
-        
       >
         <Box className={style.itemContainer}>
           {type == 'ORDER' && 
