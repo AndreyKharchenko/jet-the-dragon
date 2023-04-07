@@ -10,6 +10,7 @@ import JetSupplierMain from './JetSupplierMain';
 import JetSupplierProducts from './JetSupplierProducts';
 import { useAppSelector } from '../../../hooks/useRedux';
 import * as userSelectors from '../../../store/selectors/userSelectors';
+import { logout } from '../../../api/userManager';
 interface ISupplierProfileProps {
   page: string | null
 }
@@ -32,7 +33,9 @@ const JetSupplierProfile: React.FC<ISupplierProfileProps> = ({ page }) => {
   const handleListItemClick = (item: mocItem) => {
 
     if (item.page.toUpperCase() == 'EXIT') {
-      navigate(`/login/supplier`);
+      logout();
+      //navigate(`/login/supplier`);
+      navigate(`/`);
       return;
     }
 

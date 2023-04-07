@@ -3,7 +3,7 @@ import { ICartFilter, ICreateCart, ICreatePayment } from "../models/cart";
 import { IGetCategory, IProductFilter } from "../models/catalog";
 import { IImages } from "../models/images";
 import { ICustomerLoginForm, ISupplierLoginForm } from "../models/login";
-import { ICreateOrder, IDeleteOrder, IUpdateOrder } from "../models/order";
+import { ICreateOrder, IDeleteOrder, IOrdersFilter, IUpdateOrder } from "../models/order";
 import { ICreateFavourite, ICreateProduct, IDeleteFavourite, IDeleteProduct, IFavouriteFilter, IUpdateProduct } from "../models/product";
 import { IUpdateSupplier } from "../models/user";
 
@@ -72,6 +72,9 @@ export const catalogAPI = {
 export const ordersAPI = {
     getOrders(data: any) {
         return instance.get(`orders`, {params: data});
+    },
+    getOrdersConfirmPay(data: IOrdersFilter) {
+        return instance.get(`ordersconfirmpay`, {params: data});
     },
     createOrder(data: ICreateOrder) {
         return instance.post(`orders`, data);

@@ -86,12 +86,13 @@ const CatalogPage: React.FC<{}> = () => {
 
     const initialCart = async () => {
         if(!!getCustomerProfile) {
-            console.log('1')
             try {
                 const response = await dispatch(getCart({customerId: getCustomerProfile?.id}));
-                console.log('response', response);
-                
-                if(typeof response.payload == 'object' && !!response.payload && !Object.keys(response.payload).length) {
+                if(
+                    (typeof response.payload == 'object' && !!response.payload && !Object.keys(response.payload).length)
+                    || 
+                    (typeof response.payload == 'boolean' && !response.payload)
+                ) {
                     console.log('СОЗДАЕМ КОРЗИНУ');
                     await dispatch(createCart({deliveryType:'', paymentType: '', comment:''}));
                 }
@@ -104,7 +105,11 @@ const CatalogPage: React.FC<{}> = () => {
 
     const getOrdersByCartId = async () => {
         try {
-            await dispatch(getOrders({cartId: cartId})); 
+            console.log('CARTID', cartId)
+            if(!!cartId) {
+                await dispatch(getOrders({cartId: cartId})); 
+            }
+            
         } catch (error) {
             console.error('ERR: getOrdersByCartId()');
         }

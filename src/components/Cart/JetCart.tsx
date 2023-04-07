@@ -13,6 +13,7 @@ import * as catalogSelectors from '../../store/selectors/catalogSelectors';
 import style from './JetCart.module.css';
 import { IFullOrder, IUpdateOrder } from '../../models/order';
 import { ICreatePayment, IUpdateCart, PaymentDetailsForm } from '../../models/cart';
+import moment from 'moment';
 
 
 const JetCart: React.FC<{}> = () => {
@@ -49,7 +50,8 @@ const JetCart: React.FC<{}> = () => {
                 productId: cartItem.productId,
                 cartId: cartId,
                 orderId: cartItem.id,
-                count: cartItem.count + 1
+                count: cartItem.count + 1,
+                createDate: moment()
             }
             try {
                 await dispatch(updateOrder(order))
@@ -65,7 +67,8 @@ const JetCart: React.FC<{}> = () => {
                 productId: cartItem.productId,
                 cartId: cartId,
                 orderId: cartItem.id,
-                count: cartItem.count - 1
+                count: cartItem.count - 1,
+                createDate: moment()
             }
             try {
                 if(cartItem.count - 1 == 0) {

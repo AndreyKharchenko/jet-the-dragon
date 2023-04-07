@@ -18,6 +18,7 @@ export interface ICreateProduct {
 
 export interface IFullProduct extends ICreateProduct {
     id: string,
+    productImages?: string[]
 }
 
 export interface IUpdateProduct extends ICreateProduct {

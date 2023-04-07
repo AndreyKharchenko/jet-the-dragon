@@ -2,47 +2,49 @@ import React from 'react'
 import { Avatar, Box, Chip, Divider, ListItem, ListItemAvatar, ListItemText } from '@mui/material';
 import style from '../JetOrder.module.css'
 import { flexAround } from '../../../themes/commonStyles';
+import { IFullOrder } from '../../../models/order';
+import moment from 'moment';
 
 interface IJetOrderItem {
-  id: number;
-  image: string;
-  onclick: (id: number) => void 
+  order: IFullOrder;
+  onclick: (id: string) => void 
 }
 
-
-
-const JetOrderItem: React.FC<IJetOrderItem> = ({id, image, onclick}) => {
+const JetOrderItem: React.FC<IJetOrderItem> = ({order, onclick}) => {
   return (
     <>
       <ListItem
         className={style.item}
-        key={id}
-        onClick={ () => onclick(id)} 
+        key={order.id}
+        onClick={ () => onclick(order.id)} 
         sx={{zIndex:-1}}
       >
         <Box className={style.itemContainer}>
           <Box className={style.itemHeader}>
-            Заказ № 554563 
-            <Chip label="Получено" color="primary" size="small" sx={{ ml: 1 }} />
+            <Box className={style.itemHeaderTitle}>Заказ № {order.id}</Box>
+            <Chip label="Оплачено" color="primary" size="small" sx={{ ml: 1 }} />
           </Box>
           <Divider sx={{ mt: 3 }} />
           <Box sx={{ ...flexAround, mt: 2 }}>
             <ListItemAvatar className={style.itemAvatar}>
               <Avatar
-                src={image}
                 sx={{ width: '80px', height: '80px' }}
               />
             </ListItemAvatar>
             <ListItemText
-              primary={`Товар 1`}
+              primary={
+                <React.Fragment>
+                  <Box sx={{fontSize:'20px', fontWeight:'600'}}>{order.productName}</Box>
+                </React.Fragment>
+              }
               secondary={
                 <React.Fragment>
-                  <Box sx={{ mb: 0.2 }}>{`Дата оформления - 24.02.2023`}</Box>
-                  <Box>{`Дата доставки - 27.02.2023`}</Box>
+                  <Box sx={{ mb: 0.2 }}>{`Дата оформления - ${moment(order.createDate).format('DD.MM.YYYY')}`}</Box>
+                  <Box>{`Дата доставки - ${moment(order.createDate).add(2,'days').format('DD.MM.YYYY')}`}</Box>
                 </React.Fragment>
               }
             />
-            <Box className={style.itemPrice}>1000 ₽</Box>
+            <Box className={style.itemPrice}>{order.productPrice} ₽</Box>
           </Box>
         </Box>
       </ListItem>

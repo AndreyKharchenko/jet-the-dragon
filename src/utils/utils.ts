@@ -35,21 +35,50 @@ export function getIcon(name: string) {
     return icon;
 }
 
-export function getCartStatus(name: string) {
+export function getDeliveryType(name: string | undefined) {
     let status = null;
-    switch (name.toUpperCase()) {
-        case 'CREATED':
-            status = 0;
-            break;
-        case 'CONFIRMPAY':
-            status = 1;
-            break;
-        case 'DELIVERED':
-            status = 2;
-            break;
-        default:
-            status = 0;
+    if(!!name) {
+        switch (name.toUpperCase()) {
+            case 'PICKUP':
+                status = 'Самовывоз';
+                break;
+            case 'COURIER':
+                status = 'Доставка курьером';
+                break;
+            default:
+                status = 'Самовывоз';
+        }
     }
+    
 
     return status;
 }
+
+export function getPaymentType(name: string | undefined) {
+    let status = null;
+    if(!!name) {
+        switch (name.toUpperCase()) {
+            case 'CASH':
+                status = 'Наличными при получении';
+                break;
+            case 'BANKCARD':
+                status = 'Оплата банковской картой онлайн';
+                break;
+            default:
+                status = 'Самовывоз';
+        }
+    }
+    
+
+    return status;
+}
+
+export function getImage(id: string) {
+    if(!!id) {
+        return `https://localhost:7099/images/${id}.png`;
+    }
+
+    return `https://localhost:7099/images/default.png`;
+    
+}
+

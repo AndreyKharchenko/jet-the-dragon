@@ -1,9 +1,10 @@
 import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
 import { User } from "oidc-client";
-import { favouritiesAPI, imagesAPI, userAPI } from "../../api/api";
+import { favouritiesAPI, imagesAPI, ordersAPI, userAPI } from "../../api/api";
 import { ICustomerLoginForm, ISupplierLoginForm } from "../../models/login";
 import { ICreateFavourite, ICreateProduct, IDeleteFavourite, IDeleteProduct, IFavourite, IFavouriteFilter, IFullProduct, IUpdateProduct } from "../../models/product";
 import { ICustomer, ISupplier, IUpdateCustomer, IUpdateSupplier } from "../../models/user";
+import { ICustomerPaymentOrder, IFullOrder, IOrdersFilter } from "../../models/order";
 
 interface IUserState {
     customerProfile: null | ICustomer,
@@ -11,6 +12,7 @@ interface IUserState {
     role: 'customer' | 'supplier' | null,
     supplierProducts: IFullProduct[] | [],
     custFavourities: IFavourite[],
+    custPaymentOrders: ICustomerPaymentOrder[],
     loader: boolean
 }
 
@@ -19,6 +21,7 @@ const initialState: IUserState = {
     supplierProfile: null,
     supplierProducts: [],
     custFavourities: [],
+    custPaymentOrders: [],
     role: 'supplier',
     loader: false
 }
@@ -267,6 +270,22 @@ export const deleteFavourite = createAsyncThunk<{}, IDeleteFavourite, {state: {u
     }
 );
 
+// Получение купленных Order
+export const getOrdersConfirmPay = createAsyncThunk<ICustomerPaymentOrder[], IOrdersFilter>(
+    'user/getOrdersConfirmPay',
+    async function(filterParams, {rejectWithValue}) {
+        try {
+            const response = await ordersAPI.getOrdersConfirmPay(filterParams);
+            console.log('RESPONCE-GET-ORDERS-CONFIRM', response);
+            return response.data;
+        } catch (error) {
+            console.error('ERR:', error)
+            rejectWithValue(error)
+            return false;
+        }
+    }
+);
+
 const userSlice = createSlice({
     name: 'user',
     initialState,
@@ -326,6 +345,13 @@ const userSlice = createSlice({
                 state.loader = true;
             })
             .addCase(createFavourite.fulfilled, (state, action) => {
+                state.loader = false;
+            })
+            .addCase(getOrdersConfirmPay.pending, (state, action) => {
+                state.loader = true;
+            })
+            .addCase(getOrdersConfirmPay.fulfilled, (state, action) => {
+                state.custPaymentOrders = action.payload;
                 state.loader = false;
             })
             

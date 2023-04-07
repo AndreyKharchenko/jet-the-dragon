@@ -1,7 +1,10 @@
+import { Moment } from "moment"
+
 export interface ICreateOrder {
     productId: string,
     cartId: string,
     count: number,
+    createDate: Moment | object
 }
 
 export interface IUpdateOrder extends ICreateOrder {
@@ -22,6 +25,14 @@ export interface IFullOrder extends ICreateOrder {
     productUnit: string
 }
 
+export interface ICustomerPaymentOrder extends IFullOrder {
+    createDate: Moment | object,
+    cartPaymentType: string,
+    cartDeliveryType: string,
+    supplierAddres: string, 
+}
+
 export interface IOrdersFilter {
     cartId?: string
+    customerId?: string
 }

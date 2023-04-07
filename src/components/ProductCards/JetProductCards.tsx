@@ -11,6 +11,7 @@ import * as cartSelectors from '../../store/selectors/cartSelectors';
 import * as userSelectors from '../../store/selectors/userSelectors';
 import JetProductSkeleton from "../common/JetProductSkeleton";
 import { createFavourite, deleteFavourite } from "../../store/slices/userSlice";
+import moment from "moment";
 
 interface IJetProductCard {
     prodTitle?: string;
@@ -61,6 +62,7 @@ const JetProductCards: React.FC<IJetProductCard> = ({prodTitle, products, favour
                         productId: product.id, 
                         cartId: cartId, 
                         count: 1,
+                        createDate: moment()
                     };
 
                     await dispatch(createOrder(order));
@@ -112,6 +114,8 @@ const JetProductCards: React.FC<IJetProductCard> = ({prodTitle, products, favour
 
 
     useEffect(() => {
+        console.log('ORDERS', cartOrders);
+        console.log('FAV', favourities)
         const ordersProductsIds = cartOrders.map(order => order.productId);
         setAddedProducts([...addedProducts, ...ordersProductsIds]);
 
@@ -120,15 +124,13 @@ const JetProductCards: React.FC<IJetProductCard> = ({prodTitle, products, favour
             setFavProducts([...favProducts, ...favProductsIds]);
         }
         
-    },[])
+    },[cartOrders, favourities])
 
     return(
         <>
-            { !!prodTitle &&
+            { !!prodTitle && 
             <Box className={style.productTitle}>
-                <Badge badgeContent={products.length.toString()} color="primary">
-                    {prodTitle}
-                </Badge>
+                <Badge badgeContent={products.length.toString()} color="primary">{prodTitle}</Badge> 
             </Box>
             }
             <Box sx={{mx:2}}>

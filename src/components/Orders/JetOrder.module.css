@@ -7,6 +7,7 @@
     border-radius: 7px!important;
     cursor: pointer;
     margin-bottom: 1rem!important;
+    z-index: 11!important;
 }
 
 .itemContainer {
@@ -18,6 +19,12 @@
 .itemHeader {
     position: absolute!important;
     top: 10px!important;
+    display: flex;
+}
+
+.itemHeaderTitle {
+    font-size: 20px;
+    font-weight: 600;
 }
 
 .itemAvatar {
@@ -25,7 +32,7 @@
 }
 
 .itemPrice {
-    font-size: 18px!important;
+    font-size: 22px!important;
     font-weight: 600;
     margin-right: 0.5rem;
 }

@@ -5,6 +5,7 @@ import style from '../JetProductCard.module.css';
 import { dFlex, flexBetween } from "../../../themes/commonStyles";
 import { IFullProduct } from '../../../models/product';
 import JetSpinner from "../../common/JetSpinner";
+import { getImage } from "../../../utils/utils";
 
 interface PropsType {
     card: IFullProduct,
@@ -37,7 +38,11 @@ const JetProductCard: React.FC<PropsType> = (props) => {
                     height={275}
                     className={style.productImage}
                     component="img"
-                    image={'https://media.istockphoto.com/photos/fresh-ribeye-steaks-at-the-butcher-shop-picture-id174479270?b=1&k=20&m=174479270&s=170667a&w=0&h=TYgt4dvEDrINqUr_BqgPWvWul7KTcBGz6L1-STZfNJ8='}
+                    image={ 
+                        !!props.card.productImages?.length ? getImage(props.card.productImages[props.card.productImages.length - 1])
+                        :
+                        getImage('')
+                    }
                 />
                 <CardContent className={style.productContent}>
                     <Box sx={flexBetween}>

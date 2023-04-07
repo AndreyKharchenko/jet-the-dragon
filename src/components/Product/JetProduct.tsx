@@ -16,6 +16,7 @@ import { getSupplierData } from '../../store/slices/userSlice';
 import { createOrder } from '../../store/slices/cartSlice';
 import { ICreateOrder } from '../../models/order';
 import { deleteOrder } from '../../store/slices/cartSlice';
+import { getImage } from '../../utils/utils';
 
 interface IJetProduct {
   product: IFullProduct
@@ -99,7 +100,7 @@ const JetProduct: React.FC<IJetProduct> = ({product}) => {
           count = Math.round(prodCount/1000);
         }
         console.log('co', count)
-        const order: ICreateOrder = {productId: product.id, cartId: cartId, count: count };
+        const order: ICreateOrder = {productId: product.id, cartId: cartId, count: count, createDate: moment() };
         await dispatch(createOrder(order));
       }
       
@@ -132,9 +133,9 @@ const JetProduct: React.FC<IJetProduct> = ({product}) => {
     } 
   }, [])
 
-  const sliderData = [
+  /*const sliderData = [
     {id:1, img: 'https://media.istockphoto.com/photos/fresh-ribeye-steaks-at-the-butcher-shop-picture-id174479270?b=1&k=20&m=174479270&s=170667a&w=0&h=TYgt4dvEDrINqUr_BqgPWvWul7KTcBGz6L1-STZfNJ8='},
-  ]
+  ]*/
   
   return (
     <Box className={style.productContainer}>
@@ -167,18 +168,28 @@ const JetProduct: React.FC<IJetProduct> = ({product}) => {
           <Carousel
           indicators={false}
           >
-            {
-              sliderData.map(it => {
+            { !!product.productImages?.length && 
+              product.productImages.map(it => {
                 return(
                   <Paper>
                     <Box
                       component="img"
                       className={style.productImg}
-                      src={it.img}
+                      src={getImage(it)}
                     />
                   </Paper>
                 )
               })
+            }
+
+            { !product.productImages?.length &&
+              <Paper>
+                <Box
+                  component="img"
+                  className={style.productImg}
+                  src={getImage('')}
+                />
+              </Paper>
             }
           </Carousel>
         </Box>
