@@ -55,4 +55,20 @@ export interface IFavouriteFilter {
     customerId: string
 }
 
+export interface newPhoto { 
+    id: number, 
+    photo: File
+}
+
+export interface ICreateProductRequest {
+    productData: ICreateProduct, 
+    addImages: File[], 
+}
+
+export interface IUpdateProductRequest {
+    productData: IUpdateProduct, 
+    addImages: File[],
+    deleteImages: string[]
+}
+
 

@@ -5,18 +5,18 @@ import {Edit, Star, DeleteOutline} from '@mui/icons-material';
 import { flexAround, flexBetween, flexBetweenCenter } from '../../../themes/commonStyles';
 import { IFullProduct } from '../../../models/product';
 import moment from 'moment';
+import { getImage } from '../../../utils/utils';
 
 interface IHrzProductCard {
   data: IFullProduct;
-  image?: string;
   type?: 'PRODUCT' | 'ORDER',
   edit?: boolean,
   onEdit?: (id: string | number) => void,
   onclick?: () => void,
-  onDelete?: (id: string) => void
+  onDelete?: (id: string, name: string) => void
 }
 
-const JetHrzProductCard: React.FC<IHrzProductCard> = ({data, image, type, edit, onclick, onEdit, onDelete}) => {
+const JetHrzProductCard: React.FC<IHrzProductCard> = ({data, type, edit, onclick, onEdit, onDelete}) => {
   return (
     <>
       <ListItem
@@ -49,7 +49,7 @@ const JetHrzProductCard: React.FC<IHrzProductCard> = ({data, image, type, edit, 
                     </IconButton>
                   </Box>
                   <Box>
-                    <IconButton onClick={() => onDelete(data.id)} color='primary'>
+                    <IconButton onClick={() => onDelete(data.id, data.name)} color='primary'>
                       <DeleteOutline color='error' />
                     </IconButton>
                   </Box>
@@ -61,7 +61,7 @@ const JetHrzProductCard: React.FC<IHrzProductCard> = ({data, image, type, edit, 
           <Box sx={{ ...flexAround, mt: 2 }}>
             <ListItemAvatar className={style.itemAvatar}>
               <Avatar 
-                src={image}
+                src={getImage(data.productImages?.length ? data.productImages[data.productImages?.length - 1] : '')}
                 sx={{width:'80px', height: '80px'}}
               />
             </ListItemAvatar>

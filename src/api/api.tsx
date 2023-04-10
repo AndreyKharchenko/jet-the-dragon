@@ -1,7 +1,7 @@
 import axios from "axios";
 import { ICartFilter, ICreateCart, ICreatePayment } from "../models/cart";
 import { IGetCategory, IProductFilter } from "../models/catalog";
-import { IImages } from "../models/images";
+import { IDeleteImage, IImages } from "../models/images";
 import { ICustomerLoginForm, ISupplierLoginForm } from "../models/login";
 import { ICreateOrder, IDeleteOrder, IOrdersFilter, IUpdateOrder } from "../models/order";
 import { ICreateFavourite, ICreateProduct, IDeleteFavourite, IDeleteProduct, IFavouriteFilter, IUpdateProduct } from "../models/product";
@@ -102,6 +102,9 @@ export const cartAPI = {
 export const imagesAPI = {
     createImages(data: FormData) {
         return instance.post(`image`, data);
+    },
+    deleteImages(data: IDeleteImage) {
+        return instance.delete(`image`, {params: data});
     }
 }
 

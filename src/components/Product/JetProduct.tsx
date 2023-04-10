@@ -133,10 +133,6 @@ const JetProduct: React.FC<IJetProduct> = ({product}) => {
     } 
   }, [])
 
-  /*const sliderData = [
-    {id:1, img: 'https://media.istockphoto.com/photos/fresh-ribeye-steaks-at-the-butcher-shop-picture-id174479270?b=1&k=20&m=174479270&s=170667a&w=0&h=TYgt4dvEDrINqUr_BqgPWvWul7KTcBGz6L1-STZfNJ8='},
-  ]*/
-  
   return (
     <Box className={style.productContainer}>
       <Box className={style.productTitle}>

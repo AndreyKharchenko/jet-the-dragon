@@ -5,6 +5,7 @@ import { flexAround, flexBetweenCenter } from '../../../themes/commonStyles';
 import style from '../JetCart.module.css';
 import moment from 'moment';
 import { IFullOrder } from '../../../models/order';
+import { getImage } from '../../../utils/utils';
 
 interface ICartItem {
     order: IFullOrder,
@@ -34,6 +35,7 @@ const JetCartItem: React.FC<ICartItem> = ({ order, removeCartItem, decrementQty,
                         <ListItemAvatar className={style.cartItemAvatar}>
                             <Avatar
                                 sx={{ width: '100px', height: '100px' }}
+                                src={getImage(order.productImage)}
                             />
                         </ListItemAvatar>
                         <ListItemText

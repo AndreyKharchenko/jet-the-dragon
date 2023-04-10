@@ -73,12 +73,16 @@ export function getPaymentType(name: string | undefined) {
     return status;
 }
 
-export function getImage(id: string) {
+export function getImage(id: string | undefined) {
     if(!!id) {
         return `https://localhost:7099/images/${id}.png`;
     }
 
     return `https://localhost:7099/images/default.png`;
     
+}
+
+export function uuid() {
+    return Math.floor(Math.random() * 1000);
 }
 

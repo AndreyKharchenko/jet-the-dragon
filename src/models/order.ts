@@ -16,15 +16,18 @@ export interface IDeleteOrder {
     cartId: string
 }
 
+// Using in Cart
 export interface IFullOrder extends ICreateOrder {
     id: string,
     productName: string,
     productManufactureDate: object,
-    productImageId: string,
+    //productImageId: string,
     productPrice: number,
-    productUnit: string
+    productUnit: string,
+    productImage: string
 }
 
+// Using in Customer Profile
 export interface ICustomerPaymentOrder extends IFullOrder {
     createDate: Moment | object,
     cartPaymentType: string,

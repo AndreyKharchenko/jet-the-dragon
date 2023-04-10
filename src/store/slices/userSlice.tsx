@@ -2,7 +2,7 @@ import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
 import { User } from "oidc-client";
 import { favouritiesAPI, imagesAPI, ordersAPI, userAPI } from "../../api/api";
 import { ICustomerLoginForm, ISupplierLoginForm } from "../../models/login";
-import { ICreateFavourite, ICreateProduct, IDeleteFavourite, IDeleteProduct, IFavourite, IFavouriteFilter, IFullProduct, IUpdateProduct } from "../../models/product";
+import { ICreateFavourite, ICreateProduct, ICreateProductRequest, IDeleteFavourite, IDeleteProduct, IFavourite, IFavouriteFilter, IFullProduct, IUpdateProduct, IUpdateProductRequest } from "../../models/product";
 import { ICustomer, ISupplier, IUpdateCustomer, IUpdateSupplier } from "../../models/user";
 import { ICustomerPaymentOrder, IFullOrder, IOrdersFilter } from "../../models/order";
 
@@ -140,7 +140,7 @@ export const getSupplierProducts = createAsyncThunk<IFullProduct[]>(
 
 
 // Создание продукта (доступно только поставщику)
-export const createProduct = createAsyncThunk<{}, {productData: ICreateProduct, images: []}>(
+export const createProduct = createAsyncThunk<{}, ICreateProductRequest>(
     'user/createProduct',
     async function(product, {rejectWithValue, dispatch}) {
         try {
@@ -149,15 +149,17 @@ export const createProduct = createAsyncThunk<{}, {productData: ICreateProduct, 
 
             const {productId} = response.data;
             if(!!productId) {
-                let images = new FormData();
-                images.append('subjectId', productId);
-                images.append('images', new Blob([...product.images], {type: "octet/stream"}));
-                /*product.images.map(img => {
-                    images.append('images', img);
-                })*/
-                console.log('FORM DATA', images.get('images'));
-                console.log('FORM DATA2', images);
-                await imagesAPI.createImages(images);
+                // На создание картинки
+                let addedImages = new FormData();
+                addedImages.append('subjectId', productId);
+                
+                if(product.addImages.length) {
+                    product.addImages.map(img => {
+                        addedImages.append('images', img);
+                    })
+
+                    await imagesAPI.createImages(addedImages);
+                }
             }
 
             await dispatch(getSupplierProducts());
@@ -170,22 +172,36 @@ export const createProduct = createAsyncThunk<{}, {productData: ICreateProduct, 
 );
 
 // Обновление продукта (доступно только поставщику)
-export const updateProduct = createAsyncThunk<{}, {productData: IUpdateProduct, images: []}>(
+export const updateProduct = createAsyncThunk<{}, IUpdateProductRequest>(
     'user/updateProduct',
     async function(product, {rejectWithValue, dispatch}) {
         try {
             const response = await userAPI.updateProduct(product.productData);
             console.log('RESPONCE-UPDATE-PRODUCT', response)
 
-            let images = new FormData();
-            images.append('subjectId', product.productData.productId);
-            //images.append('images', new Blob([...product.images], {type: "octet/stream"}));
-            product.images.map(img => {
-                images.append('images', img);
-            })
-            console.log('FORM DATA UPDATE', images.get('images'));
-            console.log('FORM DATA2', images);
-            await imagesAPI.createImages(images);
+            // На создание картинки
+            let addedImages = new FormData();
+            addedImages.append('subjectId', product.productData.productId);
+            
+            if(product.addImages.length) {
+                product.addImages.map(img => {
+                    addedImages.append('images', img);
+                })
+
+                await imagesAPI.createImages(addedImages);
+            }
+            
+
+            // На удаление картинки
+            if(product.deleteImages.length) {
+                await Promise.all(
+                    product.deleteImages.map(async (img) => {
+                        await imagesAPI.deleteImages({imageId: img});
+                    })
+                );
+            }
+            
+            
 
             await dispatch(getSupplierProducts());
         } catch (error) {

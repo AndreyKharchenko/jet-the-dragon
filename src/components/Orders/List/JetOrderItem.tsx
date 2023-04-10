@@ -2,11 +2,12 @@ import React from 'react'
 import { Avatar, Box, Chip, Divider, ListItem, ListItemAvatar, ListItemText } from '@mui/material';
 import style from '../JetOrder.module.css'
 import { flexAround } from '../../../themes/commonStyles';
-import { IFullOrder } from '../../../models/order';
+import { ICustomerPaymentOrder } from '../../../models/order';
 import moment from 'moment';
+import { getImage } from '../../../utils/utils';
 
 interface IJetOrderItem {
-  order: IFullOrder;
+  order: ICustomerPaymentOrder;
   onclick: (id: string) => void 
 }
 
@@ -29,6 +30,7 @@ const JetOrderItem: React.FC<IJetOrderItem> = ({order, onclick}) => {
             <ListItemAvatar className={style.itemAvatar}>
               <Avatar
                 sx={{ width: '80px', height: '80px' }}
+                src={getImage(order.productImage)}
               />
             </ListItemAvatar>
             <ListItemText
