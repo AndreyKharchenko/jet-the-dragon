@@ -25,6 +25,20 @@
     background-color: #FFF;
 }
 
+.titleNotFixed {
+    font-weight: 600;
+    font-size: 32px;
+    line-height: 40px;
+    margin-left: 2rem;
+    margin-bottom: 2rem;
+    display: flex;
+    justify-content: flex-start;
+}
+
+.analyticToolbar {
+    margin-bottom: 2rem;
+}
+
 .submitBtn {
     font-weight: 500!important;
     font-size: 0.875rem!important;
