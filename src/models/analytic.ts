@@ -11,3 +11,20 @@ export interface IColumnTable {
     numeric: boolean;
     disablePadding: boolean;
 }
+
+export interface IBarChartData {
+    name: string, 
+    value: number
+}
+
+export interface IAnalyticFilter {
+    supplierId: string
+}
+
+export interface IAnalytic {
+    productId: string,
+    productName: string,
+    productSalesCount: number,
+    productProfit: number,
+    supplierId: string,
+}

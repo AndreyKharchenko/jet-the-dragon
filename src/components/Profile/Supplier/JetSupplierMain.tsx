@@ -84,14 +84,14 @@ const JetSupplierMain = () => {
 
   return (
     <>
-      {getLoader && 
+      {/*getLoader && 
         <Box sx={{mt:10}}>
           <JetSpinner size={85} />
         </Box>
-      }
+      */}
 
 
-      {!getLoader && 
+      {//!getLoader && 
       <Box sx={{ ml: '5%' }}>
         <Box sx={{ ml: 8 }}>
           <Avatar

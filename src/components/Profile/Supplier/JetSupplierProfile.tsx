@@ -11,6 +11,8 @@ import JetSupplierProducts from './JetSupplierProducts';
 import { useAppSelector } from '../../../hooks/useRedux';
 import * as userSelectors from '../../../store/selectors/userSelectors';
 import { logout } from '../../../api/userManager';
+import JetSpinner from '../../common/JetSpinner';
+import { flexBetweenCenter } from '../../../themes/commonStyles';
 interface ISupplierProfileProps {
   page: string | null
 }
@@ -74,22 +76,25 @@ const JetSupplierProfile: React.FC<ISupplierProfileProps> = ({ page }) => {
             }
           </Box>
         </JetSidebar>
-        <Box sx={(!getLoader) ? {mt:2} : {width:'100%',...flexCenter}}>
+        <Box sx={(!getLoader) ? {mt:2} : {width:'100%', mt: 12, ...flexCenter }}>
+          {getLoader && <JetSpinner size={85} />}
           {
-            (page?.toUpperCase() == 'MAIN')
+            (page?.toUpperCase() == 'MAIN' && !getLoader)
             ?
               <JetSupplierMain />
             :
-            (page?.toUpperCase() == 'PRODUCTS')
+            (page?.toUpperCase() == 'PRODUCTS' && !getLoader)
             ?
               <JetSupplierProducts />
             :
-            (page?.toUpperCase() == 'ANALYTICS')
+            (page?.toUpperCase() == 'ANALYTICS' && !getLoader)
             ?
               <JetSupplierAnalytics />
             :
             null
-          }
+          } 
+
+          
         </Box>
       </Box>
     </>

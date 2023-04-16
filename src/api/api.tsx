@@ -6,6 +6,7 @@ import { ICustomerLoginForm, ISupplierLoginForm } from "../models/login";
 import { ICreateOrder, IDeleteOrder, IOrdersFilter, IUpdateOrder } from "../models/order";
 import { ICreateFavourite, ICreateProduct, IDeleteFavourite, IDeleteProduct, IFavouriteFilter, IUpdateProduct } from "../models/product";
 import { IUpdateSupplier } from "../models/user";
+import { IAnalyticFilter } from "../models/analytic";
 
 const token = localStorage.getItem('TOKEN');
 //console.log('TOKEN', token)
@@ -123,5 +124,11 @@ export const favouritiesAPI = {
     },
     deleteFavourite(data: IDeleteFavourite) {
         return instance.delete(`favourities`, {params: data});
+    }
+}
+
+export const analyticAPI = {
+    getSupplierAnalytic(data: IAnalyticFilter) {
+        return instance.get(`analytic`, {params: data});
     }
 }

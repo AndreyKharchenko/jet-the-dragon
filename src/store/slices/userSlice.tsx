@@ -1,16 +1,18 @@
 import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
 import { User } from "oidc-client";
-import { favouritiesAPI, imagesAPI, ordersAPI, userAPI } from "../../api/api";
+import { analyticAPI, favouritiesAPI, imagesAPI, ordersAPI, userAPI } from "../../api/api";
 import { ICustomerLoginForm, ISupplierLoginForm } from "../../models/login";
 import { ICreateFavourite, ICreateProduct, ICreateProductRequest, IDeleteFavourite, IDeleteProduct, IFavourite, IFavouriteFilter, IFullProduct, IUpdateProduct, IUpdateProductRequest } from "../../models/product";
 import { ICustomer, ISupplier, IUpdateCustomer, IUpdateSupplier } from "../../models/user";
 import { ICustomerPaymentOrder, IFullOrder, IOrdersFilter } from "../../models/order";
+import { IAnalytic, IAnalyticFilter } from "../../models/analytic";
 
 interface IUserState {
     customerProfile: null | ICustomer,
     supplierProfile: null | ISupplier,
     role: 'customer' | 'supplier' | null,
     supplierProducts: IFullProduct[] | [],
+    supplierAnalytic: IAnalytic[] | [],
     custFavourities: IFavourite[],
     custPaymentOrders: ICustomerPaymentOrder[],
     loader: boolean
@@ -20,9 +22,10 @@ const initialState: IUserState = {
     customerProfile: null,
     supplierProfile: null,
     supplierProducts: [],
+    supplierAnalytic: [],
     custFavourities: [],
     custPaymentOrders: [],
-    role: 'supplier',
+    role: null,
     loader: false
 }
 
@@ -302,6 +305,22 @@ export const getOrdersConfirmPay = createAsyncThunk<ICustomerPaymentOrder[], IOr
     }
 );
 
+// Получение аналитики поставщика
+export const getSupplierAnalytic = createAsyncThunk<IAnalytic[], IAnalyticFilter>(
+    'user/getSupplierAnalytic',
+    async function(filterParams, {rejectWithValue}) {
+        try {
+            const response = await analyticAPI.getSupplierAnalytic(filterParams);
+            console.log('RESPONCE-GET-ANALYTIC', response);
+            return response.data;
+        } catch (error) {
+            console.error('ERR:', error)
+            rejectWithValue(error)
+            return false;
+        }
+    }
+);
+
 const userSlice = createSlice({
     name: 'user',
     initialState,
@@ -368,6 +387,14 @@ const userSlice = createSlice({
             })
             .addCase(getOrdersConfirmPay.fulfilled, (state, action) => {
                 state.custPaymentOrders = action.payload;
+                state.loader = false;
+            })
+            // АНАЛИТИКА
+            .addCase(getSupplierAnalytic.pending, (state, action) => {
+                state.loader = true;
+            })
+            .addCase(getSupplierAnalytic.fulfilled, (state, action) => {
+                state.supplierAnalytic = action.payload;
                 state.loader = false;
             })
             

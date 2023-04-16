@@ -10,6 +10,7 @@ import JetIcon from '../../common/JetIcon';
 import { login, mgr } from '../../../api/userManager';
 import * as cartSelectors from '../../../store/selectors/cartSelectors';
 import * as authSelectors from '../../../store/selectors/authSelectors';
+import * as userSelectors from '../../../store/selectors/userSelectors';
 import { authActions } from '../../../store/slices/authSlice';
 
 
@@ -17,9 +18,13 @@ const JetHeaderUtils: React.FC<{}> = () => {
     const [anchormElm, setAnchormElm] = useState<null | HTMLElement>(null);
     const [regMenu, setRegMenu] = useState<boolean>(false);
     const [regChange, setRegChange] = useState<boolean>(false);
+    const [location, setLocation] = useState<string>('');
     const input = useInput();
     const orders = useAppSelector(cartSelectors.orders);
     const token = useAppSelector(authSelectors.accessToken);
+    const customerCity = useAppSelector(userSelectors.customerCity);
+    const supplierCity = useAppSelector(userSelectors.supplierCity);
+    const userRole = useAppSelector(userSelectors.userRole);
 
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
@@ -51,7 +56,14 @@ const JetHeaderUtils: React.FC<{}> = () => {
     }
     const onCart = () => { navigate('/cart'); }
 
-    const mocRegion = 'Краснодарский край';
+    //const mocRegion = 'Краснодарский край';
+    useEffect(() => {
+        if(userRole == 'customer') {
+            setLocation(customerCity || '');
+        } else {
+            setLocation(supplierCity || '');
+        }
+    },[])
     
     return(
         <>
@@ -62,7 +74,7 @@ const JetHeaderUtils: React.FC<{}> = () => {
                         endIcon={regMenu ? <KeyboardArrowUp /> : <KeyboardArrowDown />}
                         className={style.regionBtnMenu}
                     >
-                        {mocRegion}
+                        {location}
                     </Button>
                     <Box sx={{...flexBetween}}>
                         <Tooltip title="Войти">
@@ -122,7 +134,7 @@ const JetHeaderUtils: React.FC<{}> = () => {
                         </Box>
                         :
                         <Box sx={{...flexBetween, padding:'0 10px'}}>
-                            <Box className={style.regName}>{mocRegion}</Box>
+                            <Box className={style.regName}>{location}</Box>
                             <Box>
                                 <Button 
                                     variant="text" 

@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react'
 import { IColumnTable, IRowTable } from '../../models/analytic'
 import { Box, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TableSortLabel, styled, tableCellClasses } from '@mui/material'
 import { Moment } from 'moment';
+import { dFlex, flexBetweenCenter } from '../../themes/commonStyles';
 
 interface IDataTable {
     rows: IRowTable[],
@@ -15,7 +16,7 @@ type valuesForCalculating = 'productSalesCount' | 'productProfit';
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
         backgroundColor: theme.palette.primary.main,
-        color: theme.palette.common.white,
+        color: '#FFF',
     },
     [`&.${tableCellClasses.body}`]: {
         fontSize: 14,
@@ -95,12 +96,15 @@ const JetDataTable: React.FC<IDataTable> = ({ rows, columns }) => {
                                             sortDirection={orderBy === column.id ? order : false}
                                             padding={column.disablePadding ? 'none' : 'normal'}
                                         >
-                                            <TableSortLabel sx={{
+                                            <TableSortLabel sx={{ color: '#FFF!important',
                                                     '&:hover': {
                                                         color: '#FFF'
                                                     },
                                                     '&:focus': {
                                                         color: '#FFF'
+                                                    },
+                                                    '& .MuiTableSortLabel-icon': {
+                                                        color: '#FFF !important',
                                                     },
                                                 }}
                                                 active={orderBy === column.id}
@@ -140,7 +144,7 @@ const JetDataTable: React.FC<IDataTable> = ({ rows, columns }) => {
                 </Table>
             </TableContainer>
 
-            <Box sx={{mt:3}}>
+            <Box sx={{mt:3, ...flexBetweenCenter}}>
                 <Box sx={{mb:1}}>Всего товаров: {allRows.length}</Box>
                 <Box sx={{mb:1}}>Общее число продаж: {totalProductsSalesCount}</Box>
                 <Box>Суммарная выручка: {totalProductsProfit}</Box>
