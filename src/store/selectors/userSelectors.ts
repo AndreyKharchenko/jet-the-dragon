@@ -15,7 +15,7 @@ export const supplierProducts = (state: RootState) => state.user.supplierProduct
 export const supplierAnalytic = (state: RootState) => state.user.supplierAnalytic;
 
 export const userRole = (state: RootState) => state.user.role;
-export const role = (state: RootState) => state.user.role;
+//export const role = (state: RootState) => state.user.role;
 export const loader = (state: RootState) => state.user.loader;
 
 

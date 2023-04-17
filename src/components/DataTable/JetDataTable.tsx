@@ -79,6 +79,11 @@ const JetDataTable: React.FC<IDataTable> = ({ rows, columns }) => {
           : (a, b) => -descendingComparator(a, b, orderBy);
     }
 
+    useEffect(() => {
+        console.log('rows', rows);
+        setAllRows(rows);
+    }, [rows])
+
     return (
         <>
             <TableContainer component={Paper}>

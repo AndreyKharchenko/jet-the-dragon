@@ -77,17 +77,16 @@ const JetSupplierProfile: React.FC<ISupplierProfileProps> = ({ page }) => {
           </Box>
         </JetSidebar>
         <Box sx={(!getLoader) ? {mt:2} : {width:'100%', mt: 12, ...flexCenter }}>
-          {getLoader && <JetSpinner size={85} />}
           {
-            (page?.toUpperCase() == 'MAIN' && !getLoader)
+            (page?.toUpperCase() == 'MAIN')
             ?
               <JetSupplierMain />
             :
-            (page?.toUpperCase() == 'PRODUCTS' && !getLoader)
+            (page?.toUpperCase() == 'PRODUCTS')
             ?
               <JetSupplierProducts />
             :
-            (page?.toUpperCase() == 'ANALYTICS' && !getLoader)
+            (page?.toUpperCase() == 'ANALYTICS')
             ?
               <JetSupplierAnalytics />
             :

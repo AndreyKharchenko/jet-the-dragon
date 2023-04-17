@@ -240,7 +240,7 @@ const JetSupplierProducts = () => {
             Мои товары
           </Badge>
         </Box>
-        <Box sx={{ ml: 4, mt: 10 }}>
+        <Box sx={{ ml: 4 }}>
           {!!supplierProducts &&
             supplierProducts.map(it => {
               return (
@@ -306,7 +306,7 @@ const JetSupplierProducts = () => {
                       <Box sx={{ display: 'flex', alignItems: 'flex-end', mr: 1 }}>
                         <JetInput
                           name='price'
-                          label='Цена за 1 кг'
+                          label='Цена'
                           placeholder='Цена'
                           initialVal={currentProduct.price}
                           InputProps={{
@@ -329,7 +329,7 @@ const JetSupplierProducts = () => {
                       <Box>
                         <JetInput
                           name='shelfLife'
-                          label='Срок годности'
+                          label='Срок годности (дни)'
                           placeholder='Срок годности'
                           initialVal={currentProduct.shelfLife}
                         />
