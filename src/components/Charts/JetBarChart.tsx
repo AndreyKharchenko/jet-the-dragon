@@ -22,6 +22,7 @@ const JetBarChart: React.FC<IJetBarChart> = ({data}) => {
          .attr('height', h)
          .style('overflow', 'visible')
          .style('margin-top', '25px')
+         .style('margin-bottom', '25px')
          .style('margin-left', '75px')
          .style('font-weight', 'bold')
          

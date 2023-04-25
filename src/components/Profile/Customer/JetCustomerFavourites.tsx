@@ -13,6 +13,7 @@ const JetCustomerFavourites: React.FC<{}> = () => {
   
   useEffect(() => {
     const favouriteIds = favourities.map(it => it.productId);
+    console.log('favouriteIds', favouriteIds);
     const favProd = products.filter(it => {
       if(favouriteIds.indexOf(it.id) != -1) {
         return it;

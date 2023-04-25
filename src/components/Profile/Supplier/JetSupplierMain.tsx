@@ -97,7 +97,7 @@ const JetSupplierMain = () => {
           <Avatar
             sx={{ width: '100px', height: '100px' }}
           >
-            OP
+            {getSupplierProfile?.firstName[0] + '' + getSupplierProfile?.lastName[0]}
           </Avatar>
           <IconButton color="primary" aria-label="upload picture" component="label" sx={{ position: 'relative', top: '-30px', left: '70px' }}>
             <input hidden accept="image/*" type="file" />

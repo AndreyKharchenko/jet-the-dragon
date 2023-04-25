@@ -74,7 +74,7 @@ const JetCustomerMain = () => {
                 <Avatar 
                   sx={{ width:'100px', height:'100px' }}
                 >
-                  OP
+                  {getProfile?.firstName[0] + '' + getProfile?.lastName[0]}
                 </Avatar>
                 <IconButton color="primary" aria-label="upload picture" component="label" sx={{position:'relative', top:'-30px', left:'70px'}}>
                   <input hidden accept="image/*" type="file" />

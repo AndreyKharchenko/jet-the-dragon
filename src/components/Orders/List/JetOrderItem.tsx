@@ -8,7 +8,7 @@ import { getImage } from '../../../utils/utils';
 
 interface IJetOrderItem {
   order: ICustomerPaymentOrder;
-  onclick: (id: string) => void 
+  onclick: (id: string) => void;
 }
 
 const JetOrderItem: React.FC<IJetOrderItem> = ({order, onclick}) => {
@@ -18,11 +18,10 @@ const JetOrderItem: React.FC<IJetOrderItem> = ({order, onclick}) => {
         className={style.item}
         key={order.id}
         onClick={ () => onclick(order.id)} 
-        sx={{zIndex:-1}}
       >
         <Box className={style.itemContainer}>
           <Box className={style.itemHeader}>
-            <Box className={style.itemHeaderTitle}>Заказ № {order.id}</Box>
+            <Box className={style.itemHeaderTitle}>Заказ № {order.cartId}</Box>
             <Chip label="Оплачено" color="primary" size="small" sx={{ ml: 1 }} />
           </Box>
           <Divider sx={{ mt: 3 }} />

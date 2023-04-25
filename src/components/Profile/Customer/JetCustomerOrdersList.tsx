@@ -53,9 +53,9 @@ const JetCustomerOrdersList: React.FC<{}> = () => {
             Заказы
           </Badge>
         </Box>
-        <Box sx={{ml:4, mt:10}}>
+        <Box sx={{ml:4}}>
           {
-            custPaymentOrders.map(it => {
+            custPaymentOrders.map((it, index) => {
               return(
                 <JetOrderItem 
                   order={it} 
