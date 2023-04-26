@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Box, Button, Card, Tabs, Tab, Paper, Slider, Tooltip, Typography, List, ListItem, ListItemText } from '@mui/material';
+import { Box, Button, Card, Tabs, Tab, Paper, Slider, Tooltip, Typography, List, ListItem, ListItemText, TextField, Switch } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks/useRedux';
 import { dFlex, flexAround, flexBetween, flexEnd } from '../../themes/commonStyles';
@@ -17,6 +17,8 @@ import { createOrder } from '../../store/slices/cartSlice';
 import { ICreateOrder } from '../../models/order';
 import { deleteOrder } from '../../store/slices/cartSlice';
 import { getImage } from '../../utils/utils';
+import { FormProvider, useForm } from 'react-hook-form';
+import JetInput from '../common/form-components/JetInput';
 
 interface IJetProduct {
   product: IFullProduct
@@ -24,9 +26,13 @@ interface IJetProduct {
 
 type sliderSettingsType = {min: number, max: number, step: number, default: number};
 
+type wholesaleForm = {count: number};
+
 const JetProduct: React.FC<IJetProduct> = ({product}) => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const methods = useForm<wholesaleForm>();
+  
   const supplierId = useAppSelector(userSelectors.supplierId);
   const supplierData = useAppSelector(userSelectors.supplierProfile);
   const getToken = useAppSelector(authSelectors.accessToken); 
@@ -37,6 +43,7 @@ const JetProduct: React.FC<IJetProduct> = ({product}) => {
   const [sliderSettings, setSliderSettings] = React.useState<sliderSettingsType>({min: 500, max: 10000, default: 500, step: 500});
   const [isBuy, setBuy] = useState<boolean>(false);
   const [tab, setTab] = useState<number>(0);
+  const [isWholesale, setWholesale] = useState<boolean>(false);
 
   const handleCountChange = (event: Event, newValue: number | number[]) => {
     if (typeof newValue === 'number') {
@@ -46,6 +53,10 @@ const JetProduct: React.FC<IJetProduct> = ({product}) => {
 
   const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
     setTab(newValue);
+  };
+
+  const handleWholesaleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setWholesale(event.target.checked);
   };
 
   const onSupplier = (id: string) => {
@@ -93,14 +104,27 @@ const JetProduct: React.FC<IJetProduct> = ({product}) => {
     setBuy(true);
     try {
       if(!!cartId) {
-        console.log('PRODCO', prodCount)
-        let count = prodCount;
-        if(product.unit == '1000GRM') {
-          console.log('111s')
-          count = Math.round(prodCount/1000);
+        //let count = prodCount;
+        let count = null;
+        if(isWholesale) {
+          count = (product.unit == '1000GRM') ? methods.getValues('count') * 1000 : methods.getValues('count');
+        } else {
+          count = prodCount;
         }
-        console.log('co', count)
-        const order: ICreateOrder = {productId: product.id, cartId: cartId, count: count, createDate: moment() };
+
+        if(product.unit == '1000GRM') {
+          //count = Math.round(prodCount/1000);
+          count = Math.round(count/1000);
+        }
+
+        const order: ICreateOrder = {
+          productId: product.id, 
+          cartId: cartId, 
+          count: count, 
+          createDate: moment(),
+          isWholesale: isWholesale 
+        };
+
         await dispatch(createOrder(order));
       }
       
@@ -163,6 +187,7 @@ const JetProduct: React.FC<IJetProduct> = ({product}) => {
         <Box className={style.imageContainer}>
           <Carousel
           indicators={false}
+          autoPlay={!!product.productImages && product.productImages.length > 1}
           >
             { !!product.productImages?.length && 
               product.productImages.map(it => {
@@ -211,19 +236,51 @@ const JetProduct: React.FC<IJetProduct> = ({product}) => {
               </Box>
 
               <Box sx={{mt: 2, mb: 2}}>
-                <Box>Укажите количество продукта: {valueLabelFormat(prodCount)}</Box>
-                <Slider
-                  value={prodCount}
-                  min={sliderSettings.min}
-                  max={sliderSettings.max}
-                  defaultValue={sliderSettings.default}
-                  step={sliderSettings.step}
-                  getAriaValueText={valueLabelFormat}
-                  valueLabelFormat={valueLabelFormat}
-                  onChange={handleCountChange}
-                  valueLabelDisplay="auto"
-                  aria-labelledby="non-linear-slider"
-                />
+                <Box sx={{mb:1}}>
+                  <Tooltip title="Оптовый заказ (заказ более 10 кг)" placement="top">
+                    <React.Fragment>
+                      <Typography component='span' sx={{textDecoration:'underline'}}>Заказть оптом? (от 10 кг/100шт)</Typography>
+                      <Switch checked={isWholesale} onChange={handleWholesaleChange} />
+                    </React.Fragment>
+                  </Tooltip>
+                </Box>
+
+                {!isWholesale && 
+                  <React.Fragment>
+                    <Box>Укажите количество продукта: {valueLabelFormat(prodCount)}</Box>
+                    <Slider
+                      value={prodCount}
+                      min={sliderSettings.min}
+                      max={sliderSettings.max}
+                      defaultValue={sliderSettings.default}
+                      step={sliderSettings.step}
+                      getAriaValueText={valueLabelFormat}
+                      valueLabelFormat={valueLabelFormat}
+                      onChange={handleCountChange}
+                      valueLabelDisplay="auto"
+                      aria-labelledby="non-linear-slider"
+                    />
+                  </React.Fragment>
+                }
+
+                {isWholesale &&
+                  <React.Fragment>
+                    <FormProvider {...methods}>
+                      <form>
+                        <JetInput 
+                          name='count' 
+                          label='Количество продукта (кг/шт)' 
+                          placeholder='Количество продукта (кг/шт)' 
+                          variant='outlined'
+                          fullWidth={true}
+                        />
+                      </form>
+                    </FormProvider>
+                    
+                  </React.Fragment>
+
+                }
+
               </Box>
 
               <Box sx={{ mb: 2 }}>

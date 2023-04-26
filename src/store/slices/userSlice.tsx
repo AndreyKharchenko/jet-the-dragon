@@ -4,7 +4,7 @@ import { analyticAPI, favouritiesAPI, imagesAPI, ordersAPI, userAPI } from "../.
 import { ICustomerLoginForm, ISupplierLoginForm } from "../../models/login";
 import { ICreateFavourite, ICreateProduct, ICreateProductRequest, IDeleteFavourite, IDeleteProduct, IFavourite, IFavouriteFilter, IFullProduct, IUpdateProduct, IUpdateProductRequest } from "../../models/product";
 import { ICustomer, ISupplier, IUpdateCustomer, IUpdateSupplier } from "../../models/user";
-import { ICustomerPaymentOrder, IFullOrder, IOrdersFilter } from "../../models/order";
+import { ICustomerPaymentOrder, IFullOrder, IOrdersFilter, ISupplierActiveOrder } from "../../models/order";
 import { IAnalytic, IAnalyticFilter } from "../../models/analytic";
 
 interface IUserState {
@@ -13,6 +13,7 @@ interface IUserState {
     role: 'customer' | 'supplier' | null,
     supplierProducts: IFullProduct[] | [],
     supplierAnalytic: IAnalytic[] | [],
+    supplierActiveOrders: ISupplierActiveOrder[] | [],
     custFavourities: IFavourite[],
     custPaymentOrders: ICustomerPaymentOrder[],
     loader: boolean
@@ -23,6 +24,7 @@ const initialState: IUserState = {
     supplierProfile: null,
     supplierProducts: [],
     supplierAnalytic: [],
+    supplierActiveOrders: [],
     custFavourities: [],
     custPaymentOrders: [],
     role: null,
@@ -305,6 +307,22 @@ export const getOrdersConfirmPay = createAsyncThunk<ICustomerPaymentOrder[], IOr
     }
 );
 
+// Получение купленных Order (для сборки поставщиком)
+export const getSupplierActiveOrders = createAsyncThunk<ISupplierActiveOrder[], IOrdersFilter>(
+    'user/getSupplierActiveOrders',
+    async function(filterParams, {rejectWithValue}) {
+        try {
+            const response = await ordersAPI.getSupplierActiveOrders(filterParams);
+            console.log('RESPONCE-GET-ORDERS-SUPPLIER-ACTIVE', response);
+            return response.data;
+        } catch (error) {
+            console.error('ERR:', error)
+            rejectWithValue(error)
+            return false;
+        }
+    }
+);
+
 // Получение аналитики поставщика
 export const getSupplierAnalytic = createAsyncThunk<IAnalytic[], IAnalyticFilter>(
     'user/getSupplierAnalytic',
@@ -382,11 +400,19 @@ const userSlice = createSlice({
             .addCase(createFavourite.fulfilled, (state, action) => {
                 state.loader = false;
             })
+            // ORDERS (КУПЛЕННЫЕ)
             .addCase(getOrdersConfirmPay.pending, (state, action) => {
                 state.loader = true;
             })
             .addCase(getOrdersConfirmPay.fulfilled, (state, action) => {
                 state.custPaymentOrders = action.payload;
+                state.loader = false;
+            })
+            .addCase(getSupplierActiveOrders.pending, (state, action) => {
+                state.loader = true;
+            })
+            .addCase(getSupplierActiveOrders.fulfilled, (state, action) => {
+                state.supplierActiveOrders = action.payload;
                 state.loader = false;
             })
             // АНАЛИТИКА

@@ -77,6 +77,9 @@ export const ordersAPI = {
     getOrdersConfirmPay(data: IOrdersFilter) {
         return instance.get(`ordersconfirmpay`, {params: data});
     },
+    getSupplierActiveOrders(data: IOrdersFilter) {
+        return instance.get(`supplierordersactive`, {params: data});
+    },
     createOrder(data: ICreateOrder) {
         return instance.post(`orders`, data);
     },

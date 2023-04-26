@@ -13,6 +13,7 @@ export const supplierCity = (state: RootState) => state.user.supplierProfile?.ci
 export const supplierId = (state: RootState) => state.user.supplierProfile?.id;
 export const supplierProducts = (state: RootState) => state.user.supplierProducts;
 export const supplierAnalytic = (state: RootState) => state.user.supplierAnalytic;
+export const supplierActiveOrders = (state: RootState) => state.user.supplierActiveOrders;
 
 export const userRole = (state: RootState) => state.user.role;
 //export const role = (state: RootState) => state.user.role;

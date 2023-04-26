@@ -13,22 +13,24 @@ import * as userSelectors from '../../../store/selectors/userSelectors';
 import { logout } from '../../../api/userManager';
 import JetSpinner from '../../common/JetSpinner';
 import { flexBetweenCenter } from '../../../themes/commonStyles';
+import JetSupplierActiveOrders from './JetSupplierActiveOrders';
 interface ISupplierProfileProps {
   page: string | null
 }
 
-const mocdata: mocItem[] = [
+const listItems: mocItem[] = [
   { id: 1, label: 'Личный кабинет', icon: 'jet-account-outline', page: 'main' },
   { id: 2, label: 'Мои товары', icon: 'jet-products', page: 'products' },
-  { id: 3, label: 'Аналитика', icon: 'jet-analytics', page: 'analytics' },
-  { id: 4, label: 'Выход', icon: 'jet-exit', page: 'exit' },
+  { id: 3, label: 'Активные заказы', icon: 'jet-active-orders', page: 'active_orders' },
+  { id: 4, label: 'Аналитика', icon: 'jet-analytics', page: 'analytics' },
+  { id: 5, label: 'Выход', icon: 'jet-exit', page: 'exit' },
 ]
 
 type mocItem = { id: number, label: string, icon: string, page: string };
 
 const JetSupplierProfile: React.FC<ISupplierProfileProps> = ({ page }) => {
 
-  const [selectedItem, setSelectedItem] = useState<mocItem>(mocdata[0]);
+  const [selectedItem, setSelectedItem] = useState<mocItem>(listItems[0]);
   const navigate = useNavigate();
   const getLoader = useAppSelector(userSelectors.loader);
 
@@ -53,12 +55,12 @@ const JetSupplierProfile: React.FC<ISupplierProfileProps> = ({ page }) => {
           </Box>
           <Box>
             {
-              mocdata.map((item, index) => (
+              listItems.map((item, index) => (
                 <ListItemButton
                   selected={selectedItem.id === item.id}
                   key={item.label}
                   sx={{
-                    color: (index == mocdata.length - 1) ? '#eb4034' : '#3853D8',
+                    color: (index == listItems.length - 1) ? '#eb4034' : '#3853D8',
                     mb: 1,
                     borderLeft: (selectedItem.id === item.id) ? '5px solid #3853D8' : 'none',
                   }}
@@ -89,6 +91,10 @@ const JetSupplierProfile: React.FC<ISupplierProfileProps> = ({ page }) => {
             (page?.toUpperCase() == 'ANALYTICS')
             ?
               <JetSupplierAnalytics />
+            :
+            (page?.toUpperCase() == 'ACTIVE_ORDERS')
+            ?
+              <JetSupplierActiveOrders />
             :
             null
           } 

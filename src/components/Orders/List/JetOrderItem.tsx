@@ -1,7 +1,7 @@
 import React from 'react'
 import { Avatar, Box, Chip, Divider, ListItem, ListItemAvatar, ListItemText } from '@mui/material';
 import style from '../JetOrder.module.css'
-import { flexAround } from '../../../themes/commonStyles';
+import { flexAround, flexBetween } from '../../../themes/commonStyles';
 import { ICustomerPaymentOrder } from '../../../models/order';
 import moment from 'moment';
 import { getImage } from '../../../utils/utils';
@@ -21,8 +21,11 @@ const JetOrderItem: React.FC<IJetOrderItem> = ({order, onclick}) => {
       >
         <Box className={style.itemContainer}>
           <Box className={style.itemHeader}>
-            <Box className={style.itemHeaderTitle}>Заказ № {order.cartId}</Box>
-            <Chip label="Оплачено" color="primary" size="small" sx={{ ml: 1 }} />
+            
+              <Box className={style.itemHeaderTitle}>Заказ № {order.cartId}</Box>
+              <Chip label="Оплачено" color="primary" size="small" sx={{ ml: 1 }} />
+              {order.isWholesale && <Chip label="Оптом" color="primary" size="small" sx={{ ml: 1 }} />}
+            
           </Box>
           <Divider sx={{ mt: 3 }} />
           <Box sx={{ ...flexAround, mt: 2 }}>

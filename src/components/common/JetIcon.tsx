@@ -4,7 +4,7 @@ import {Apple, Egg, KebabDining, SetMeal, AccountCircleOutlined, Logout, PersonA
   GroupAddOutlined, ShoppingCartOutlined, ShoppingBagOutlined,
   ShoppingCartCheckoutOutlined, InventoryOutlined, BookmarkBorderOutlined,
   ExitToAppOutlined, Inventory, Timeline, SupervisedUserCircleOutlined, Storefront,
-  BakeryDining, DinnerDining, DonutSmall, BrightnessLow, Cake} from '@mui/icons-material';
+  BakeryDining, DinnerDining, DonutSmall, BrightnessLow, Cake, PendingActions} from '@mui/icons-material';
 type PropsType = {
     icon: string,
     fontSize?: 'small' | 'medium' | 'large'
@@ -34,6 +34,7 @@ const SvgIcon: React.FC<PropsType> = (props) => {
     { icon: <ExitToAppOutlined fontSize={props.fontSize || 'medium'} />, name: 'jet-exit' },
     { icon: <Inventory fontSize={props.fontSize || 'medium'} />, name: 'jet-products' },
     { icon: <Timeline fontSize={props.fontSize || 'medium'} />, name: 'jet-analytics' },
+    { icon: <PendingActions fontSize={props.fontSize || 'medium'} />, name: 'jet-active-orders' },
     { icon: <SupervisedUserCircleOutlined fontSize={props.fontSize || 'medium'} />, name: 'jet-supplier-outline' },
   ]
 

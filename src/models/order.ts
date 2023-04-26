@@ -4,7 +4,8 @@ export interface ICreateOrder {
     productId: string,
     cartId: string,
     count: number,
-    createDate: Moment | object
+    createDate: Moment | object,
+    isWholesale?: boolean,
 }
 
 export interface IUpdateOrder extends ICreateOrder {
@@ -33,9 +34,20 @@ export interface ICustomerPaymentOrder extends IFullOrder {
     cartPaymentType: string,
     cartDeliveryType: string,
     supplierAddres: string, 
+    isWholesale: boolean,
+}
+
+// Using in Supplier Profile
+export interface ISupplierActiveOrder extends IFullOrder {
+    createDate: Moment | object,
+    cartPaymentType: string,
+    cartDeliveryType: string,
+    supplierAddres: string, 
+    isWholesale: boolean,
 }
 
 export interface IOrdersFilter {
     cartId?: string
     customerId?: string
+    supplierId?: string
 }

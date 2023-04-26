@@ -62,7 +62,8 @@ const JetProductCards: React.FC<IJetProductCard> = ({prodTitle, products, favour
                         productId: product.id, 
                         cartId: cartId, 
                         count: 1,
-                        createDate: moment()
+                        createDate: moment(),
+                        isWholesale: false
                     };
 
                     await dispatch(createOrder(order));
