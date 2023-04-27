@@ -2,12 +2,13 @@ import React from 'react'
 import { CircularProgress } from '@mui/material';
 
 interface IJetSpinner {
-    size: number
+    size: number,
+    color?: 'error' | 'primary'
 }
 
-const JetSpinner: React.FC<IJetSpinner> = ({size}) => {
+const JetSpinner: React.FC<IJetSpinner> = ({size, color}) => {
     return (
-        <CircularProgress thickness={3} size={size} />
+        <CircularProgress thickness={3} size={size} color={color} />
     );
 }
 

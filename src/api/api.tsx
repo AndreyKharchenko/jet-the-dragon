@@ -1,5 +1,5 @@
 import axios from "axios";
-import { ICartFilter, ICreateCart, ICreatePayment } from "../models/cart";
+import { ICartFilter, ICreateCart, ICreateDelivered, ICreatePayment } from "../models/cart";
 import { IGetCategory, IProductFilter } from "../models/catalog";
 import { IDeleteImage, IImages } from "../models/images";
 import { ICustomerLoginForm, ISupplierLoginForm } from "../models/login";
@@ -115,6 +115,12 @@ export const imagesAPI = {
 export const paymentAPI = {
     createPayment(data: ICreatePayment) {
         return instance.post(`payment`, data);
+    }
+}
+
+export const deliveredAPI = {
+    createDelivered(data: ICreateDelivered) {
+        return instance.post(`delivered`, data);
     }
 }
 

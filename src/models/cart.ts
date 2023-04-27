@@ -1,3 +1,5 @@
+// Models for cart page elements and order operations
+
 export interface IBankCard {
     cardnumber: string,
     cardDt: object,
@@ -26,6 +28,11 @@ export interface ICartFilter {
 export interface ICreatePayment {
     cartId: string,
     payment: boolean
+}
+
+export interface ICreateDelivered {
+    cartId: string,
+    delivered: boolean
 }
 
 export interface PaymentDetailsForm {deliveryType: string, paymentType: string, comment: string};

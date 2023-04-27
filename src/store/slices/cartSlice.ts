@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { cartAPI, ordersAPI, paymentAPI } from "../../api/api";
-import { ICart, ICartFilter, ICreateCart, ICreatePayment, IUpdateCart } from "../../models/cart";
+import { cartAPI, deliveredAPI, ordersAPI, paymentAPI } from "../../api/api";
+import { ICart, ICartFilter, ICreateCart, ICreateDelivered, ICreatePayment, IUpdateCart } from "../../models/cart";
 import { ICreateOrder, IDeleteOrder, IFullOrder, IOrdersFilter, IUpdateOrder } from "../../models/order";
 
 interface ICartState {
@@ -132,6 +132,21 @@ export const createPayment = createAsyncThunk<{}, ICreatePayment>(
         try {
             const response = await paymentAPI.createPayment(payment);
             console.log('RESPONCE-CREATE-PAYMENT', response);
+        } catch (error) {
+            console.error('ERR:', error)
+            rejectWithValue(error)
+            return false;
+        }
+    }
+);
+
+// Подтверждение доставки
+export const createDelivered = createAsyncThunk<{}, ICreateDelivered>(
+    'cart/createDelivered',
+    async function(payment, {rejectWithValue}) {
+        try {
+            const response = await deliveredAPI.createDelivered(payment);
+            console.log('RESPONCE-CREATE-DELIVERED', response);
         } catch (error) {
             console.error('ERR:', error)
             rejectWithValue(error)
