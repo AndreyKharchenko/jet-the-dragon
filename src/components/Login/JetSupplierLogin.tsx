@@ -114,7 +114,7 @@ const JetSupplierLogin: React.FC<{}> = () => {
     <Grid>
       <Paper elevation={10} sx={{ padding: 20, height: '55vh', width: '55vw', margin: '20px auto' }}>
         <Grid container item alignItems='center' flexDirection='column' sx={{ position: 'absolute', top: '80px', left: '0px' }}>
-          <Avatar sx={{ backgroundColor: '#3853D8' }}><LockOutlined /></Avatar>
+          <Avatar sx={{ backgroundColor: '#ff4569' }}><LockOutlined /></Avatar>
           <Box sx={{ textTransform: 'uppercase' }}>
             <h2>Регистрация поставщика</h2>
           </Box>
@@ -125,7 +125,7 @@ const JetSupplierLogin: React.FC<{}> = () => {
             {
               steps.map((step, index) => (
                 <Step key={step}>
-                  <StepLabel color='#3853D8' onClick={() => handleStep(index)}>
+                  <StepLabel color='#ff4569' onClick={() => handleStep(index)}>
                     {step}
                   </StepLabel>
                 </Step>

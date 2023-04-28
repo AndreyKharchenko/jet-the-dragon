@@ -56,7 +56,7 @@ const JetFooter: React.FC<{}> = (props) => {
                 <Box>Покупателю</Box>
                 <Box>Магазинам</Box>
                 <Box>Правовая информация</Box>
-                <Box>Eco Space</Box>
+                <Box>FOOD SPACE</Box>
                 <IconButton onClick={openDrawer}>
                     <KeyboardArrowUpOutlined />
                 </IconButton>
@@ -130,12 +130,12 @@ const JetFooter: React.FC<{}> = (props) => {
                             </Box>
                         </Grid>
                         <Grid item xs={2}>
-                            <Box className={style.columnTitle}>Eco Space</Box>
+                            <Box className={style.columnTitle}>FOOD SPACE</Box>
                             <Typography 
                                 color='secondary'
                                 sx={{fontSize: '12px', mt:1}}
                             >
-                                © 2022 - { moment().format('YYYY') } «ECO SPACE»
+                                © 2022 - { moment().format('YYYY') } «FOOD SPACE»
                             </Typography>
                             <Box className={style.contacts}>
                                 <Link href={CONTACT_LINKS['TELEGRAM']}>

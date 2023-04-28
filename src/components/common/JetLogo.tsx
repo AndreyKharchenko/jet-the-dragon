@@ -9,8 +9,8 @@ const JetLogo: React.FC<{}> = () => {
             <AcUnitIcon fontSize="small" color={"primary"} />
             <Typography sx={{
                 ml:1,
-                //color: theme => theme.palette.primary.main,
-                color: '#FFF',
+                color: theme => theme.palette.primary.main,
+                //color: '#FFF',
                 fontSize: '20px',
                 fontWeight: 'bold'
             }} component='h3'>

@@ -80,10 +80,11 @@ const JetCustomerProfile: React.FC<IUserProfileProps> = ({orderId, page}) => {
                                 <ListItemButton
                                     selected={selectedItem.id === item.id}
                                     key={item.label}
-                                    sx={{ 
-                                        color: (index == listItems.length - 1) ? '#eb4034' : '#3853D8', 
-                                        mb: 1, 
-                                        borderLeft: (selectedItem.id === item.id) ? '5px solid #3853D8' : 'none',
+                                    sx={{
+                                        //color: (index == listItems.length - 1) ? '#eb4034' : '#673ab7',
+                                        color: '#673ab7',
+                                        mb: 1,
+                                        borderLeft: (selectedItem.id === item.id) ? '5px solid #673ab7' : 'none',
                                     }}
                                     onClick={() => handleListItemClick(item)}
                                 >

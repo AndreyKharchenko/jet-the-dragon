@@ -54,7 +54,7 @@ const JetBarChart: React.FC<IJetBarChart> = ({data}) => {
       svg.selectAll('rect')
         .data(data)
         .enter().append('rect')
-          .style('fill', '#3853D8')
+          .style('fill', '#ff4569')
           .attr('width', barWidth) 
           .attr('height', (val,i) => h - yScale(val.value))
           .attr('x', (val,i) => xScale(val.name) + 10)

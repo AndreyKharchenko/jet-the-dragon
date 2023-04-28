@@ -55,7 +55,7 @@ const JetUserLogin: React.FC<{}> = (props) => {
     <Grid>
       <Paper elevation={10} sx={{padding:20, height: '57vh', width: 280, margin: '20px auto'}}>
           <Grid container item alignItems='center' flexDirection='column' sx={{position:'absolute', top:'80px', left:'0px'}}>
-            <Avatar sx={{backgroundColor: '#3853D8'}}><LockOutlined /></Avatar>
+            <Avatar sx={{backgroundColor: '#ff4569'}}><LockOutlined /></Avatar>
             <Box sx={{textTransform: 'uppercase'}}>
               {/*<h2>{action.text}</h2>*/}
               <h2>Войти</h2>

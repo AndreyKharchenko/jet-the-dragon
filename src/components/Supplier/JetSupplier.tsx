@@ -45,7 +45,7 @@ const JetSupplier: React.FC<{}> = () => {
                 { !!supplierProducts.length && <JetProductCards products={supplierProducts} /> }
                 { !supplierProducts.length && 
                     <Box sx={{textAlign:'center'}}>
-                        <Box sx={{fontSize:'30px', fontWeight:'600', color: '#3853D8'}}>Нет товаров</Box> 
+                        <Box sx={{fontSize:'30px', fontWeight:'600', color: '#ff4569'}}>Нет товаров</Box> 
                     </Box>
                 }
             </Box>
