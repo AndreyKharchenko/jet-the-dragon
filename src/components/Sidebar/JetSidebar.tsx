@@ -16,7 +16,7 @@ const JetSidebar: React.FC<ISidebar> = (props) => {
             sx={{
                 width: 300,
                 flexShrink: 0,
-                [`& .MuiDrawer-paper`]: { width: 300,boxSizing: 'border-box'},
+                [`& .MuiDrawer-paper`]: { width: 300,boxSizing: 'border-box', backgroundColor: '#ff4569'},
             }}
         >
             <Box 

@@ -59,10 +59,15 @@ const JetSupplierProfile: React.FC<ISupplierProfileProps> = ({ page }) => {
                 <ListItemButton
                   selected={selectedItem.id === item.id}
                   key={item.label}
-                  sx={{
+                  /*sx={{
                     color: (index == listItems.length - 1) ? '#eb4034' : '#3853D8',
                     mb: 1,
                     borderLeft: (selectedItem.id === item.id) ? '5px solid #3853D8' : 'none',
+                  }}*/
+                  sx={{
+                    color: (index == listItems.length - 1) ? '#eb4034' : '#FFF',
+                    mb: 1,
+                    borderLeft: (selectedItem.id === item.id) ? '5px solid #FFF' : 'none',
                   }}
                   onClick={() => handleListItemClick(item)}
                 >
