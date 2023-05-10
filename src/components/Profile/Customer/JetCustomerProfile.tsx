@@ -72,7 +72,7 @@ const JetCustomerProfile: React.FC<IUserProfileProps> = ({orderId, page}) => {
             <Box sx={dFlex}>
                 <JetSidebar>
                     <Box sx={{mt:4, mb: 6}}>
-                        <JetLogo />
+                        <JetLogo color='#FFF' />
                     </Box>
                     <Box>
                         {
@@ -82,9 +82,9 @@ const JetCustomerProfile: React.FC<IUserProfileProps> = ({orderId, page}) => {
                                     key={item.label}
                                     sx={{
                                         //color: (index == listItems.length - 1) ? '#eb4034' : '#673ab7',
-                                        color: '#673ab7',
+                                        color: '#FFF',
                                         mb: 1,
-                                        borderLeft: (selectedItem.id === item.id) ? '5px solid #673ab7' : 'none',
+                                        borderLeft: (selectedItem.id === item.id) ? '5px solid #FFF' : 'none',
                                     }}
                                     onClick={() => handleListItemClick(item)}
                                 >

@@ -3,18 +3,22 @@ import { Box, Typography } from "@mui/material";
 import { flexCenter } from "../../themes/commonStyles";
 import AcUnitIcon from '@mui/icons-material/AcUnit';
 
-const JetLogo: React.FC<{}> = () => {
+type JetLogoProps = {
+    color?: string
+}
+
+const JetLogo: React.FC<JetLogoProps> = ({color}) => {
     return(
         <Box sx={flexCenter}>
-            <AcUnitIcon fontSize="small" color={"primary"} />
+            {/*<AcUnitIcon fontSize="small" color={"primary"} />*/}
             <Typography sx={{
                 ml:1,
-                color: theme => theme.palette.primary.main,
+                color: (!!color) ? color : theme => theme.palette.primary.main,
                 //color: '#FFF',
                 fontSize: '20px',
                 fontWeight: 'bold'
             }} component='h3'>
-                eco Space
+                FOOD SPACE
             </Typography>
         </Box>
     );

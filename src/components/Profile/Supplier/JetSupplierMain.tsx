@@ -6,7 +6,7 @@ import PhotoCamera from '@mui/icons-material/PhotoCamera';
 import EditIcon from '@mui/icons-material/Edit';
 import JetInput from '../../common/form-components/JetInput';
 import style from './JetSupplier.module.css';
-import { dFlex, flexBetweenCenter } from '../../../themes/commonStyles';
+import { dFlex, flexBetween, flexBetweenCenter } from '../../../themes/commonStyles';
 import JetSelect from '../../common/form-components/JetSelect';
 import JetDatePicker from '../../common/form-components/JetDatePicker';
 import moment, { Moment } from 'moment';
@@ -137,12 +137,9 @@ const JetSupplierMain = () => {
                   <JetInput name={'city'} label={'Город'} placeholder={'Город'} disabled={disabled} />
                 </Box>
 
-                <Box className={style.defaultInput}>
+                <Box sx={{...flexBetween, width:'20vw'}}>
                   <JetInput name={'street'} label={'Улица'} placeholder={'Улица'} disabled={disabled} />
-                </Box>
-
-                <Box className={style.defaultInput}>
-                  <JetInput name={'houseNumber'} label={'Дом'} placeholder={'Дом'} disabled={disabled} />
+                  <JetInput name={'houseNumber'} label={'Дом'} placeholder={'Дом'} disabled={disabled} sx={{width:'100px'}} />
                 </Box>
               </Box>
             </form>
@@ -150,7 +147,7 @@ const JetSupplierMain = () => {
 
           <FormProvider {...methods2}>
             <form>
-              <Box sx={{mt:5}}>
+              <Box sx={{}}>
                 <Box className={style.defaultInput}>
                   <JetSelect
                     selectLabel='Форма организации'
