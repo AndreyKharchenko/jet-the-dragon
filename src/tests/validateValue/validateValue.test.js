@@ -1,23 +1,15 @@
-import validateValue from "./validateValue";
+import { getPaymentType } from "../../utils/utils";
 
 describe('validateValue', () => {
-    test('Корректное значение', () => {
-        expect(validateValue(50)).toBe(true);
+    test('getPaymentType = CASH', () => {
+        expect(getPaymentType('cash')).toBe('Наличными при получении');
     })
 
-    test('Меньше корректного значения', () => {
-        expect(validateValue(-1)).toBe(false);
+    test('getPaymentType = BANKCARD', () => {
+        expect(getPaymentType('bankcard')).toBe('Оплата банковской картой онлайн');
     })
 
-    test('Больше корректного значения', () => {
-        expect(validateValue(101)).toBe(false);
-    })
-
-    test('Пограничное значение снизу', () => {
-        expect(validateValue(0)).toBe(true);
-    })
-
-    test('Пограничное значение сверху', () => {
-        expect(validateValue(100)).toBe(true);
+    test('getPaymentType = UNDEFINED', () => {
+        expect(getPaymentType(undefined)).toBe(null);
     })
 })
