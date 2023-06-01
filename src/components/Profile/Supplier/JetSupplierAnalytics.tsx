@@ -6,10 +6,11 @@ import JetBarChart from '../../Charts/JetBarChart';
 import { useAppDispatch, useAppSelector } from '../../../hooks/useRedux';
 import { getSupplierAnalytic } from '../../../store/slices/userSlice';
 import * as userSelectors from '../../../store/selectors/userSelectors';
-import {Leaderboard} from '@mui/icons-material';
+import {Leaderboard, Timeline} from '@mui/icons-material';
 import JetSpinner from '../../common/JetSpinner';
 import { flexCenter } from '../../../themes/commonStyles';
-import { IBarChartData, IRowTable } from '../../../models/analytic';
+import { IBarChartData, ILineChartData, IRowTable } from '../../../models/analytic';
+import JetLineChart from '../../Charts/JetLineChart';
 
 const columns = [
   {
@@ -45,8 +46,12 @@ const JetSupplierAnalytics = () => {
   const supplierId = useAppSelector(userSelectors.supplierId);
   const getLoader = useAppSelector(userSelectors.loader);
   const supplierAnalytic = useAppSelector(userSelectors.supplierAnalytic);
+
   const [barChart, setBarChart] = useState<boolean>(false);
   const [barChartData, setBarChartData] = useState<IBarChartData[]>([]);
+
+  const [lineChart, setLineChart] = useState<boolean>(false);
+  const [lineChartData, setLineChartData] = useState<ILineChartData[]>([]);
   const [dtRows, setDtRows] = useState<IRowTable[]>([]);
 
   const getAnalytic = async () => {
@@ -61,19 +66,13 @@ const JetSupplierAnalytics = () => {
   
 
   const displayBarChart = () => {
-    setBarChart(true);
-    
-    // Получаем данные для графика
-    const barChartData = supplierAnalytic.map(it => {
-      return {
-        name: it.productName,
-        value: it.productSalesCount
-      }
-    })
+    setBarChart(!barChart);
+    setLineChart(false);
+  }
 
-    console.log('barChartData', barChartData)
-
-    setBarChartData(barChartData);
+  const displayLineChart = () => {
+    setLineChart(!lineChart);
+    setBarChart(false);
   }
 
   useEffect(() => {
@@ -92,6 +91,24 @@ const JetSupplierAnalytics = () => {
     })
     console.log('ROWS', rows);
     setDtRows(rows);
+
+    // Получаем данные для графика (Line Chart)
+    const lineChartData = supplierAnalytic.map(it => {
+      return {
+        name: it.productName,
+        value: it.productSalesCount
+      }
+    })
+    setLineChartData(lineChartData);
+
+    // Получаем данные для диаграммы (Bar Chart)
+    const barChartData = supplierAnalytic.map(it => {
+      return {
+        name: it.productName,
+        value: it.productSalesCount
+      }
+    })
+    setBarChartData(barChartData);
     
   },[supplierAnalytic])
 
@@ -110,13 +127,23 @@ const JetSupplierAnalytics = () => {
               startIcon={<Leaderboard />} 
               onClick={displayBarChart}
             >
-              Динамика продаж
+              Диаграмма продаж
+            </Button>
+
+            <Button 
+              variant='outlined' 
+              startIcon={<Timeline />} 
+              onClick={displayLineChart}
+            >
+              График продаж
             </Button>
           </Box>
 
           <JetDataTable rows={dtRows} columns={columns} />
 
           { barChart && <JetBarChart data={barChartData} /> }
+
+          { lineChart && <JetLineChart data={lineChartData} /> }
 
         </React.Fragment>
       }
