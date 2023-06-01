@@ -16,6 +16,7 @@ const JetBarChart: React.FC<IJetBarChart> = ({data}) => {
      const w = 500;
      const h = 300;
      const barWidth = 35;
+     const maxValue = Math.max.apply(null, data.map(d => d.value)); // Maximum data value
      
      const svg = d3.select(svgRef.current)
          .attr('width', w)
@@ -33,7 +34,7 @@ const JetBarChart: React.FC<IJetBarChart> = ({data}) => {
           .padding(0.5);
          
      const yScale = d3.scaleLinear()
-         .domain([0,h])
+         .domain([0,maxValue])
          .range([h,0]);
  
      // setting the axes
@@ -41,36 +42,30 @@ const JetBarChart: React.FC<IJetBarChart> = ({data}) => {
          .ticks(data.length);
      
      const yAxis = d3.axisLeft(yScale)
-         .ticks(5);
+         .ticks(maxValue);
      
      svg.append('g')
          .call(xAxis)
          .attr('transform', `translate(0, ${h})`);
  
      svg.append('g')
-         .call(yAxis);
+         .call(yAxis)
+         .attr('transform', `translate(0, ${0})`);
  
      // setting the svg data
       svg.selectAll('rect')
         .data(data)
         .enter().append('rect')
-          .style('fill', '#ff4569')
+          .attr('fill', '#ff4569')
           .attr('width', barWidth) 
           .attr('height', (val,i) => h - yScale(val.value))
-          .attr('x', (val,i) => xScale(val.name) + 10)
+          .attr('x', (val,i) => xScale(val.name))
           .attr('y', (val,i) => h - val.value)
-          
+          .attr('transform', (val,i) => `translate(0,${ 5 - (h - yScale(val.value)) })`)
           .append('title')
           .text((d: any) => {
             return d.value;
           })
-
-          
-          
-          
-          
-            
-          
   }
 
   useEffect(() => {

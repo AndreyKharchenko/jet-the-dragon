@@ -45,9 +45,14 @@ const JetLineChart: React.FC<IJetLineChart> = ({ data }) => {
       .select('path')
       .attr('d', (value) => line(data))
       .attr('fill', 'none')
-      .attr('stroke', '#ff4569')
+      .attr('stroke', '#fff')
       .attr('stroke-width', 2)
       .attr('transform', `translate(-30,${-10})`)
+      .transition()
+      .duration(2000)
+      .delay(100)
+      .attr('stroke', '#ff4569')
+      .attr('stroke-width', 2)
 
     // Setup functions to draw X and Y Axes
     const xAxis: any = d3.axisBottom(xScale);
