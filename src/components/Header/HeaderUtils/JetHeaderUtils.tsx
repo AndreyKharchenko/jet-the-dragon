@@ -1,32 +1,33 @@
 import React, { useEffect, useState } from 'react';
 import { Badge, Box, Button, IconButton, Stack, Menu, TextField, Tooltip } from '@mui/material';
-import { flexAround, flexBetween, flexCenter } from '../../../themes/commonStyles';
-import {KeyboardArrowDown,KeyboardArrowUp, AccountCircle, ShoppingCartOutlined, Close} from '@mui/icons-material';
+import { flexBetween, flexCenter } from '../../../themes/commonStyles';
+import {KeyboardArrowDown,KeyboardArrowUp, ShoppingCartOutlined, Close} from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
-import { useAppDispatch, useAppSelector } from '../../../hooks/useRedux';
+import { useAppSelector } from '../../../hooks/useRedux';
 import style from '../JetHeader.module.css';
 import { useInput } from '../../../hooks/useInput';
 import JetIcon from '../../common/JetIcon';
-import { login, mgr } from '../../../api/userManager';
 import * as cartSelectors from '../../../store/selectors/cartSelectors';
-import * as authSelectors from '../../../store/selectors/authSelectors';
 import * as userSelectors from '../../../store/selectors/userSelectors';
-import { authActions } from '../../../store/slices/authSlice';
+
+interface IHeaderUtils {
+    isSupplierBtn: boolean,
+    onCustomer: () => void,
+    onSupplier: () => void
+}
 
 
-const JetHeaderUtils: React.FC<{}> = () => {
+const JetHeaderUtils: React.FC<IHeaderUtils> = ({isSupplierBtn, onCustomer, onSupplier}) => {
     const [anchormElm, setAnchormElm] = useState<null | HTMLElement>(null);
     const [regMenu, setRegMenu] = useState<boolean>(false);
     const [regChange, setRegChange] = useState<boolean>(false);
     const [location, setLocation] = useState<string>('');
     const input = useInput();
     const orders = useAppSelector(cartSelectors.orders);
-    const token = useAppSelector(authSelectors.accessToken);
     const customerCity = useAppSelector(userSelectors.customerCity);
     const supplierCity = useAppSelector(userSelectors.supplierCity);
     const userRole = useAppSelector(userSelectors.userRole);
 
-    const dispatch = useAppDispatch();
     const navigate = useNavigate();
 
     const onOpenReg = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -39,24 +40,8 @@ const JetHeaderUtils: React.FC<{}> = () => {
         setRegMenu(false);
     }
 
-    const onLogin = async (loginType: string) => {
-        
-        if(token) {  
-            navigate(`/my/main`); // Переход на личный кабинет
-        } else {
-            try {
-                const t = await mgr.signinRedirectCallback();
-                dispatch(authActions.userSigned({token: t}));
-            } catch (error) {
-                login();
-            }
-            
-        }
-        
-    }
     const onCart = () => { navigate('/cart'); }
-
-    //const mocRegion = 'Краснодарский край';
+    
     useEffect(() => {
         if(userRole == 'customer') {
             setLocation(customerCity || '');
@@ -78,10 +63,16 @@ const JetHeaderUtils: React.FC<{}> = () => {
                     </Button>
                     <Box sx={{...flexBetween}}>
                         <Tooltip title="Войти">
-                            <IconButton onClick={() => onLogin('customer')} color='primary' size='large'>
+                            <IconButton onClick={onCustomer} color='primary' size='large'>
                                 <JetIcon icon='jet-account-outline' fontSize='medium' />
                             </IconButton>
                         </Tooltip>
+
+                        {isSupplierBtn && <Tooltip title="Личный кабинет поставщика">
+                            <IconButton onClick={onSupplier} color='primary' size='large'>
+                                <JetIcon icon='jet-add-person' fontSize='medium' />
+                            </IconButton>
+                        </Tooltip>}
                             
                         <Tooltip title='Корзина'>
                             <IconButton onClick={onCart} color='primary' size='large'>
