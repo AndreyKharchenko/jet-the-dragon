@@ -35,3 +35,76 @@
     font-weight: 600;
     color: #ff4569;
 }
+
+.container {
+    /* margin-left: 2rem; */
+    display: flex;
+    flex-direction: column;
+    row-gap: 24px;
+}
+
+.techMapTitle {
+    top: 0;
+    font-weight: 600;
+    font-size: 32px;
+    line-height: 40px;
+}
+
+.techMapOptions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.techMap {
+    border: 1px solid black;
+}
+
+.techMapGraph {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 60px;
+}
+
+.techMapGraphTitle {
+    font-size: 30px;
+    line-height: 28px;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+.job {
+    position: relative;
+    width: 200px;
+    min-height: 150px;
+    background-color: #ff4569;
+    color: #fff;
+    font-weight: 600;
+    font-size: 18px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    row-gap: 8px;
+    border-radius: 8px;
+}
+
+.job::before {
+    position: absolute;
+    content: '';
+    top: 50%;
+    right: -60px;
+    width: 60px;
+    height: 2px;
+    background-color: #ff4569;
+}
+
+.fabs {
+    position: fixed!important;
+    right: 50px;
+    bottom: 100px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}

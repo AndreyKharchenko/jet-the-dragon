@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Box, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { dFlex, flexCenter } from '../../../themes/commonStyles';
@@ -14,6 +14,7 @@ import { logout } from '../../../api/userManager';
 import JetSpinner from '../../common/JetSpinner';
 import { flexBetweenCenter } from '../../../themes/commonStyles';
 import JetSupplierActiveOrders from './JetSupplierActiveOrders';
+import JetSupplierTechMap from './JetSupplierTechMap';
 interface ISupplierProfileProps {
   page: string | null
 }
@@ -23,7 +24,8 @@ const listItems: mocItem[] = [
   { id: 2, label: 'Мои товары', icon: 'jet-products', page: 'products' },
   { id: 3, label: 'Активные заказы', icon: 'jet-active-orders', page: 'active_orders' },
   { id: 4, label: 'Аналитика', icon: 'jet-analytics', page: 'analytics' },
-  { id: 5, label: 'Выход', icon: 'jet-exit', page: 'exit' },
+  { id: 5, label: 'Технологическая карта', icon: 'jet-tech-map', page: 'tech_map' },
+  { id: 6, label: 'Выход', icon: 'jet-exit', page: 'exit' },
 ]
 
 type mocItem = { id: number, label: string, icon: string, page: string };
@@ -46,6 +48,10 @@ const JetSupplierProfile: React.FC<ISupplierProfileProps> = ({ page }) => {
     setSelectedItem(item);
     navigate(`/my/${item.page}`);
   }
+
+  useEffect(() => {
+    console.log('TETET')
+  }, [])
   return (
     <>
       <Box sx={dFlex}>
@@ -79,7 +85,7 @@ const JetSupplierProfile: React.FC<ISupplierProfileProps> = ({ page }) => {
             }
           </Box>
         </JetSidebar>
-        <Box sx={(!getLoader) ? {mt:2} : {width:'100%', mt: 12, ...flexCenter }}>
+        <Box sx={(!getLoader) ? {mt:2} : {width:'100%', mt: 12, ...flexCenter, border: '1px solid black' }}>
           {
             (page?.toUpperCase() == 'MAIN')
             ?
@@ -96,6 +102,10 @@ const JetSupplierProfile: React.FC<ISupplierProfileProps> = ({ page }) => {
             (page?.toUpperCase() == 'ACTIVE_ORDERS')
             ?
               <JetSupplierActiveOrders />
+            :
+            (page?.toUpperCase() == 'TECH_MAP')
+            ?
+              <JetSupplierTechMap />
             :
             null
           } 

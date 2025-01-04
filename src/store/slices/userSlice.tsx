@@ -1,11 +1,12 @@
 import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
 import { User } from "oidc-client";
-import { analyticAPI, favouritiesAPI, imagesAPI, ordersAPI, userAPI } from "../../api/api";
+import { analyticAPI, favouritiesAPI, imagesAPI, ordersAPI, techMapAPI, userAPI } from "../../api/api";
 import { ICustomerLoginForm, ISupplierLoginForm } from "../../models/login";
 import { ICreateFavourite, ICreateProduct, ICreateProductRequest, IDeleteFavourite, IDeleteProduct, IFavourite, IFavouriteFilter, IFullProduct, IUpdateProduct, IUpdateProductRequest } from "../../models/product";
 import { ICustomer, ISupplier, IUpdateCustomer, IUpdateSupplier } from "../../models/user";
 import { ICustomerPaymentOrder, IFullOrder, IOrdersFilter, ISupplierActiveOrder } from "../../models/order";
 import { IAnalytic, IAnalyticFilter } from "../../models/analytic";
+import { ICreateOrUpdateTechMap, IDeleteTechMap, ITechMap, ITechMapFilter } from "../../models/techmap";
 
 interface IUserState {
     customerProfile: null | ICustomer,
@@ -13,6 +14,7 @@ interface IUserState {
     role: 'customer' | 'supplier' | null,
     supplierProducts: IFullProduct[] | [],
     supplierAnalytic: IAnalytic[] | [],
+    supplierTechMaps: ITechMap[] | [],
     supplierActiveOrders: ISupplierActiveOrder[] | [],
     custFavourities: IFavourite[],
     custPaymentOrders: ICustomerPaymentOrder[],
@@ -24,6 +26,7 @@ const initialState: IUserState = {
     supplierProfile: null,
     supplierProducts: [],
     supplierAnalytic: [],
+    supplierTechMaps: [],
     supplierActiveOrders: [],
     custFavourities: [],
     custPaymentOrders: [],
@@ -339,6 +342,66 @@ export const getSupplierAnalytic = createAsyncThunk<IAnalytic[], IAnalyticFilter
     }
 );
 
+// Получение технологических карт поставщика
+export const getSupplierTechMaps = createAsyncThunk<ITechMap[], ITechMapFilter>(
+    'user/getSupplierTechMaps',
+    async function(filterParams, {rejectWithValue}) {
+        try {
+            const response = await techMapAPI.getAllTechMap(filterParams);
+            return response.data;
+        } catch (error) {
+            console.error('ERR:', error)
+            rejectWithValue(error)
+            return false;
+        }
+    }
+);
+
+// Создание технологической карты
+export const createTechMap = createAsyncThunk<{}, ICreateOrUpdateTechMap>(
+    'user/createTechMap',
+    async function(techMap, {rejectWithValue, dispatch}) {
+        try {
+            await techMapAPI.createTechMap(techMap);
+            await dispatch(getSupplierTechMaps({}));
+        } catch (error) {
+            console.error('ERR:', error)
+            rejectWithValue(error)
+            return false;
+        }
+    }
+);
+
+// Обновление технологической карты
+export const updateTechMap = createAsyncThunk<{}, ICreateOrUpdateTechMap>(
+    'user/updateTechMap',
+    async function(techMap, {rejectWithValue, dispatch}) {
+        try {
+            await techMapAPI.updateTechMap(techMap);
+            await dispatch(getSupplierTechMaps({}));
+        } catch (error) {
+            console.error('ERR:', error)
+            rejectWithValue(error)
+            return false;
+        }
+    }
+);
+
+// Удаление технологической карты
+export const deleteTechMap = createAsyncThunk<{}, IDeleteTechMap>(
+    'user/deleteTechMap',
+    async function(techMap, {rejectWithValue, dispatch}) {
+        try {
+            await techMapAPI.deleteTechMap(techMap);
+            await dispatch(getSupplierTechMaps({}));
+        } catch (error) {
+            console.error('ERR:', error)
+            rejectWithValue(error)
+            return false;
+        }
+    }
+);
+
 const userSlice = createSlice({
     name: 'user',
     initialState,
@@ -421,6 +484,14 @@ const userSlice = createSlice({
             })
             .addCase(getSupplierAnalytic.fulfilled, (state, action) => {
                 state.supplierAnalytic = action.payload;
+                state.loader = false;
+            })
+            // Технологические карты
+            .addCase(getSupplierTechMaps.pending, (state, action) => {
+                state.loader = true;
+            })
+            .addCase(getSupplierTechMaps.fulfilled, (state, action) => {
+                state.supplierTechMaps = action.payload;
                 state.loader = false;
             })
             

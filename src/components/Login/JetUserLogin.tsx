@@ -58,7 +58,7 @@ const JetUserLogin: React.FC<{}> = (props) => {
             <Avatar sx={{backgroundColor: '#ff4569'}}><LockOutlined /></Avatar>
             <Box sx={{textTransform: 'uppercase'}}>
               {/*<h2>{action.text}</h2>*/}
-              <h2>Войти</h2>
+              <h2>Регистрация</h2>
             </Box>
           </Grid>
 

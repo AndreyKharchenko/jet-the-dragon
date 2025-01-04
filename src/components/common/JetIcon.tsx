@@ -4,7 +4,7 @@ import {Apple, Egg, KebabDining, SetMeal, AccountCircleOutlined, Logout, PersonA
   GroupAddOutlined, ShoppingCartOutlined, ShoppingBagOutlined,
   ShoppingCartCheckoutOutlined, InventoryOutlined, BookmarkBorderOutlined,
   ExitToAppOutlined, Inventory, Timeline, SupervisedUserCircleOutlined, Storefront,
-  BakeryDining, DinnerDining, DonutSmall, BrightnessLow, Cake, PendingActions} from '@mui/icons-material';
+  BakeryDining, DinnerDining, DonutSmall, BrightnessLow, Cake, PendingActions, AccountTree, DeleteOutlineOutlined} from '@mui/icons-material';
 type PropsType = {
     icon: string,
     fontSize?: 'small' | 'medium' | 'large'
@@ -36,6 +36,8 @@ const SvgIcon: React.FC<PropsType> = (props) => {
     { icon: <Timeline fontSize={props.fontSize || 'medium'} />, name: 'jet-analytics' },
     { icon: <PendingActions fontSize={props.fontSize || 'medium'} />, name: 'jet-active-orders' },
     { icon: <SupervisedUserCircleOutlined fontSize={props.fontSize || 'medium'} />, name: 'jet-supplier-outline' },
+    { icon: <AccountTree fontSize={props.fontSize || 'medium'} />, name: 'jet-tech-map' },
+    { icon: <DeleteOutlineOutlined fontSize={props.fontSize || 'medium'} />, name: 'jet-trash' },
   ]
 
   const icon = useMemo(() => {

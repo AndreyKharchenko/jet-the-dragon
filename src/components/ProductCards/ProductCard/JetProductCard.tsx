@@ -23,6 +23,8 @@ const JetProductCard: React.FC<PropsType> = (props) => {
     const onMouseOver = () => setElevation(10);
     const onMouseOut = () => setElevation(3);
 
+    console.log(props.card)
+
     const isNew = true;
     
     return(

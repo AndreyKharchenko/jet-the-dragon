@@ -74,7 +74,9 @@ export const JetInput: React.FC<InputProps> = ({name, label, placeholder, mask, 
     }
 
     useEffect(() => {
-        setValue(name, initialVal);
+        if(initialVal) {
+            setValue(name, initialVal);
+        }
     },[initialVal])
 
     return (

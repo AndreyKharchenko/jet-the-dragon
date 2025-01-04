@@ -7,15 +7,25 @@ import { ICreateOrder, IDeleteOrder, IOrdersFilter, IUpdateOrder } from "../mode
 import { ICreateFavourite, ICreateProduct, IDeleteFavourite, IDeleteProduct, IFavouriteFilter, IUpdateProduct } from "../models/product";
 import { IUpdateSupplier } from "../models/user";
 import { IAnalyticFilter } from "../models/analytic";
+import { IDeleteTechMap, ITechMap, ITechMapFilter } from "../models/techmap";
+//import https from 'https'
+
 
 const token = localStorage.getItem('TOKEN');
 //console.log('TOKEN', token)
+// @ts-ignore
 
+// const isNode = typeof window === 'undefined';
 const instance = axios.create({
-    baseURL: 'https://localhost:7099/',
+    baseURL: 'http://localhost:5158/',
     headers: {
         'Authorization': `Bearer ${token}`
     },
+    /* ...(isNode && {
+        httpsAgent: new https.Agent({
+          rejectUnauthorized: false, // Это работает только в Node.js среде
+        }),
+      }), */
 });
 
 export const authAPI = {
@@ -54,6 +64,21 @@ export const userAPI = {
     deleteProduct(data: IDeleteProduct) {
         return instance.delete(`products`, {params: data});
     }
+}
+
+export const techMapAPI = {
+    getAllTechMap(data: ITechMapFilter) {
+        return instance.get(`techmap`, {params: data});
+    },
+    createTechMap(data: ITechMap) {
+        return instance.post(`techmap`, data);
+    },
+    updateTechMap(data: ITechMap) {
+        return instance.put(`techmap`, data);
+    },
+    deleteTechMap(data: IDeleteTechMap) {
+        return instance.delete(`techmap`, {params: data});
+    },
 }
 
 export const catalogAPI = {

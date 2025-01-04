@@ -10,7 +10,7 @@ import { flexBetweenCenter, dFlexCol, flexBetween, flexAround, flexCenter } from
 import { ICustomerLoginForm, ISupplierLoginForm } from '../../models/login';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks/useRedux';
-import { updateCustomer, createCustomer, createSupplier, userActions } from '../../store/slices/userSlice';
+import { updateCustomer, createCustomer, createSupplier, userActions, getCustomerData } from '../../store/slices/userSlice';
 import { IUpdateCustomer } from '../../models/user';
 import JetSpinner from '../common/JetSpinner';
 import * as userSelectors from '../../store/selectors/userSelectors';
@@ -78,7 +78,8 @@ const JetSupplierLogin: React.FC<{}> = () => {
   const handleCompleteReg = async () => {
     // REQUEST SUPPLIER
     let values = methods2.getValues();
-    
+    console.log('VALUES', values)
+    console.log(getCustomerProfile)
     try {
       if(!!getCustomerProfile) {
         let params: ISupplierLoginForm = {
@@ -97,6 +98,7 @@ const JetSupplierLogin: React.FC<{}> = () => {
   };
 
   useEffect(() => {
+    console.log('ТУТ', getCustomerProfile)
     if (!!getCustomerProfile) {
       setDisabled(true);
     }

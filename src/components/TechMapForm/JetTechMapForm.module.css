@@ -1,0 +1,64 @@
+.root {
+    padding: 20px;
+    border-radius: 20px;
+    height: 600px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.root ::-webkit-scrollbar {
+    width: 0; /* Ширина всего элемента навигации */
+}
+
+
+.techMapFormTitle {
+    font-weight: 600;
+    font-size: 28px;
+    line-height: 26px;
+    position: sticky;
+    top: 0;
+    background-color: #FFF;
+    z-index: 4;
+}
+
+.techMapName input {
+    border: 1px solid black;
+    width: 100%;
+}
+
+.job {
+    margin-top: 20px;
+}
+
+.jobHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.jobNumber {
+    font-weight: 600;
+    font-size: 22px;
+}
+
+.jobFields {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    column-gap: 30px;
+    row-gap: 30px;
+}
+
+.techMapForm {
+    overflow-y: scroll;
+}
+
+.btnsGroup {
+    margin-top: 40px;
+    display: flex;
+    gap: 24px;
+}
+
+.btnsGroup button {
+    width: 241px;
+}

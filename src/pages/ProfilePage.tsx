@@ -19,6 +19,7 @@ const ProfilePage: React.FC<{}> = () => {
   let [searchParams, setSearchParams] = useSearchParams();
 
   const getRole = useAppSelector(userSelectors.userRole);
+  console.log('getRole', getRole)
   const orderId = searchParams.get('order');
 
   useEffect(() => {

@@ -75,14 +75,20 @@ export function getPaymentType(name: string | undefined) {
 
 export function getImage(id: string | undefined) {
     if(!!id) {
-        return `https://localhost:7099/images/${id}.png`;
+        return `http://localhost:5158/images/${id}.png`;
     }
 
-    return `https://localhost:7099/images/default.png`;
+    return `http://localhost:5158/images/default.png`;
     
 }
 
 export function uuid() {
     return Math.floor(Math.random() * 1000);
+}
+
+export function guid() {
+    return "10000000-1000-4000-8000-100000000000".replace(/[018]/g, c =>
+        (+c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> +c / 4).toString(16)
+    );
 }
 
