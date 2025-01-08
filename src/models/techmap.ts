@@ -3,6 +3,7 @@ export interface ITechMap {
     supplierId?: number | string,
     name: string
     techMapJobs: ITechMapJob[]
+    criticalPath: ICriticalPath
 }
 
 export interface ICreateOrUpdateTechMap {
@@ -14,14 +15,12 @@ export interface ICreateOrUpdateTechMap {
 
 export interface ITechMapJob {
     id: string,
-    //id?: string,
     jobName: string;
     jobDescription: string;
     jobDuration: string
-    // jobDependence: string
     jobDependence: string[]
     jobResources: string
-    jobCompleteDate: string
+    jobCompleteDate: string | Date
 }
 
 export interface ITechMapJobForm {
@@ -31,7 +30,7 @@ export interface ITechMapJobForm {
     jobDuration: string
     jobDependence: IJobDependency[]
     jobResources: string
-    jobCompleteDate: string
+    jobCompleteDate: string | Date
 }
 
 export interface IJobDependency {
@@ -52,10 +51,9 @@ export interface ITechMapTableRow {
     jobName: string
     jobDescription: string
     jobDuration: string
-    // jobDependence: string
     jobDependence: string[]
     jobResources: string
-    jobCompleteDate: string
+    jobCompleteDate: string | Date
 }
 
 export interface ITechMapTableColumn {
@@ -63,4 +61,11 @@ export interface ITechMapTableColumn {
     label: string;
     numeric: boolean;
     disablePadding: boolean;
+}
+
+export interface ICriticalPath {
+    id: string
+    techMapId: string
+    totalDuration: number
+    techMapJobs: ITechMapJob[]
 }

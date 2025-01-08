@@ -7,7 +7,7 @@ import { ICreateOrder, IDeleteOrder, IOrdersFilter, IUpdateOrder } from "../mode
 import { ICreateFavourite, ICreateProduct, IDeleteFavourite, IDeleteProduct, IFavouriteFilter, IUpdateProduct } from "../models/product";
 import { IUpdateSupplier } from "../models/user";
 import { IAnalyticFilter } from "../models/analytic";
-import { IDeleteTechMap, ITechMap, ITechMapFilter } from "../models/techmap";
+import { ICreateOrUpdateTechMap, IDeleteTechMap, ITechMap, ITechMapFilter } from "../models/techmap";
 //import https from 'https'
 
 
@@ -70,10 +70,10 @@ export const techMapAPI = {
     getAllTechMap(data: ITechMapFilter) {
         return instance.get(`techmap`, {params: data});
     },
-    createTechMap(data: ITechMap) {
+    createTechMap(data: ICreateOrUpdateTechMap) {
         return instance.post(`techmap`, data);
     },
-    updateTechMap(data: ITechMap) {
+    updateTechMap(data: ICreateOrUpdateTechMap) {
         return instance.put(`techmap`, data);
     },
     deleteTechMap(data: IDeleteTechMap) {

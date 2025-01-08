@@ -34,6 +34,7 @@ const JetTechMapForm: React.FC<IJetTechMapFormProps> = ({ onSaveForm, defaultVal
     }
 
     useEffect(() => {
+        console.log(`${defaultValue?.jobs[0].jobName} - ${defaultValue?.jobs[0].jobCompleteDate}`)
         if (isEdit && defaultValue) reset(defaultValue)
     }, [isEdit, reset, defaultValue, setValue])
 
@@ -53,7 +54,7 @@ const JetTechMapForm: React.FC<IJetTechMapFormProps> = ({ onSaveForm, defaultVal
         <Box className={style.root}>
             <Box className={style.techMapForm}>
                 <FormProvider {...methods}>
-                    <Box className={style.techMapFormTitle}>Новая технологическая карта</Box>
+                    <Box className={style.techMapFormTitle}>{(isEdit) ? defaultValue?.name : 'Новая технологическая карта'}</Box>
                     <JetInput name={`name`} label={'Название карты'} placeholder={'Название карты'} fullWidth sx={{ mt: 1 }} />
                     {fields.map((job, index) => (
                         <Box className={style.job} key={job.id}>
@@ -74,7 +75,7 @@ const JetTechMapForm: React.FC<IJetTechMapFormProps> = ({ onSaveForm, defaultVal
                                     name={`jobs[${index}].jobCompleteDate`}
                                     label='Дата окончания'
                                     format='DD.MM.YYYY'
-                                    initialValue={moment()}
+                                    initialValue={(job && job.jobCompleteDate) ? moment(job.jobCompleteDate) : moment()}
                                 />
 
                                 {dependencies.length > 0 && <Controller

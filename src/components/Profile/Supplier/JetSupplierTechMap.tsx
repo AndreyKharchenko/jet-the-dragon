@@ -40,6 +40,10 @@ const JetSupplierTechMap = () => {
 
   const [currentTechMap, setCurrentTechMap] = useState<IJetTechMapComboboxOption>(techMapsOptions[0])
 
+  const currentTechMapData = supplierTechMaps.find(techmap => techmap.id == currentTechMap?.id);
+
+  const hasCriticalPath = currentTechMapData?.criticalPath && currentTechMapData.criticalPath.techMapJobs.length > 0 
+
   const techMapTableRows: ITechMapTableRow[] = useMemo(() => {
     const techmap = supplierTechMaps.find(techmap => techmap.id == currentTechMap?.id);
     return techmap?.techMapJobs.map(job => {
@@ -93,6 +97,7 @@ const JetSupplierTechMap = () => {
       name: form.name, 
       techMapJobs: form.jobs.map(it => ({...it, jobDependence: it.jobDependence.map(it => it.id)})) }
     console.log('data', data)
+    console.log(`${data.techMapJobs[0].jobName} - ${new Date(data.techMapJobs[0].jobCompleteDate).toISOString()}`)
 
     if (isEdit && currentTechMap) {
       data.techMapId = currentTechMap?.id || ''
@@ -126,13 +131,6 @@ const JetSupplierTechMap = () => {
     getTechMaps()
   }, [supplierTechMaps])
 
-  const criticalPath = [
-    { jobName: 'Подготовка почвы', jobDuration: 24 },
-    { jobName: 'Закупка семян', jobDuration: 48 },
-    { jobName: 'Внесение удобрений', jobDuration: 24 },
-    { jobName: 'Посев семян', jobDuration: 48 },
-    { jobName: 'Полив', jobDuration: 24 },
-  ];
 
   return (
     <Box className={style.container}>
@@ -146,19 +144,21 @@ const JetSupplierTechMap = () => {
         <Box className={style.techMap}>
           <JetTechMapTable rows={techMapTableRows} columns={techMapColumns} />
         </Box>}
-      {/* <Box className={style.techMapGraphWrapper}>
+      {hasCriticalPath && <Box className={style.techMapGraphWrapper}>
           <Box className={style.techMapGraphTitle}>Критический путь</Box>
           <Box className={style.techMapGraph}>
-            {criticalPath.map((job, index) => {
+            {currentTechMapData.criticalPath.techMapJobs.map((job, index) => {
               return (
                 <Box key={index} className={style.job}>
+                  <Box className={style.jobNumber}>{index + 1}</Box>
                   <Box>{job.jobName}</Box>
                   <Box>{job.jobDuration} ч</Box>
                 </Box>
               );
             })}
           </Box>
-      </Box> */}
+          <Box className={style.criticalPathTime}>Общее время выполнения: <span>{currentTechMapData.criticalPath.totalDuration} часов</span></Box>
+      </Box>}
       <Box className={style.fabs}>
         <Fab color="primary" onClick={onEditTechMap}>
           <EditIcon />

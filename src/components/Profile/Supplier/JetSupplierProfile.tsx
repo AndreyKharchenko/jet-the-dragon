@@ -85,7 +85,7 @@ const JetSupplierProfile: React.FC<ISupplierProfileProps> = ({ page }) => {
             }
           </Box>
         </JetSidebar>
-        <Box sx={(!getLoader) ? {mt:2} : {width:'100%', mt: 12, ...flexCenter, border: '1px solid black' }}>
+        <Box sx={(!getLoader) ? {mt:2} : {width:'100%', mt: 12, ...flexCenter }}>
           {
             (page?.toUpperCase() == 'MAIN')
             ?
