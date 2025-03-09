@@ -32,13 +32,11 @@ const JetSupplierProfile: React.FC<ISupplierProfileProps> = ({ page }) => {
 
   const [selectedItem, setSelectedItem] = useState<mocItem>(listItems[0]);
   const navigate = useNavigate();
-  const getLoader = useAppSelector(userSelectors.loader);
 
   const handleListItemClick = (item: mocItem) => {
 
     if (item.page.toUpperCase() == 'EXIT') {
       logout();
-      //navigate(`/login/supplier`);
       navigate(`/`);
       return;
     }
