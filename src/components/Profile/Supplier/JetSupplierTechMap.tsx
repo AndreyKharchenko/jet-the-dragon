@@ -13,9 +13,11 @@ import { TechMapFormValues } from '../../TechMapForm/types';
 import JetTechMapForm from '../../TechMapForm/JetTechMapForm';
 import * as userSelectors from '../../../store/selectors/userSelectors';
 import { IJetTechMapComboboxOption } from '../../TechMapCombobox/types';
-import { ICreateOrUpdateTechMap, IJobDependency, ITechMap, ITechMapJob, ITechMapTableRow } from '../../../models/techmap';
+import { ICreateOrUpdateTechMap, IJobDependency, ITechMapJob, ITechMapTableRow } from '../../../models/techmap';
 import JetIcon from '../../common/JetIcon';
 import { guid } from '../../../utils/utils';
+import JetSpinner from '../../common/JetSpinner';
+import { flexCenter } from '../../../themes/commonStyles';
 
 const JetSupplierTechMap = () => {
   const dispatch = useAppDispatch();
@@ -23,12 +25,16 @@ const JetSupplierTechMap = () => {
   let [isEdit, setIsEdit] = useState<boolean>(false);
   const supplierTechMaps = useAppSelector(userSelectors.supplierTechMaps);
   const supplierId = useAppSelector(userSelectors.supplierId);
-  const techMapsOptions = supplierTechMaps.map(techmap => {
+  const getLoader = useAppSelector(userSelectors.loader);
+
+  const hasData = !getLoader && supplierTechMaps && supplierTechMaps.length > 0
+
+  const techMapsOptions = supplierTechMaps?.map(techmap => {
     return {
       label: techmap.name,
       id: techmap?.id || ''
     }
-  })
+  }) || []
 
   const getDependantJobNames = (dependantIds: string[], jobs: ITechMapJob[]) => {
     // Фильтруем массив jobs по найденным id в dependense
@@ -38,14 +44,14 @@ const JetSupplierTechMap = () => {
     return dependentJobs.map(job => job.jobName);
   }
 
-  const [currentTechMap, setCurrentTechMap] = useState<IJetTechMapComboboxOption>(techMapsOptions[0])
+  const [currentTechMap, setCurrentTechMap] = useState<IJetTechMapComboboxOption | null>(techMapsOptions[0] || null)
 
-  const currentTechMapData = supplierTechMaps.find(techmap => techmap.id == currentTechMap?.id);
+  const currentTechMapData = supplierTechMaps?.find(techmap => techmap.id == currentTechMap?.id);
 
-  const hasCriticalPath = currentTechMapData?.criticalPath && currentTechMapData.criticalPath.techMapJobs.length > 0 
+  const hasCriticalPath = currentTechMapData?.criticalPath && currentTechMapData.criticalPath.techMapJobs.length > 0
 
   const techMapTableRows: ITechMapTableRow[] = useMemo(() => {
-    const techmap = supplierTechMaps.find(techmap => techmap.id == currentTechMap?.id);
+    const techmap = supplierTechMaps?.find(techmap => techmap.id == currentTechMap?.id);
     return techmap?.techMapJobs.map(job => {
       return {
         ...job,
@@ -55,14 +61,14 @@ const JetSupplierTechMap = () => {
   }, [currentTechMap])
 
   const currentTechMapFormData: (TechMapFormValues | null) = useMemo(() => {
-    const techmap = supplierTechMaps.find(techmap => techmap.id == currentTechMap?.id)
+    const techmap = supplierTechMaps?.find(techmap => techmap.id == currentTechMap?.id)
     // Таблица для поиска по старому ID имени и нового ID (требуется генерировать новый ID для обработки на беке)
-    const jobMap = techmap?.techMapJobs.reduce((acc: { [key: string]: {jobName: string, newId: string} }, job) => {
+    const jobMap = techmap?.techMapJobs.reduce((acc: { [key: string]: { jobName: string, newId: string } }, job) => {
       acc[job.id] = { jobName: job.jobName, newId: guid() };
       return acc;
     }, {});
 
-    if(jobMap == undefined) {
+    if (jobMap == undefined) {
       return null;
     }
 
@@ -92,10 +98,11 @@ const JetSupplierTechMap = () => {
 
   const onSave = async (form: TechMapFormValues) => {
     console.log('form', form)
-    const data: ICreateOrUpdateTechMap = { 
-      supplierId, 
-      name: form.name, 
-      techMapJobs: form.jobs.map(it => ({...it, jobDependence: it.jobDependence.map(it => it.id)})) }
+    const data: ICreateOrUpdateTechMap = {
+      supplierId,
+      name: form.name,
+      techMapJobs: form.jobs.map(it => ({ ...it, jobDependence: it.jobDependence.map(it => it.id) }))
+    }
     console.log('data', data)
     console.log(`${data.techMapJobs[0].jobName} - ${new Date(data.techMapJobs[0].jobCompleteDate).toISOString()}`)
 
@@ -120,45 +127,56 @@ const JetSupplierTechMap = () => {
   }
 
   useEffect(() => {
-    console.log(supplierTechMaps)
-    //if(supplierTechMaps.length == 0) return;
+    console.log('supplierTechMaps', supplierTechMaps)
+    if (supplierTechMaps === null) {
+      getTechMaps()
+    }  
 
-    if (supplierTechMaps.length > 0) {
+    if(supplierTechMaps && supplierTechMaps?.length > 0) {
       setCurrentTechMap({ label: supplierTechMaps[0].name, id: supplierTechMaps[0].id || '' })
-      return
     }
-
-    getTechMaps()
   }, [supplierTechMaps])
-
 
   return (
     <Box className={style.container}>
       <Box className={style.techMapTitle}>Технологические карты</Box>
-      {techMapsOptions.length &&
-        <Box className={style.techMapOptions}>
-          <JetTechMapCombobox options={techMapsOptions} onChange={setCurrentTechMap} />
+
+      {getLoader && <Box sx={flexCenter}><JetSpinner size={85} /></Box>}
+
+      {!hasData &&
+        <Box className={style.noData}>
+          Нет найдено данных для аналитики
         </Box>
       }
-      {techMapTableRows.length !== 0 &&
-        <Box className={style.techMap}>
-          <JetTechMapTable rows={techMapTableRows} columns={techMapColumns} />
-        </Box>}
-      {hasCriticalPath && <Box className={style.techMapGraphWrapper}>
-          <Box className={style.techMapGraphTitle}>Критический путь</Box>
-          <Box className={style.techMapGraph}>
-            {currentTechMapData.criticalPath.techMapJobs.map((job, index) => {
-              return (
-                <Box key={index} className={style.job}>
-                  <Box className={style.jobNumber}>{index + 1}</Box>
-                  <Box>{job.jobName}</Box>
-                  <Box>{job.jobDuration} ч</Box>
-                </Box>
-              );
-            })}
-          </Box>
-          <Box className={style.criticalPathTime}>Общее время выполнения: <span>{currentTechMapData.criticalPath.totalDuration} часов</span></Box>
-      </Box>}
+
+      {hasData &&
+          <>
+            {techMapsOptions?.length &&
+              <Box className={style.techMapOptions}>
+                <JetTechMapCombobox options={techMapsOptions} onChange={setCurrentTechMap} />
+              </Box>
+            }
+            {techMapTableRows.length !== 0 &&
+              <Box className={style.techMap}>
+                <JetTechMapTable rows={techMapTableRows} columns={techMapColumns} />
+              </Box>}
+            {hasCriticalPath && <Box className={style.techMapGraphWrapper}>
+              <Box className={style.techMapGraphTitle}>Критический путь</Box>
+              <Box className={style.techMapGraph}>
+                {currentTechMapData.criticalPath.techMapJobs.map((job, index) => {
+                  return (
+                    <Box key={index} className={style.job}>
+                      <Box className={style.jobNumber}>{index + 1}</Box>
+                      <Box>{job.jobName}</Box>
+                      <Box>{job.jobDuration} ч</Box>
+                    </Box>
+                  );
+                })}
+              </Box>
+              <Box className={style.criticalPathTime}>Общее время выполнения: <span>{currentTechMapData.criticalPath.totalDuration} часов</span></Box>
+            </Box>}
+          </>
+      }
       <Box className={style.fabs}>
         <Fab color="primary" onClick={onEditTechMap}>
           <EditIcon />

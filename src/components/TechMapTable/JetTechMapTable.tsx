@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, TableSortLabel, styled, tableCellClasses } from '@mui/material'
-import moment, { Moment } from 'moment';
+import moment from 'moment';
 import { ITechMapTableColumn, ITechMapTableRow } from '../../models/techmap';
 
 interface IDataTable {
@@ -36,7 +36,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 const JetTechMapTable: React.FC<IDataTable> = ({ rows, columns }) => {
 
     const [order, setOrder] = useState<Order>('asc');
-    const [orderBy, setOrderBy] = useState<keyof ITechMapTableRow>('jobName');
+    const [orderBy, setOrderBy] = useState<keyof ITechMapTableRow>('jobCompleteDate');
     let [allRows, setAllRows] = useState(rows);
     const [page, setPage] = useState<number>(0);
     const [rowsPerPage, setRowsPerPage] = useState<number>(5);
@@ -71,8 +71,8 @@ const JetTechMapTable: React.FC<IDataTable> = ({ rows, columns }) => {
         order: Order,
         orderBy: Key,
     ): (
-        a: { [key in Key]: number | string | Moment },
-        b: { [key in Key]: number | string | Moment },
+        a: { [key in Key]: number | string  | Date | string[] },
+        b: { [key in Key]: number | string  | Date | string[] },
     ) => number {
         return order === 'desc'
             ? (a, b) => descendingComparator(a, b, orderBy)
@@ -126,14 +126,14 @@ const JetTechMapTable: React.FC<IDataTable> = ({ rows, columns }) => {
                     </TableHead>
                     <TableBody>
                         {
-                                /* (
+                                (
                                     rowsPerPage > 0
                                     ?
                                     allRows.sort(getComparator(order, orderBy)).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                                     :
                                     allRows.sort(getComparator(order, orderBy)).slice()
-                                ) */
-                                allRows.map((row, index) => {
+                                )
+                                .map((row, index) => {
                                     return (
                                         <StyledTableRow
                                             hover

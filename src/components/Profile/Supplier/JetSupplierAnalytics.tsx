@@ -6,7 +6,7 @@ import JetBarChart from '../../Charts/JetBarChart';
 import { useAppDispatch, useAppSelector } from '../../../hooks/useRedux';
 import { getSupplierAnalytic } from '../../../store/slices/userSlice';
 import * as userSelectors from '../../../store/selectors/userSelectors';
-import {Leaderboard, Timeline} from '@mui/icons-material';
+import { Leaderboard, Timeline } from '@mui/icons-material';
 import JetSpinner from '../../common/JetSpinner';
 import { flexCenter } from '../../../themes/commonStyles';
 import { IBarChartData, ILineChartData, IRowTable } from '../../../models/analytic';
@@ -54,16 +54,18 @@ const JetSupplierAnalytics = () => {
   const [lineChartData, setLineChartData] = useState<ILineChartData[]>([]);
   const [dtRows, setDtRows] = useState<IRowTable[]>([]);
 
+  const hasData = !getLoader && supplierAnalytic && supplierAnalytic.length > 0
+
   const getAnalytic = async () => {
-    if(!!supplierId) {
+    if (!!supplierId) {
       try {
-        await dispatch(getSupplierAnalytic({supplierId: supplierId}));
+        await dispatch(getSupplierAnalytic({ supplierId: supplierId }));
       } catch (error) {
         console.error('ERR: getAnalytic()');
       }
     }
   }
-  
+
 
   const displayBarChart = () => {
     setBarChart(!barChart);
@@ -76,63 +78,67 @@ const JetSupplierAnalytics = () => {
   }
 
   useEffect(() => {
-    if(!supplierAnalytic.length) {
+    if(supplierAnalytic === null) {
       getAnalytic();
+    } else {
+      // Получаем данные для таблицы
+      const rows = supplierAnalytic.map(it => {
+        return {
+          id: it.productId,
+          productName: it.productName,
+          productSalesCount: it.productSalesCount,
+          productProfit: it.productProfit,
+        }
+      })
+      console.log('ROWS', rows);
+      setDtRows(rows);
+
+      // Получаем данные для графика (Line Chart)
+      const lineChartData = supplierAnalytic.map(it => {
+        return {
+          name: it.productName,
+          value: it.productSalesCount
+        }
+      })
+      setLineChartData(lineChartData);
+
+      // Получаем данные для диаграммы (Bar Chart)
+      const barChartData = supplierAnalytic.map(it => {
+        return {
+          name: it.productName,
+          value: it.productSalesCount
+        }
+      })
+      setBarChartData(barChartData);
     }
-
-    // Получаем данные для таблицы
-    const rows = supplierAnalytic.map(it => {
-      return {
-        id: it.productId,
-        productName: it.productName,
-        productSalesCount: it.productSalesCount,
-        productProfit: it.productProfit,
-      }
-    })
-    console.log('ROWS', rows);
-    setDtRows(rows);
-
-    // Получаем данные для графика (Line Chart)
-    const lineChartData = supplierAnalytic.map(it => {
-      return {
-        name: it.productName,
-        value: it.productSalesCount
-      }
-    })
-    setLineChartData(lineChartData);
-
-    // Получаем данные для диаграммы (Bar Chart)
-    const barChartData = supplierAnalytic.map(it => {
-      return {
-        name: it.productName,
-        value: it.productSalesCount
-      }
-    })
-    setBarChartData(barChartData);
-    
   },[supplierAnalytic])
 
-  
   return (
     <>
       <Box className={style.title}>Аналитика</Box>
-      
-      { getLoader && <Box sx={{width:'100%', ...flexCenter, mt: 5}}><JetSpinner size={85} /></Box> }
 
-      {!getLoader &&
+      {getLoader && <Box sx={{ width: '100%', ...flexCenter, mt: 5 }}><JetSpinner size={85} /></Box>}
+
+      {!hasData &&
+        <Box className={style.noData}>
+          Нет найдено данных для аналитики
+        </Box>
+      }
+
+      {hasData &&
         <React.Fragment>
           <Box className={style.analyticToolbar}>
-            <Button 
-              variant='outlined' 
-              startIcon={<Leaderboard />} 
+            <Button
+              variant='outlined'
+              startIcon={<Leaderboard />}
               onClick={displayBarChart}
             >
               Диаграмма продаж
             </Button>
 
-            <Button 
-              variant='outlined' 
-              startIcon={<Timeline />} 
+            <Button
+              variant='outlined'
+              startIcon={<Timeline />}
               onClick={displayLineChart}
             >
               График продаж
@@ -141,13 +147,13 @@ const JetSupplierAnalytics = () => {
 
           <JetDataTable rows={dtRows} columns={columns} />
 
-          { barChart && <JetBarChart data={barChartData} /> }
+          {barChart && barChartData.length && <JetBarChart data={barChartData} />}
 
-          { lineChart && <JetLineChart data={lineChartData} /> }
+          {lineChart && lineChartData.length && <JetLineChart data={lineChartData} />}
 
         </React.Fragment>
       }
-      
+
     </>
   )
 }

@@ -19,7 +19,7 @@ const ProfilePage: React.FC<{}> = () => {
   let [searchParams, setSearchParams] = useSearchParams();
 
   const getRole = useAppSelector(userSelectors.userRole);
-  console.log('getRole', getRole)
+  const isSupplier = !!getRole && (getRole.toUpperCase() === PROFILE_TYPES['SUPPLIER'])
   const orderId = searchParams.get('order');
 
   useEffect(() => {
@@ -47,8 +47,7 @@ const ProfilePage: React.FC<{}> = () => {
         >
 
           <Container maxWidth="xl" sx={{ height: '100%'}}>
-            {!!getRole &&
-              (getRole.toUpperCase() == PROFILE_TYPES['SUPPLIER'])
+            {isSupplier
               ?
               <JetSupplierProfile page={params.page || null} />
               :
@@ -60,9 +59,9 @@ const ProfilePage: React.FC<{}> = () => {
           </Container>
         </Box>
 
-        <Box>
+        {!isSupplier && <Box>
           <JetFooter />
-        </Box>
+        </Box>}
       </Box>
 
     </>
