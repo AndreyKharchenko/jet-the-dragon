@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { Box, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import { dFlex, flexCenter } from '../../../themes/commonStyles';
+import { dFlex } from '../../../themes/commonStyles';
 import JetIcon from '../../common/JetIcon';
 import JetLogo from '../../common/JetLogo';
 import JetSidebar from '../../Sidebar/JetSidebar';
@@ -11,8 +11,6 @@ import JetSupplierProducts from './JetSupplierProducts';
 import { useAppSelector } from '../../../hooks/useRedux';
 import * as userSelectors from '../../../store/selectors/userSelectors';
 import { logout } from '../../../api/userManager';
-import JetSpinner from '../../common/JetSpinner';
-import { flexBetweenCenter } from '../../../themes/commonStyles';
 import JetSupplierActiveOrders from './JetSupplierActiveOrders';
 import JetSupplierTechMap from './JetSupplierTechMap';
 interface ISupplierProfileProps {
@@ -49,9 +47,6 @@ const JetSupplierProfile: React.FC<ISupplierProfileProps> = ({ page }) => {
     navigate(`/my/${item.page}`);
   }
 
-  useEffect(() => {
-    console.log('TETET')
-  }, [])
   return (
     <>
       <Box sx={dFlex}>

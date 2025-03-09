@@ -90,7 +90,6 @@ const JetSupplierAnalytics = () => {
           productProfit: it.productProfit,
         }
       })
-      console.log('ROWS', rows);
       setDtRows(rows);
 
       // Получаем данные для графика (Line Chart)

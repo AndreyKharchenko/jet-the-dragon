@@ -97,14 +97,11 @@ const JetSupplierTechMap = () => {
   }
 
   const onSave = async (form: TechMapFormValues) => {
-    console.log('form', form)
     const data: ICreateOrUpdateTechMap = {
       supplierId,
       name: form.name,
       techMapJobs: form.jobs.map(it => ({ ...it, jobDependence: it.jobDependence.map(it => it.id) }))
     }
-    console.log('data', data)
-    console.log(`${data.techMapJobs[0].jobName} - ${new Date(data.techMapJobs[0].jobCompleteDate).toISOString()}`)
 
     if (isEdit && currentTechMap) {
       data.techMapId = currentTechMap?.id || ''
@@ -127,7 +124,6 @@ const JetSupplierTechMap = () => {
   }
 
   useEffect(() => {
-    console.log('supplierTechMaps', supplierTechMaps)
     if (supplierTechMaps === null) {
       getTechMaps()
     }  

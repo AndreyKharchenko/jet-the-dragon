@@ -34,7 +34,6 @@ const JetTechMapForm: React.FC<IJetTechMapFormProps> = ({ onSaveForm, defaultVal
     }
 
     useEffect(() => {
-        console.log(`${defaultValue?.jobs[0].jobName} - ${defaultValue?.jobs[0].jobCompleteDate}`)
         if (isEdit && defaultValue) reset(defaultValue)
     }, [isEdit, reset, defaultValue, setValue])
 
